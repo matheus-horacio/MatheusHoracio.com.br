@@ -1,0 +1,436 @@
+# Configuração do Pages CMS — app.pagescms.org
+# Conecte este repositório e tudo abaixo vira formulário visual.
+
+media:
+  input: assets/img
+  output: /assets/img
+  extensions: [webp, jpg, jpeg, png, avif]
+  categories: [image]
+
+content:
+  - name: conteudo
+    label: Site
+    path: _data/conteudo.yml
+    type: file
+    icon: file-text
+    fields:
+
+      # ─────────── CORES ───────────
+      - name: tema
+        label: 🎨 Cores
+        type: object
+        fields:
+          - name: cor_fundo
+            label: Fundo claro
+            type: string
+            description: "Cor de fundo das seções claras. Use hexadecimal, ex.: #ffffff"
+            default: "#ffffff"
+          - name: cor_texto
+            label: Texto e fundo escuro
+            type: string
+            description: "Serve para o texto nas seções claras E para o fundo das seções escuras. Ex.: #000000"
+            default: "#000000"
+          - name: cor_destaque
+            label: Cor de destaque
+            type: string
+            description: "Usada no selo 'Sem cachê' e no ponto de 'Agenda aberta'. Ex.: #00A79E"
+            default: "#00A79E"
+          - name: cor_texto_corpo_claro
+            label: Parágrafos em fundo claro
+            type: string
+            default: "#3A3A41"
+          - name: cor_texto_corpo_escuro
+            label: Parágrafos em fundo escuro
+            type: string
+            default: "#B4B4BC"
+
+      # ─────────── BUSCA ───────────
+      - name: seo
+        label: 🔍 Google e redes sociais
+        type: object
+        fields:
+          - name: titulo
+            label: Título da página
+            type: string
+            description: "Aparece na aba do navegador e no Google. Até 60 caracteres funciona melhor."
+          - name: descricao
+            label: Descrição
+            type: text
+            description: "O parágrafo que o Google mostra abaixo do título. Até 160 caracteres."
+          - name: imagem
+            label: Imagem de compartilhamento
+            type: image
+            description: "📐 EXATAMENTE 1200 × 630 px (proporção 1,91:1), até 300 KB, JPG. Aparece quando alguém manda o link no WhatsApp, LinkedIn ou Facebook. Deixe o rosto no centro: as bordas são cortadas em algumas redes."
+          - name: favicon
+            label: Favicon
+            type: image
+            description: "ENVIE 512 x 512 px, PNG com fundo transparente, ate 50 KB. E o icone que aparece na aba do navegador, nos favoritos e no atalho da tela inicial do celular. Precisa ser QUADRADO e legivel bem pequeno: use so a inicial ou um simbolo, nunca o nome inteiro. O atual tem 96 x 96, que fica embacado em tela de alta resolucao."
+          - name: analytics
+            label: ID do Google Analytics
+            type: string
+          - name: wikidata
+            label: Link do Wikidata
+            type: string
+
+      # ─────────── CONTATO ───────────
+      - name: contato
+        label: ✉️ Contato
+        type: object
+        fields:
+          - name: email
+            label: E-mail
+            type: string
+            description: "Todos os botões do site abrem um e-mail para cá."
+          - name: assunto
+            label: Assunto do e-mail
+            type: string
+          - name: corpo
+            label: Primeira linha do e-mail
+            type: string
+          - name: linkedin
+            label: LinkedIn
+            type: string
+          - name: instagram
+            label: Instagram
+            type: string
+          - name: cidade
+            label: Cidade
+            type: string
+          - name: estado
+            label: Estado
+            type: string
+
+      # ─────────── TOPO ───────────
+      - name: nav
+        label: ⬆️ Barra do topo
+        type: object
+        fields:
+          - name: marca
+            label: Nome
+            type: string
+          - name: botao
+            label: Texto do botão
+            type: string
+          - name: links
+            label: Links do menu
+            type: object
+            list: true
+            fields:
+              - { name: texto, label: Texto, type: string }
+              - { name: ancora, label: Âncora, type: string, description: "historia, numeros, palestras, videos, galeria ou perguntas" }
+
+      # ─────────── CAPA ───────────
+      - name: capa
+        label: 🖼️ Capa
+        type: object
+        fields:
+          - name: imagem
+            label: Foto de fundo
+            type: image
+            description: "📐 ENVIE 2400 × 1350 px (16:9), até 500 KB, JPG. A foto mais importante do site. ⚠️ Ela é CORTADA de forma diferente em cada tela: no computador aparece quase inteira (1440 × 900), no tablet vira quadrada (820 × 950) e no CELULAR vira vertical (375 × 750), ou seja, só a FAIXA CENTRAL da foto aparece. Escolha uma foto em que o assunto principal esteja no meio, com folga dos dois lados. O texto fica sobre o terço de baixo, então evite informação importante ali."
+          - name: imagem_alt
+            label: Descrição da foto
+            type: string
+            description: "Para leitores de tela e para o Google entender a imagem."
+          - name: titulo_linha1
+            label: Título — 1ª linha
+            type: string
+          - name: titulo_linha2
+            label: Título — 2ª linha
+            type: string
+          - name: subtitulo
+            label: Parágrafo de abertura
+            type: rich-text
+            description: "Use **negrito** nas frases que precisam saltar."
+          - name: botao
+            label: Texto do botão
+            type: string
+          - name: link_secundario
+            label: Link secundário
+            type: string
+          - name: escurecer
+            label: Brilho da foto (%)
+            type: number
+            description: "Quanto menor, mais escura fica a foto. 52 é o padrão. Abaixe se o texto estiver difícil de ler."
+
+      # ─────────── 01 ───────────
+      - name: travessia
+        label: 1️⃣ A travessia
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - { name: titulo, label: Título, type: string }
+          - name: imagem
+            label: Retrato
+            type: image
+            description: "ENVIE 1200 x 1500 px (proporcao 4:5, vertical), ate 300 KB, JPG. O recorte e igual no computador, no tablet e no celular, entao o que voce ve e o que aparece. Use foto vertical de uma pessoa. Foto horizontal fica com as laterais cortadas."
+          - { name: imagem_alt, label: Descrição da foto, type: string }
+          - { name: imagem_legenda, label: Legenda da foto, type: string }
+          - name: texto
+            label: Texto
+            type: rich-text
+            description: "Use **negrito** para destacar. Linha em branco separa parágrafos."
+
+      # ─────────── 02 ───────────
+      - name: contratacao
+        label: 2️⃣ A contratação
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - { name: titulo, label: Título, type: string }
+          - name: imagem
+            label: Foto
+            type: image
+            description: "ENVIE 1600 x 1200 px (proporcao 4:3, horizontal), ate 350 KB, JPG. Este espaco e HORIZONTAL, feito para foto de grupo. O recorte e igual nas tres telas."
+          - { name: imagem_alt, label: Descrição da foto, type: string }
+          - { name: imagem_legenda, label: Legenda da foto, type: string }
+          - { name: texto, label: Texto, type: rich-text }
+
+      # ─────────── 03 ───────────
+      - name: queda
+        label: 3️⃣ A queda e a volta
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - { name: titulo, label: Título, type: string }
+          - { name: texto, label: Texto, type: rich-text }
+
+      # ─────────── FOTO LARGA ───────────
+      - name: foto_larga
+        label: 🏞️ Foto larga
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar, type: boolean, default: true }
+          - name: imagem
+            label: Foto
+            type: image
+            description: "ENVIE 2400 x 1350 px (16:9), ate 500 KB, JPG. Ocupa a largura toda da tela. ATENCAO: a altura e fixa e o corte muda por tela. No computador mostra uma faixa larga (1440 x 620) e no celular uma faixa estreita (375 x 280) que pega so o CENTRO da foto. Mantenha as pessoas no meio."
+          - { name: imagem_alt, label: Descrição da foto, type: string }
+          - { name: titulo, label: Título sobre a foto, type: string }
+          - { name: legenda, label: Legenda, type: string }
+
+      # ─────────── 03 ───────────
+      - name: numeros
+        label: 3️⃣ Resultados
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - name: itens
+            label: Números
+            type: object
+            list: true
+            description: "Use 4 números — o layout foi desenhado para quatro."
+            fields:
+              - { name: numero, label: Número, type: string, description: "Curto. Ex.: 11 mi, 54%, +8 h" }
+              - { name: descricao, label: O que ele significa, type: text }
+          - { name: texto, label: Texto abaixo dos números, type: rich-text }
+
+      # ─────────── 04 ───────────
+      - name: palestras
+        label: 4️⃣ Palestras
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - name: temas
+            label: Temas de palestra
+            type: object
+            list: true
+            fields:
+              - { name: titulo, label: Título, type: string }
+              - { name: descricao, label: Sinopse, type: text }
+              - { name: formato, label: Duração e público, type: string, description: "Ex.: 45–60 min · Eventos e congressos" }
+          - name: onde
+            label: Onde já palestrou
+            type: rich-text
+            description: "Cada evento novo aqui aumenta muito a chance de ser convidado. Use **negrito** nos nomes."
+          - name: cache
+            label: Modelo de cachê
+            type: object
+            list: true
+            fields:
+              - { name: selo, label: Selo, type: string }
+              - name: selo_estilo
+                label: Cor do selo
+                type: select
+                options:
+                  values:
+                    - { value: destaque, label: Cor de destaque }
+                    - { value: escuro, label: Preto }
+              - { name: titulo, label: Para quem, type: string }
+              - { name: texto, label: Explicação, type: text }
+              - { name: frase, label: Frase de fecho, type: string }
+          - { name: nota, label: Observação final, type: string }
+
+      # ─────────── 05 ───────────
+      - name: videos
+        label: 5️⃣ Vídeos
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - name: destaques
+            label: Vídeos em destaque
+            type: object
+            list: true
+            description: "Exatamente 2. Aparecem grandes, no topo da seção."
+            fields:
+              - { name: titulo, label: Título, type: string }
+              - { name: fonte, label: Onde está, type: string }
+              - { name: link, label: Link, type: string }
+              - name: thumb
+                label: Miniatura
+                type: image
+                description: "ENVIE 1280 x 720 px (16:9), ate 200 KB, JPG. Recorte 16:9 igual nas tres telas. Atalho do YouTube: cole https://i.ytimg.com/vi/ID_DO_VIDEO/maxresdefault.jpg"
+              - { name: alt, label: Descrição da miniatura, type: string }
+          - name: itens
+            label: Demais vídeos
+            type: object
+            list: true
+            description: "Use múltiplos de 4 para o desktop não ficar com linha pela metade."
+            fields:
+              - { name: titulo, label: Título, type: string }
+              - { name: fonte, label: Onde está, type: string, description: "Ex.: YouTube, Podcast, Instagram" }
+              - { name: link, label: Link, type: string }
+              - name: thumb
+                label: Miniatura
+                type: image
+                description: "16:9. Para vídeo do YouTube dá para colar https://i.ytimg.com/vi/ID_DO_VIDEO/maxresdefault.jpg"
+              - { name: alt, label: Descrição da miniatura, type: string }
+
+      # ─────────── 06 ───────────
+      - name: depoimentos
+        label: 6️⃣ Depoimentos
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - name: itens
+            label: Depoimentos
+            type: object
+            list: true
+            description: "Use número par — ficam em duas colunas."
+            fields:
+              - { name: texto, label: Citação, type: text, description: "Sem aspas. O site coloca sozinho." }
+              - { name: autor, label: Nome, type: string }
+              - { name: cargo, label: Cargo, type: string, description: "Ex.: Operations Lead no The Chosen Brasil" }
+
+      # ─────────── 07 ───────────
+      - name: galeria
+        label: 7️⃣ Galeria
+        type: object
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - name: fotos
+            label: Fotos
+            type: object
+            list: true
+            description: "Use 12 fotos — assim nenhuma linha fica pela metade no celular, tablet ou computador."
+            fields:
+              - name: imagem
+                label: Foto
+                type: image
+                description: "ENVIE 1600 x 1200 px (proporcao 4:3, horizontal), ate 350 KB, JPG. Recorte 4:3 igual nas tres telas. Aparecem 4 por linha no computador, 3 no tablet e 2 no celular. Ao clicar, a foto abre INTEIRA e sem corte, entao capriche na resolucao."
+              - { name: legenda, label: Legenda curta, type: string, description: "Aparece sobre a foto. Máximo 2 linhas." }
+              - { name: alt, label: Descrição completa, type: text, description: "Cite todos os nomes. É isto que o Google lê." }
+
+      # ─────────── 08 ───────────
+      - name: perguntas
+        label: 8️⃣ Dúvidas frequentes
+        type: object
+        description: "É a seção que o Google e o ChatGPT mais usam para citar você. Vale caprichar."
+        fields:
+          - { name: visivel, label: Mostrar esta seção, type: boolean, default: true }
+          - { name: rotulo, label: Rótulo, type: string }
+          - name: tema
+            label: Fundo
+            type: select
+            options:
+              values:
+                - { value: claro, label: Claro }
+                - { value: escuro, label: Escuro }
+          - name: itens
+            label: Perguntas
+            type: object
+            list: true
+            fields:
+              - { name: pergunta, label: Pergunta, type: string, description: "Escreva como alguém digitaria no Google." }
+              - { name: resposta, label: Resposta, type: text, description: "Frases completas, começando por 'Matheus Horácio...'. Uma IA copia isto literalmente." }
+
+      # ─────────── FIM ───────────
+      - name: fim
+        label: 🔚 Contato final
+        type: object
+        fields:
+          - { name: selo, label: Selo, type: string, description: "Ex.: Agenda 2026 aberta" }
+          - { name: titulo, label: Título, type: string }
+          - { name: texto, label: Texto, type: text }
+          - { name: ano, label: Ano do rodapé, type: string }
+          - name: links
+            label: Links do rodapé
+            type: object
+            list: true
+            fields:
+              - { name: texto, label: Texto, type: string }
+              - { name: url, label: Endereço, type: string }

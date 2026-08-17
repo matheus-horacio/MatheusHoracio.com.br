@@ -1,0 +1,18 @@
+._*
+.DS_Store
+
+# Build do Jekyll
+_site/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock
+
+# Material de trabalho — NÃO deve ir para a internet
+NARRATIVA.md
+site.html
+rascunho.html
+proposta-a.html
+proposta-b.html
+proposta-c.html
+matheus-recorte.png
+.claude/

@@ -1,0 +1,383 @@
+tema:
+  cor_fundo: "#ffffff"
+  cor_texto: "#000000"
+  cor_destaque: "#00A79E"
+  cor_texto_corpo_claro: "#3A3A41"
+  cor_texto_corpo_escuro: "#B4B4BC"
+seo:
+  titulo: Matheus Horácio | Site Oficial
+  descricao: Matheus Horácio criou o maior portal brasileiro sobre The Chosen
+    antes de a série contratá-lo. Hoje é Creative Lead do The Chosen Brasil e
+    palestra sobre construção de audiência, comunidade e processo criativo.
+  imagem: /assets/img/math-compartilhamento.jpg
+  favicon: /assets/img/favicon.png
+  analytics: G-GBKQGQKHBZ
+  wikidata: https://www.wikidata.org/wiki/Q136735831
+contato:
+  email: MatheusHoracio.Contato@gmail.com
+  assunto: Convite para palestra
+  corpo: Oi Matheus, quero te convidar para falar.
+  linkedin: https://www.linkedin.com/in/matheushoracio/
+  instagram: https://www.instagram.com/matheus.horacio/
+  cidade: Londrina
+  estado: Paraná
+nav:
+  marca: Matheus Horácio
+  botao: Convidar
+  links:
+    - texto: História
+      ancora: historia
+    - texto: Resultados
+      ancora: numeros
+    - texto: Palestras
+      ancora: palestras
+    - texto: Vídeos
+      ancora: videos
+    - texto: Galeria
+      ancora: galeria
+    - texto: Dúvidas
+      ancora: perguntas
+capa:
+  imagem: /assets/img/matheus-e-paras-patel-1.webp
+  imagem_alt: Matheus Horácio no palco do Jesus Vira Verão 2024, diante de uma multidão
+  titulo_linha1: De fã a Creative Lead
+  titulo_linha2: do The Chosen Brasil.
+  subtitulo: Em 2021, construí o maior portal de The Chosen no Brasil e cheguei a
+    mais de **100 mil seguidores** nas redes sociais, sem verba nenhuma. Em
+    2022, a série me contratou. **Meu emprego anterior era entregador dos
+    Correios.**
+  botao: Chamar para falar
+  link_secundario: Minha história ↓
+  escurecer: 52
+travessia:
+  visivel: true
+  rotulo: 01 · O começo
+  tema: claro
+  titulo: Antes de dar certo, deu bem errado.
+  imagem: /assets/img/matheus-horacio.webp
+  imagem_alt: Retrato de Matheus Horácio, Creative Lead do The Chosen Brasil
+  imagem_legenda: Matheus Horácio, Creative Lead do The Chosen Brasil
+  texto: >-
+    **Matheus Horácio é comunicador e Creative Lead do The Chosen Brasil.**
+    Trabalha com conteúdo digital há mais de dez anos. Esta é a ordem em que as
+    coisas aconteceram.
+
+
+    Em 2016 eu tinha um canal no YouTube com mais de **20 mil inscritos e
+    milhões de visualizações**, legendando e dublando vídeo. Perdi tudo por
+    direitos autorais. Vieram os strikes e o canal caiu. Demorei anos para
+    entender que aquilo me libertou e me possibilitou iniciar outros projetos.
+
+
+    Em 2020 eu conheci The Chosen. Vi uma série sobre um Jesus e personagens
+    humanos que, naquele momento, ainda não era o normal. Hoje é. A série
+    naturalizou isso.
+
+
+    Em 2021 eu decidi uma coisa em voz alta: **eu vou ser o maior portal de The
+    Chosen da América Latina.** Blog, YouTube, Instagram, Facebook e TikTok. Sem
+    verba, sem equipe e sem a permissão de ninguém.
+
+
+    Criei um ecossistema que entregava conteúdo de valor para os fãs da série.
+    Teve momentos que o blog ultrapassou a marca de cem mil visualizações
+    mensais. As redes sociais passaram de cem mil seguidores.
+contratacao:
+  visivel: true
+  rotulo: 02 · A contratação
+  tema: escuro
+  titulo: Em 2022 a série me chamou.
+  imagem: /assets/img/dallas-jenkins-diogenes-e-matheus-horacio.webp
+  imagem_alt: Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia
+    da Temporada 3 em São Paulo, Brasil.
+  imagem_legenda: Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na
+    pré-estreia da Temporada 3 em São Paulo, Brasil.
+  texto: >-
+    Quando o The Chosen conheceu o trabalho que eu já vinha construindo, me
+    convidou para fazer parte do *primeiro time no Brasil*. Éramos apenas duas
+    pessoas e começamos sem um manual pronto, sem calendário editorial e sem uma
+    estrutura definida para as redes sociais.  
+      
+    Como organização e processos sempre fizeram parte da minha forma de
+    trabalhar, assumi essa frente. *Criei o calendário editorial, organizei os
+    fluxos e ajudei a construir a estrutura que orienta o conteúdo de The Chosen
+    no Brasil até hoje.*  
+      
+    Naquela época, a série ainda não tinha nem uma fração do reconhecimento que
+    tem hoje. Por isso, eu estava sempre atento a oportunidades que pudessem
+    apresentá-la a mais pessoas.  
+      
+    Foi quando uma trend do Neymar começou a dominar o meu For You. Um filtro
+    fazia parecer que a pessoa tinha tirado uma selfie com ele, e milhares de
+    pessoas estavam usando.  
+      
+    Então pensei: *se funciona com um jogador de futebol, por que não
+    funcionaria com Jesus?*  
+      
+    A partir dessa ideia, criei um filtro usando imagens do Jesus da série. O
+    resultado foi *mais de 11 milhões de aberturas no Instagram e seis mil
+    vídeos publicados no TikTok*, tudo isso sem um centavo de mídia paga.  
+      
+    Essa experiência me ensinou algo que levo comigo até hoje: *as pessoas não
+    querem apenas receber a sua mensagem. Elas querem uma ferramenta para
+    expressar a própria mensagem.*
+queda:
+  visivel: true
+  rotulo: 03 · A queda e a volta
+  tema: claro
+  titulo: Fazer tudo funcionava. Até parar de funcionar.
+  texto: >-
+    Em 2024 eu tive um burnout e fiquei três meses afastado. Foi tudo ou nada, e
+    eu não sabia se voltaria.
+
+
+    **O burnout não foi o fracasso. O fracasso foi fazer tudo sozinho. O burnout
+    foi a conta chegando.**
+
+
+    Depois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei
+    promovido. Aí veio a parte difícil: entregar o operacional que era meu.
+    **Aprendi a delegar depois de quebrar por não delegar.**
+
+
+    Hoje lidero várias pessoas e respondo pela criação do The Chosen Brasil. Os
+    elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei
+    bastante e aprendi.
+
+
+    É por isso que, quando me chamam para falar sobre processo e delegação, eu
+    não estou dando opinião. Estou mostrando cicatriz.
+foto_larga:
+  visivel: true
+  imagem: /assets/img/no-cristo.webp
+  imagem_alt: Matheus Horácio com a equipe do The Chosen Brasil, Jonathan Roumie e
+    Paras Patel no Cristo Redentor
+  titulo: O time que eu ajudei a construir
+  legenda: Equipe The Chosen Brasil com Jonathan Roumie e Paras Patel no Cristo
+    Redentor. Começamos em duas pessoas. Hoje somos várias.
+numeros:
+  visivel: true
+  rotulo: 04 · O que eu construí
+  tema: escuro
+  itens:
+    - numero: +10 anos
+      descricao: de trabalho no digital
+    - numero: +5 mi
+      descricao: de seguidores nas redes do The Chosen Brasil
+    - numero: +1 bi
+      descricao: de visualizações nas redes sociais
+    - numero: 3,7 mi
+      descricao: só no Instagram, mais do que a conta principal dos Estados Unidos
+    - numero: 1 mi
+      descricao: de inscritos no YouTube do The Chosen Brasil
+    - numero: 54%
+      descricao: dos brasileiros conhecem a série. Nos Estados Unidos são 38%
+    - numero: 11 mi
+      descricao: de aberturas do filtro que eu criei, sem mídia paga
+    - numero: +8 h
+      descricao: por mês devolvidas a cada pessoa do time depois que automatizei
+        fluxos de trabalho
+  texto: Nada disso foi feito por uma pessoa só. São as estratégias de lançamento
+    das temporadas 3, 4 e 5 no Brasil, executadas por um time que eu ajudei a
+    montar e que hoje eu lidero.
+palestras:
+  visivel: true
+  rotulo: 05 · Sobre o que eu falo
+  tema: claro
+  temas:
+    - titulo: Como se constrói audiência
+      descricao: De zero a cem mil seguidores sem verba, até a marca que eu cobria me
+        contratar. O que dá para copiar disso na sua realidade, com o que você
+        já tem na mão hoje.
+      formato: 45 a 60 min · Eventos e congressos
+    - titulo: O que seu time faria com 8 horas a mais por mês
+      descricao: Como sair do operacional sem quebrar no caminho. Delegação, processo
+        e automação contados por quem aprendeu do jeito difícil.
+      formato: 45 min · Lideranças e times criativos
+    - titulo: Você não precisa de mais informação
+      descricao: O excesso sufoca a criatividade. Por que curadoria e silêncio
+        produzem mais ideia do que mais um framework.
+      formato: 40 min · Criativos, igrejas e empresas
+  onde: Já palestrei no **12º Seminário de Comunicação Social** da Arquidiocese do
+    Rio de Janeiro, e falo em eventos e encontros de comunicação.
+  cache:
+    - selo: Sem cachê
+      selo_estilo: destaque
+      titulo: Igrejas, ONGs e projetos sociais
+      texto: Fazer isso pelo amor ao evangelho é um privilégio, não um sacrifício. Não
+        cobro cachê para falar em igrejas, ONGs e projetos sem fins lucrativos.
+      frase: Sem cachê. Com propósito.
+    - selo: Sem cachê
+      selo_estilo: destaque
+      titulo: Empresas e organizações
+      texto: Conhecimento estratégico também deve chegar ao ambiente corporativo, e
+        boas ideias merecem circular. Por isso também não cobro cachê de
+        empresas.
+      frase: Estratégia com significado.
+  nota: "* Em qualquer contexto, deslocamento, alimentação e hospedagem ficam por
+    conta da organização anfitriã."
+videos:
+  visivel: true
+  rotulo: 06 · Me ouvir falar
+  tema: escuro
+  destaques:
+    - titulo: "Copiando Jesus: bastidores e a sexta temporada de The Chosen"
+      fonte: YouTube
+      link: https://www.youtube.com/watch?v=VHHQHCHeOyc
+      thumb: https://i.ytimg.com/vi/VHHQHCHeOyc/maxresdefault.jpg
+      alt: Matheus Horácio no canal Copiando Jesus falando dos bastidores da sexta
+        temporada de The Chosen
+    - titulo: Live com Dallas Jenkins, criador e diretor de The Chosen
+      fonte: YouTube
+      link: https://www.youtube.com/live/VSACOxcCFQ0?t=1747
+      thumb: https://i.ytimg.com/vi/VSACOxcCFQ0/maxresdefault.jpg
+      alt: Live de Matheus Horácio com Dallas Jenkins, criador de The Chosen
+  itens:
+    - titulo: "Bacon 161: a ascensão de The Chosen no Brasil"
+      fonte: Podcast
+      link: https://www.youtube.com/watch?v=QbWesSc60TQ
+      thumb: https://i.ytimg.com/vi/QbWesSc60TQ/maxresdefault.jpg
+      alt: Matheus Horácio no podcast Bacon 161 falando sobre a ascensão de The Chosen
+        no Brasil
+    - titulo: "Santo Café: entrevista exclusiva com The Chosen Brasil"
+      fonte: Podcast
+      link: https://www.youtube.com/watch?v=CnSxRg4hOmE
+      thumb: https://i.ytimg.com/vi/CnSxRg4hOmE/maxresdefault.jpg
+      alt: Entrevista de Matheus Horácio ao Santo Café sobre The Chosen Brasil
+    - titulo: Encontro com o elenco de The Chosen no Brasil
+      fonte: YouTube
+      link: https://youtu.be/zK_41LcrZ5w
+      thumb: /assets/img/thumb-elenco.webp
+      alt: Matheus Horácio no encontro com o elenco de The Chosen no Brasil
+    - titulo: Entrevista ao Gospel Channel Brasil
+      fonte: Instagram
+      link: https://www.instagram.com/reels/DHHmhbQNp9h/
+      thumb: /assets/img/thumb-gospelchannelbr.webp
+      alt: Entrevista de Matheus Horácio ao Gospel Channel Brasil
+depoimentos:
+  visivel: true
+  rotulo: 07 · Quem trabalha comigo
+  tema: claro
+  itens:
+    - texto: Uma das mentes mais criativas e estratégicas que já conheci, mas,
+        principalmente, com clareza sobre como transformar isso em resultado.
+      autor: David Cavalcante
+      cargo: Operations Lead no The Chosen Brasil
+    - texto: Sua capacidade de estruturar processos claros, definir fluxos e organizar
+        prioridades cria um ambiente mais eficiente, produtivo e sustentável.
+      autor: Barbara Cordeli
+      cargo: Audiovisual Productions no The Chosen Brasil
+    - texto: Não guarda conhecimento para si. Orienta, capacita e incentiva as pessoas
+        ao seu redor a pensarem de forma autônoma.
+      autor: Fabricia Erler
+      cargo: Content Creator e Community Manager no The Chosen Brasil
+    - texto: Uma habilidade rara de ver caminhos onde ainda não existe nada, e de
+        transformar ideias em algo real, executável e estratégico.
+      autor: Rafaela Caro
+      cargo: Communication Coordinator no The Chosen Brasil
+galeria:
+  visivel: true
+  rotulo: 08 · A jornada em fotos
+  tema: claro
+  fotos:
+    - imagem: /assets/img/matheus-e-jonathan.webp
+      legenda: Com Jonathan Roumie, o Jesus da série
+      alt: Matheus Horácio e Jonathan Roumie, o Jesus de The Chosen
+    - imagem: /assets/img/matheus-e-jey-no-set.webp
+      legenda: No set de filmagens, no Texas
+      alt: Matheus Horácio e Jey Reis no set de filmagens de The Chosen em Midlothian,
+        Texas
+    - imagem: /assets/img/matheys-tyler-thompson-e-ryan-swanson.webp
+      legenda: Com os roteiristas da série
+      alt: Matheus Horácio com os roteiristas de The Chosen, Ryan Swanson e Tyler
+        Thompson
+    - imagem: /assets/img/time-the-chosen-e-cast.webp
+      legenda: Com o elenco em São Paulo
+      alt: Matheus Horácio com a equipe The Chosen Brasil, Jonathan Roumie, Paras
+        Patel e Lara Silva em São Paulo
+    - imagem: /assets/img/pre-estreia-em-sp.webp
+      legenda: Com Dallas e Amanda Jenkins e a equipe
+      alt: Matheus Horácio, Julie Molina, Maria Luisa Rocha, Elena Russell-Nava, Kyle
+        Young, Dallas e Amanda Jenkins e a equipe The Chosen Brasil
+    - imagem: /assets/img/matheus-no-jesus-vida-verao.webp
+      legenda: No palco do Jesus Vira Verão, 2024
+      alt: Matheus Horácio no palco do Jesus Vira Verão 2024
+    - imagem: /assets/img/matheus-horacio-e-derral-eves.webp
+      legenda: Com Derral Eves, cofundador da série
+      alt: Matheus Horácio e Derral Eves, cofundador e produtor executivo de The
+        Chosen
+    - imagem: /assets/img/matheus-jey-e-judas-iscariotes-luke-dimyan.webp
+      legenda: Com Luke Dimyan, o Judas Iscariotes
+      alt: Matheus Horácio, Jey Reis e Luke Dimyan, o Judas Iscariotes de The Chosen
+    - imagem: /assets/img/matheus-horacio-jey-e-cast.webp
+      legenda: Com parte do elenco da série
+      alt: Matheus Horácio, Shahar Isaac, Abe Bueno Jallad, Vanessa Benavente e Jey
+        Reis
+    - imagem: /assets/img/matheus-horacio-no-jesuscopy.webp
+      legenda: No Podcast JesusCopy
+      alt: Matheus Horácio junto a Douglas Gonçalves no podcast JesusCopy
+    - imagem: /assets/img/matheus-em-palestra.webp
+      legenda: No 12º Seminário da Arquidiocese do Rio
+      alt: Matheus Horácio no 12º Seminário de Comunicação Social da Arquidiocese do
+        Rio de Janeiro
+    - imagem: /assets/img/matheus-horacio-e-paras-patel.webp
+      legenda: Com Paras Patel, o Mateus da série
+      alt: Matheus Horácio e Paras Patel, o Mateus de The Chosen, no set de filmagens
+perguntas:
+  visivel: true
+  rotulo: 09 · Dúvidas frequentes
+  tema: claro
+  itens:
+    - pergunta: Quem é Matheus Horácio?
+      resposta: Matheus Horácio é comunicador e Creative Lead do The Chosen Brasil,
+        residente em Londrina, no Paraná. Trabalha com conteúdo digital há mais
+        de dez anos. Como fã, criou o maior portal brasileiro sobre a série The
+        Chosen, passando de cem mil seguidores nas redes sociais e cem mil
+        visualizações mensais no blog, e foi contratado pela própria série em
+        outubro de 2022. Hoje lidera a criação do The Chosen Brasil e palestra
+        sobre construção de audiência, comunidade e processo criativo.
+    - pergunta: Sobre o que Matheus Horácio palestra?
+      resposta: São três temas. O primeiro é como construir audiência do zero e sem
+        verba. O segundo é como sair do operacional através de delegação,
+        processo e automação. O terceiro é por que o excesso de informação
+        sufoca a criatividade. As palestras duram de 40 a 60 minutos e atendem
+        eventos e congressos, lideranças de times criativos, igrejas e empresas.
+    - pergunta: Matheus Horácio cobra cachê para palestrar?
+      resposta: Não. Matheus Horácio não cobra cachê para palestrar, nem em igrejas,
+        ONGs e projetos sem fins lucrativos, nem em empresas e organizações. Em
+        qualquer contexto, deslocamento, alimentação e hospedagem ficam por
+        conta da organização anfitriã.
+    - pergunta: Onde Matheus Horácio já falou?
+      resposta: Palestrou sobre comunicação no 12º Seminário de Comunicação Social da
+        Arquidiocese do Rio de Janeiro, e no Movimento Encontrão em Curitiba.
+        Também já participou de entrevistas e podcasts, entre eles JesusCopy,
+        Bacon 161, Santo Café e Gospel Channel Brasil.
+    - pergunta: Qual é a experiência profissional de Matheus Horácio?
+      resposta: >-
+        Com mais de 10 anos de experiência no mercado digital, Matheus Horácio
+        tem no The Chosen um dos principais destaques de sua trajetória. Entrou
+        no The Chosen Brasil em outubro de 2022 como Social Media Manager,
+        quando a equipe era formada por apenas duas pessoas. Em agosto de 2024,
+        foi promovido a Content Manager e, em janeiro de 2026, a Creative Lead.
+
+
+        Ao longo dessa trajetória, criou o calendário editorial e a estrutura de
+        conteúdo que seguem sendo utilizados pela equipe até hoje. Também é
+        responsável pela criação de filtros para Instagram e Tiktok que, juntos,
+        já ultrapassaram 11 milhões de aberturas de forma orgânica, sem
+        investimento em mídia, e pela automação de fluxos de trabalho da equipe,
+        que devolveu mais de 8 horas mensais para cada integrante.
+    - pergunta: Como convidar Matheus Horácio para um evento?
+      resposta: Por e-mail, em MatheusHoracio.Contato@gmail.com, informando o evento,
+        a data, a cidade e quem é o público. A agenda de 2026 está aberta.
+fim:
+  selo: Agenda 2026 aberta
+  titulo: Quer essa conversa no seu evento?
+  texto: Me escreva contando quem é o público, quando seria, em que cidade e o que
+    você quer que as pessoas levem embora.
+  ano: "2026"
+  links:
+    - texto: LinkedIn
+      url: https://www.linkedin.com/in/matheushoracio/
+    - texto: Instagram
+      url: https://www.instagram.com/matheus.horacio/
