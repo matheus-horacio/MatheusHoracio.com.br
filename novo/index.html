@@ -87,9 +87,11 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .beat{padding-block:clamp(56px,10vh,110px)}
 .beat:first-of-type{padding-top:0}
 
-.vortex{height:150vh}
-@media (min-width:1000px){.vortex{height:170vh}}
-.vortex .stick{position:sticky;top:0;height:100svh;display:grid;place-items:center;text-align:center;padding-inline:var(--gut)}
+/* o redemoinho ocupa uma tela só: sem prender a rolagem */
+.vortex{position:relative}
+.vortex .stick{min-height:100svh;display:grid;place-items:center;text-align:center;padding:90px var(--gut) 60px}
+.center-chap{justify-content:center;margin-bottom:28px}
+.center-chap::before{content:'';flex:0 0 48px;height:1px;background:currentColor;opacity:.6}
 .vortex .yr{font-family:var(--serif);font-size:17px;letter-spacing:.3em;color:var(--ink);margin-bottom:16px}
 
 .two{display:grid;gap:clamp(28px,5vw,72px);align-items:center}
@@ -233,11 +235,9 @@ footer a:hover{color:var(--fg)}
 </section>
 
 <!-- 2. O CHAMADO: o redemoinho. Depois o primeiro time e o filtro, com a frase-ponte que explica por que ele foi atrás da trend. -->
-<section class="chapter" id="chamado" style="padding-bottom:0">
-  <div class="wrap"><p class="chap rv">O chamado</p></div>
-</section>
-<section class="vortex" data-mode="vortex">
+<section class="vortex" id="chamado" data-mode="vortex">
   <div class="stick"><div>
+    <p class="chap center-chap">O chamado</p>
     <p class="yr">2022</p>
     <h2 class="display">Em 2022 a série me <em>chamou.</em></h2>
   </div></div>
@@ -245,13 +245,15 @@ footer a:hover{color:var(--fg)}
 <section data-mode="hire">
   <div class="wrap">
     <div class="beat two" style="padding-top:0">
-      <figure class="photo ar43 rv">
-        <img src="/assets/img/dallas-jenkins-diogenes-e-matheus-horacio.webp" width="1600" height="1200" alt="Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo" loading="lazy">
-      </figure>
+      <div class="rv">
+        <figure class="photo ar43">
+          <img src="/assets/img/dallas-jenkins-diogenes-e-matheus-horacio.webp" width="1600" height="1200" alt="Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo" loading="lazy">
+        </figure>
+        <p class="cap">Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo.</p>
+      </div>
       <div class="stack rv">
         <p class="body">Quando o The Chosen conheceu o trabalho que eu já vinha construindo, me convidou para fazer parte do <b>primeiro time no Brasil</b>. Éramos apenas duas pessoas e começamos sem um manual pronto, sem calendário editorial e sem uma estrutura definida para as redes sociais.</p>
         <p class="body">Como organização e processos sempre fizeram parte da minha forma de trabalhar, assumi essa frente. <b>Criei o calendário editorial, organizei os fluxos e ajudei a construir a estrutura que orienta o conteúdo de The Chosen no Brasil até hoje.</b></p>
-        <p class="cap">Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo.</p>
       </div>
     </div>
   </div>
