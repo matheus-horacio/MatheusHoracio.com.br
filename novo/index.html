@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/img/favicon.png">
+<title>Matheus Horácio Interativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+/* Layout: um mar escuro fixo atrás de tudo. Regra dos peixes: cinza é uma pessoa, verde é alguém alcançado pela mensagem.
+   O cardume nada sempre para a direita (a história andando) e fica mais verde a cada capítulo. */
+:root{
+  --bg:#030304; --fg:#F4F2EE; --ink:#C6C6CC; --mute:#85858D; --line:rgba(255,255,255,.13);
+  --teal:#00BFB3; --teal-ink:#5FE3D8; --paper:#F2F0EA; --paper-ink:#18181A;
+  --serif:'Libre Bodoni','Bodoni 72',Didot,Georgia,serif;
+  --sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --gut:clamp(20px,6vw,88px); --max:1200px; --ease:cubic-bezier(.16,1,.3,1);
+  --heroH:86svh;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--teal);color:#000}
+:focus-visible{outline:2px solid var(--teal-ink);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+
+/* camadas: foto da capa < peixes < vinheta < texto < granulação */
+.hero-bg{position:absolute;top:0;left:0;width:100%;height:var(--heroH);z-index:-1;overflow:hidden;margin:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 22%;filter:grayscale(1) contrast(1.08) brightness(.66)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.5) 0%,rgba(3,3,4,.05) 26%,rgba(3,3,4,.5) 56%,var(--bg) 100%)}
+#sea{position:fixed;inset:0;width:100vw;height:100lvh;z-index:0;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(130% 95% at 50% 50%,transparent 50%,rgba(0,0,0,.7) 100%)}
+main,header{position:relative;z-index:1}
+body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E")}
+
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gut)}
+.bar{position:fixed;top:0;left:0;right:0;height:2px;z-index:12;background:var(--teal);transform-origin:left center;transform:scaleX(0)}
+.top{position:fixed;inset:0 0 auto 0;z-index:10;padding-top:env(safe-area-inset-top,0px);transition:background .4s}
+.top.solid{background:linear-gradient(180deg,rgba(3,3,4,.92),rgba(3,3,4,0))}
+.top .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--serif);font-size:19px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:99px;text-decoration:none;
+  background:var(--teal);color:#001513;font-size:15px;font-variation-settings:'wght' 650;transition:background .25s}
+.btn:hover{background:var(--teal-ink)}
+.btn.sm{min-height:42px;padding:0 20px;font-size:14px}
+.link{display:inline-flex;align-items:center;min-height:48px;color:var(--ink);text-decoration:none;font-size:15px;font-variation-settings:'wght' 550}
+.link:hover{color:var(--fg)}
+
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-ink);font-variation-settings:'wght' 600}
+.chap{font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,2vw,1.4rem);color:var(--teal-ink);display:flex;align-items:center;gap:14px}
+.chap::after{content:'';flex:0 0 48px;height:1px;background:currentColor;opacity:.6}
+.display{font-family:var(--serif);font-weight:500;font-size:clamp(2.3rem,6.2vw,5.2rem);line-height:1.05;letter-spacing:-.015em}
+.display em,.h2 em{font-style:italic;color:var(--teal)}
+.h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4.2vw,3.3rem);line-height:1.1;letter-spacing:-.01em}
+.quote{font-size:clamp(1.35rem,2.8vw,2.1rem);line-height:1.3;letter-spacing:-.015em;font-variation-settings:'wdth' 92,'wght' 560}
+.quote em{font-style:normal;color:var(--teal)}
+.body{font-size:clamp(1.06rem,1.6vw,1.17rem);line-height:1.7;color:var(--ink);max-width:56ch}
+.body b{color:var(--fg);font-weight:inherit;font-variation-settings:'wght' 620}
+.stack{display:grid;gap:20px}
+.blk{max-width:40rem}
+.blk.r{margin-left:auto}
+
+.hero{min-height:var(--heroH);display:flex;align-items:flex-end;padding-block:96px 44px}
+.hero .display{max-width:13ch}
+.hero .body{max-width:42ch;color:#DADADF}
+.hero .acts{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}
+.hint{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.06em;color:var(--mute)}
+.hint::before{content:'';width:22px;height:1px;background:var(--teal)}
+
+.chapter{padding-block:clamp(90px,13vh,140px) 0}
+.chapter > .wrap > .chap{margin-bottom:clamp(36px,6vh,60px)}
+.beat{padding-block:clamp(56px,10vh,110px)}
+.beat:first-of-type{padding-top:0}
+
+.vortex{height:180vh}
+.vortex .stick{position:sticky;top:0;height:100svh;display:grid;place-items:center;text-align:center;padding-inline:var(--gut)}
+.vortex .yr{font-family:var(--serif);font-size:17px;letter-spacing:.3em;color:var(--ink);margin-bottom:16px}
+
+.two{display:grid;gap:clamp(28px,5vw,72px);align-items:center}
+.photo{margin:0;position:relative;overflow:hidden;border-radius:2px;background:#111;max-width:100%}
+.photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(.9);transition:filter 1.4s var(--ease)}
+.photo.in img{filter:grayscale(0) contrast(1.02) brightness(.95)}
+.cap{margin-top:12px;font-size:13px;line-height:1.5;color:var(--mute)}
+.ar43{aspect-ratio:4/3}.ar169{aspect-ratio:16/9}
+
+.roles{display:grid;gap:1px;background:var(--line);border-block:1px solid var(--line)}
+.roles div{background:rgba(3,3,4,.84);padding:18px 0;display:flex;justify-content:space-between;gap:20px;align-items:baseline}
+.roles span{font-size:12.5px;letter-spacing:.14em;color:var(--mute);font-variant-numeric:tabular-nums;white-space:nowrap}
+.roles b{font-family:var(--serif);font-weight:500;font-size:clamp(1.2rem,2.4vw,1.7rem);text-align:right}
+.roles div:last-child b{color:var(--teal)}
+.nums{display:grid;gap:28px}
+.nums div{display:grid;gap:8px}
+.nums b{font-family:var(--serif);font-weight:500;font-size:clamp(2.8rem,6.4vw,5rem);line-height:.9}
+.nums span{color:var(--ink);font-size:15px;max-width:30ch}
+.says{display:grid;gap:32px}
+.says blockquote{margin:0;display:grid;gap:12px;border-left:2px solid var(--teal);padding-left:20px}
+.says p{font-size:clamp(1.1rem,1.7vw,1.28rem);line-height:1.55;font-variation-settings:'wght' 460;color:var(--fg)}
+.says cite{font-style:normal;font-size:13.5px;color:var(--mute)}
+.says cite b{color:var(--fg);font-weight:inherit;font-variation-settings:'wght' 620}
+
+.tlist{border-top:1px solid var(--line)}
+.tlist article{display:grid;gap:10px;padding:30px 0;border-bottom:1px solid var(--line)}
+.tlist h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,3vw,2.3rem);line-height:1.12}
+.tlist p{color:var(--ink);max-width:58ch}
+.tlist .fmt{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-ink)}
+.free{display:grid;gap:8px;max-width:60ch}
+.free b{font-family:var(--serif);font-weight:500;font-size:clamp(1.4rem,2.6vw,1.9rem)}
+.free p{color:var(--ink);font-size:15.5px}
+
+.invite{padding-block:clamp(110px,16vh,170px) 8vh}
+.invite .head{text-align:center;max-width:24ch;margin-inline:auto}
+.invite .head .body{margin-inline:auto}
+.cta-big{margin-top:36px;display:flex;justify-content:center}
+.cta-big .btn{min-height:60px;padding:0 36px;font-size:17px;box-shadow:0 0 0 10px rgba(0,191,179,.1)}
+.inv{display:grid;gap:clamp(24px,4vw,56px);margin-top:9vh;scroll-margin-top:90px}
+.form{display:grid;gap:16px;align-content:start}
+.field{display:grid;gap:7px;min-width:0}
+.field span{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-variation-settings:'wght' 600}
+.field input,.field select{width:100%;min-height:50px;padding:0 15px;border-radius:3px;border:1px solid var(--line);background:rgba(16,16,18,.92);color:var(--fg);font:inherit;font-size:16px}
+.field input::placeholder{color:#64646C}
+.field input:focus,.field select:focus{outline:none;border-color:var(--teal)}
+.row2{display:grid;gap:16px}
+.letter{background:var(--paper);color:var(--paper-ink);border-radius:3px;padding:clamp(22px,3vw,34px);display:grid;gap:16px;align-content:start;min-width:0}
+.letter .hd{font-size:13.5px;line-height:1.8;color:#55555C;border-bottom:1px solid rgba(0,0,0,.12);padding-bottom:12px;overflow-wrap:anywhere}
+.letter .hd b{color:var(--paper-ink);font-weight:inherit;font-variation-settings:'wght' 650}
+.letter .bd{font-size:15.5px;line-height:1.75;white-space:pre-line;overflow-wrap:anywhere}
+.letter .bd b{font-weight:inherit;font-variation-settings:'wght' 650}
+.letter i{font-style:normal;color:#8E8E96}
+.letter .note{font-size:13px;color:#4A4A52;line-height:1.55;border-left:2px solid var(--teal);padding-left:12px}
+.acts2{display:flex;flex-wrap:wrap;gap:10px}
+.acts2 .btn{background:var(--paper-ink);color:var(--paper)}
+.acts2 .btn:hover{background:#000}
+.acts2 .btn.line{background:transparent;color:var(--paper-ink);box-shadow:inset 0 0 0 1.5px var(--paper-ink)}
+.toast{font-size:13px;color:#00756C;min-height:1.3em}
+.addr{margin-top:22px;color:var(--ink);font-size:15px}
+.addr span{color:var(--fg);user-select:all;-webkit-user-select:all}
+footer{margin-top:12vh;padding-block:28px calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between;align-items:center;color:var(--mute);font-size:14px}
+footer nav{display:flex;gap:22px}
+footer a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)}
+footer a:hover{color:var(--fg)}
+
+.js .rv{opacity:.3;transform:translateY(20px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (min-width:760px){
+  .row2{grid-template-columns:1fr 1fr}
+  .nums{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .says{grid-template-columns:1fr 1fr;gap:48px 64px}
+}
+@media (min-width:1000px){
+  :root{--heroH:100svh}
+  .hero{padding-bottom:9vh}
+  .two{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+  .tlist article{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:10px 56px;align-items:baseline}
+  .tlist article p{grid-column:2;grid-row:1/span 2}
+  .inv{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+  .letter{position:sticky;top:96px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .js .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<figure class="hero-bg"><img src="/assets/img/matheus-e-paras-patel-1.webp" alt="Matheus Horácio de figurino no set de The Chosen, ao lado de Paras Patel, o Mateus da série"></figure>
+<canvas id="sea" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
+<div class="bar" id="bar" aria-hidden="true"></div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Matheus Horácio</a>
+    <a class="btn sm" href="#convite">Convidar</a>
+  </div>
+</header>
+
+<main>
+<!-- CAPA: o presente. O cardume já está verde. -->
+<section class="hero" id="inicio" data-mode="hero">
+  <div class="wrap stack">
+    <p class="eyebrow">Comunicador · Creative Lead · Palestrante</p>
+    <h1 class="display">De fã a <em>Creative Lead</em> do The Chosen Brasil.</h1>
+    <p class="body">Em 2021, construí o maior portal de The Chosen no Brasil e cheguei a mais de <b>100 mil seguidores</b> nas redes sociais, sem verba nenhuma. Em 2022, a série me contratou.</p>
+    <div class="acts">
+      <a class="btn" href="#convite">Chamar para falar</a>
+      <a class="link" href="#fa">Minha história ↓</a>
+    </div>
+    <p class="hint" id="hint">Toque na água.</p>
+  </div>
+</section>
+
+<!-- 1. O FÃ: flashback, tudo cinza. O peixe do Matheus fica verde ao conhecer a série; depois o público começa a seguir. -->
+<section class="chapter" id="fa">
+  <div class="wrap">
+    <p class="chap rv">O fã</p>
+    <div class="beat" data-mode="fan1"><div class="blk stack rv">
+      <p class="eyebrow">2016</p>
+      <h2 class="h2">Antes de dar certo, deu bem errado.</h2>
+      <p class="body">Eu tinha um canal no YouTube, legendando e dublando vídeo. Perdi tudo por direitos autorais. Vieram os strikes e o canal caiu. Demorei anos para entender que aquilo me libertou e me possibilitou iniciar outros projetos.</p>
+    </div></div>
+    <div class="beat" data-mode="fan2"><div class="blk r stack rv">
+      <p class="eyebrow">2020</p>
+      <h2 class="h2">Em 2020 eu conheci <em>The Chosen.</em></h2>
+      <p class="body">Vi uma série sobre um Jesus e personagens humanos que, naquele momento, ainda não era o normal. Hoje é. A série naturalizou isso.</p>
+    </div></div>
+    <div class="beat" data-mode="portal"><div class="blk stack rv">
+      <p class="eyebrow">2021</p>
+      <p class="quote">Em 2021 eu decidi uma coisa em voz alta: <em>eu vou ser o maior portal de The Chosen da América Latina.</em></p>
+      <p class="body">Blog, YouTube, Instagram, Facebook e TikTok. Sem verba, sem equipe e sem a permissão de ninguém.</p>
+      <p class="body">Criei um ecossistema que entregava conteúdo de valor para os fãs da série. Teve momentos que o blog ultrapassou a marca de <b>cem mil visualizações mensais</b>. As redes sociais passaram de <b>cem mil seguidores</b>.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 2. O CHAMADO: o redemoinho. Depois o primeiro time e o filtro, com a frase-ponte que explica por que ele foi atrás da trend. -->
+<section class="chapter" id="chamado" style="padding-bottom:0">
+  <div class="wrap"><p class="chap rv">O chamado</p></div>
+</section>
+<section class="vortex" data-mode="vortex">
+  <div class="stick"><div>
+    <p class="yr">2022</p>
+    <h2 class="display">Em 2022 a série me <em>chamou.</em></h2>
+  </div></div>
+</section>
+<section data-mode="hire">
+  <div class="wrap">
+    <div class="beat two" style="padding-top:0">
+      <figure class="photo ar43 rv">
+        <img src="/assets/img/dallas-jenkins-diogenes-e-matheus-horacio.webp" alt="Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo" loading="lazy">
+      </figure>
+      <div class="stack rv">
+        <p class="body">Quando o The Chosen conheceu o trabalho que eu já vinha construindo, me convidou para fazer parte do <b>primeiro time no Brasil</b>. Éramos apenas duas pessoas e começamos sem um manual pronto, sem calendário editorial e sem uma estrutura definida para as redes sociais.</p>
+        <p class="body">Como organização e processos sempre fizeram parte da minha forma de trabalhar, assumi essa frente. <b>Criei o calendário editorial, organizei os fluxos e ajudei a construir a estrutura que orienta o conteúdo de The Chosen no Brasil até hoje.</b></p>
+        <p class="cap">Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section data-mode="reach">
+  <div class="wrap">
+    <div class="beat"><div class="blk r stack rv">
+      <p class="body">Naquela época, a série ainda não tinha nem uma fração do reconhecimento que tem hoje. Por isso, eu estava sempre atento a oportunidades que pudessem apresentá-la a mais pessoas.</p>
+      <p class="body">Foi quando uma trend do Neymar começou a dominar o meu For You. Um filtro fazia parecer que a pessoa tinha tirado uma selfie com ele, e milhares de pessoas estavam usando. Então pensei:</p>
+      <h2 class="h2">Se funciona com um jogador de futebol, por que não funcionaria com <em>Jesus?</em></h2>
+      <p class="body">A partir dessa ideia, criei um filtro usando imagens do Jesus da série. O resultado foi <b>mais de 11 milhões de aberturas no Instagram e seis mil vídeos publicados no TikTok</b>, tudo isso sem um centavo de mídia paga.</p>
+    </div></div>
+    <div class="beat" style="padding-top:0"><div class="blk stack rv">
+      <p class="body">Essa experiência me ensinou algo que levo comigo até hoje:</p>
+      <p class="quote">As pessoas não querem apenas receber a sua mensagem. <em>Elas querem uma ferramenta para expressar a própria mensagem.</em></p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 3. A QUEDA: o cardume some. Fica só o peixe dele. -->
+<section class="chapter" id="queda" data-mode="alone">
+  <div class="wrap">
+    <p class="chap rv">A queda</p>
+    <div class="beat"><div class="blk stack rv">
+      <p class="eyebrow">2024</p>
+      <h2 class="h2">Fazer tudo funcionava. Até parar de funcionar.</h2>
+      <p class="body">Em 2024 eu tive um burnout e fiquei três meses afastado. Foi tudo ou nada, e eu não sabia se voltaria.</p>
+    </div></div>
+    <div class="beat" style="padding-top:0"><div class="blk r stack rv">
+      <p class="quote">O burnout não foi o fracasso. <em>O fracasso foi fazer tudo sozinho.</em> O burnout foi a conta chegando.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 4. A VOLTA: o time chega e nada em formação com ele. -->
+<section class="chapter" id="volta" data-mode="team">
+  <div class="wrap">
+    <p class="chap rv">A volta</p>
+    <div class="beat"><div class="blk stack rv">
+      <p class="body">Depois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei promovido. Aí veio a parte difícil: entregar o operacional que era meu.</p>
+      <h2 class="h2">Aprendi a delegar depois de quebrar por <em>não delegar.</em></h2>
+      <p class="body">Hoje lidero várias pessoas e respondo pela criação do The Chosen Brasil. Os elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei bastante e aprendi.</p>
+    </div></div>
+    <div class="beat stack" style="padding-top:0">
+      <div class="roles rv">
+        <div><span>OUT 2022</span><b>Social Media Manager</b></div>
+        <div><span>AGO 2024</span><b>Content Manager</b></div>
+        <div><span>JAN 2026</span><b>Creative Lead</b></div>
+      </div>
+    </div>
+    <div class="beat" style="padding-top:0">
+      <figure class="photo ar169 rv">
+        <img src="/assets/img/no-cristo-redentor.webp" alt="Matheus Horácio com a equipe do The Chosen Brasil, Jonathan Roumie e Paras Patel no Cristo Redentor" loading="lazy">
+      </figure>
+      <p class="cap">O time que eu ajudei a construir, com Jonathan Roumie e Paras Patel no Cristo Redentor. Começamos em duas pessoas. Hoje somos várias.</p>
+    </div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="body rv">Nada disso foi feito por uma pessoa só. São as estratégias de lançamento das temporadas 3, 4 e 5 no Brasil, executadas por um time que eu ajudei a montar e que hoje eu lidero.</p>
+      <div class="nums rv" style="margin-top:16px">
+        <div><b>+5 mi</b><span>de seguidores nas redes do The Chosen Brasil</span></div>
+        <div><b>+1 bi</b><span>de visualizações nas redes sociais</span></div>
+        <div><b>54%</b><span>dos brasileiros conhecem a série. Nos Estados Unidos, são 38%.</span></div>
+      </div>
+    </div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="eyebrow rv">Quem trabalha comigo</p>
+      <div class="says">
+        <blockquote class="rv"><p>“Uma das mentes mais criativas e estratégicas que já conheci, mas, principalmente, com clareza sobre como transformar isso em resultado.”</p><cite><b>David Cavalcante</b> · Operations Lead no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Sua capacidade de estruturar processos claros, definir fluxos e organizar prioridades cria um ambiente mais eficiente, produtivo e sustentável.”</p><cite><b>Barbara Cordeli</b> · Audiovisual Productions no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Não guarda conhecimento para si. Orienta, capacita e incentiva as pessoas ao seu redor a pensarem de forma autônoma.”</p><cite><b>Fabricia Erler</b> · Content Creator e Community Manager no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Uma habilidade rara de ver caminhos onde ainda não existe nada, e de transformar ideias em algo real, executável e estratégico.”</p><cite><b>Rafaela Caro</b> · Communication Coordinator no The Chosen Brasil</cite></blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. NO SEU EVENTO: a frase da cicatriz faz a ponte para as palestras. -->
+<section class="chapter" id="palestras" data-mode="talks">
+  <div class="wrap">
+    <p class="chap rv">No seu evento</p>
+    <div class="beat"><div class="blk stack rv">
+      <p class="quote">É por isso que, quando me chamam para falar sobre processo e delegação, eu não estou dando opinião. <em>Estou mostrando cicatriz.</em></p>
+    </div></div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="eyebrow rv">Sobre o que eu falo</p>
+      <div class="tlist">
+        <article class="rv"><h3>Como se constrói audiência</h3><span class="fmt">45 a 60 min · Eventos e congressos</span><p>De zero a cem mil seguidores sem verba, até a marca que eu cobria me contratar. O que dá para copiar disso na sua realidade, com o que você já tem na mão hoje.</p></article>
+        <article class="rv"><h3>O que seu time faria com 8 horas a mais por mês</h3><span class="fmt">45 min · Lideranças e times criativos</span><p>Como sair do operacional sem quebrar no caminho. Delegação, processo e automação contados por quem aprendeu do jeito difícil.</p></article>
+        <article class="rv"><h3>Você não precisa de mais informação</h3><span class="fmt">40 min · Criativos, igrejas e empresas</span><p>O excesso sufoca a criatividade. Por que curadoria e silêncio produzem mais ideia do que mais um framework.</p></article>
+      </div>
+      <div class="free rv" style="margin-top:28px">
+        <b>Não cobro cachê.</b>
+        <p>Nem em igrejas, ONGs e projetos sem fins lucrativos, nem em empresas e organizações. Em qualquer contexto, deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã.</p>
+        <p>Já palestrei no 12º Seminário de Comunicação Social da Arquidiocese do Rio de Janeiro e no Movimento Encontrão, em Curitiba.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="invite" id="convite" data-mode="gather">
+  <div class="wrap">
+    <div class="head stack rv">
+      <p class="eyebrow">Agenda 2026 aberta</p>
+      <h2 class="display" style="font-size:clamp(2.3rem,6vw,5rem)">Quer essa conversa no seu <em>evento?</em></h2>
+      <p class="body">Me escreva contando quem é o público, quando seria, em que cidade e o que você quer que as pessoas levem embora.</p>
+    </div>
+    <div class="cta-big"><a class="btn" id="ctaBig" href="#montar">Escrever o convite</a></div>
+
+    <div class="inv" id="montar">
+      <form class="form" id="form" autocomplete="off">
+        <label class="field"><span>Nome do evento</span><input type="text" id="fEvento" placeholder="Ex.: Congresso de Comunicação 2026"></label>
+        <label class="field"><span>Tema</span><select id="fTema">
+          <option>Como se constrói audiência</option>
+          <option>O que seu time faria com 8 horas a mais por mês</option>
+          <option>Você não precisa de mais informação</option>
+          <option>Ainda não sei, quero conversar</option>
+        </select></label>
+        <div class="row2">
+          <label class="field"><span>Cidade</span><input type="text" id="fCidade" placeholder="Ex.: Curitiba, PR"></label>
+          <label class="field"><span>Data</span><input type="text" id="fData" placeholder="Ex.: março de 2027"></label>
+        </div>
+        <label class="field"><span>Quem é o público</span><input type="text" id="fPublico" placeholder="Ex.: 300 líderes de comunicação"></label>
+        <label class="field"><span>O que as pessoas devem levar embora</span><input type="text" id="fLevar" placeholder="Ex.: como crescer sem verba"></label>
+        <label class="field"><span>Seu nome</span><input type="text" id="fNome" placeholder="Ex.: Ana, da organização"></label>
+      </form>
+      <div class="letter">
+        <div class="hd"><b>Para:</b> eu@matheushoracio.com.br<br><b>Assunto:</b> <span id="lSubj">Convite para palestra</span></div>
+        <div class="bd" id="lBody"></div>
+        <p class="note">Sem cachê. Deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã.</p>
+        <div class="acts2">
+          <a class="btn" id="lMail" href="mailto:eu@matheushoracio.com.br">Abrir no meu e-mail</a>
+          <button class="btn line" type="button" id="lCopy">Copiar convite</button>
+        </div>
+        <p class="toast" id="toast" role="status"></p>
+      </div>
+    </div>
+    <p class="addr">Ou escreva direto para <span>eu@matheushoracio.com.br</span></p>
+    <footer>
+      <span>© 2026 Matheus Horácio · Londrina, PR</span>
+      <nav><a href="https://www.linkedin.com/in/matheushoracio/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/matheus.horacio/" target="_blank" rel="noopener">Instagram</a></nav>
+    </footer>
+  </div>
+</section>
+</main>
+
+<script>
+(function(){
+const d=document, root=d.documentElement; root.classList.add('js');
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=(s,r=d)=>r.querySelector(s), $$=(s,r=d)=>[...r.querySelectorAll(s)];
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rnd=(a,b)=>a+Math.random()*(b-a), TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ---------- O mar ---------- */
+const cv=$('#sea'), ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+function size(force){const w=innerWidth,h=innerHeight;
+  if(!force&&w===W&&Math.abs(h-H)<160)return;
+  W=w;H=h;DPR=Math.min(2,devicePixelRatio||1);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}
+size(true);
+const small=W<700, K=small?.62:1;
+const BASE=small?60:110, EXTRA=small?50:90, N=BASE+EXTRA;
+/* faixas: cada peixe tem a sua altura na tela, para o cardume ficar distribuído por igual */
+const lanes=[...Array(N).keys()].sort(()=>Math.random()-.5);
+const fish=[];
+for(let i=0;i<N;i++){const depth=Math.pow(Math.random(),.85), ly=(lanes[i]+rnd(.15,.85))/N;
+  fish.push({x:rnd(-80,W+80),y:ly*H,ly,a:rnd(-.1,.1),v:30,depth,L:(38+depth*depth*118)*K,ph:rnd(0,TAU),
+    ring:Math.random(),rank:Math.random(),th:0,extra:i>=BASE,al:i>=BASE?0:.75,tint:0,team:false,gx:0,gy:0})}
+fish.sort((p,q)=>p.depth-q.depth);
+const bases=fish.filter(f=>!f.extra);
+const team=bases.filter(f=>f.depth>.45).slice(0,10); team.forEach(f=>{f.team=true;f.rank=rnd(0,.3)});
+const followers=bases.filter(f=>!f.team).sort(()=>Math.random()-.5);
+const hero={x:W*.7,y:H*.5,ly:.5,a:0,v:40,depth:.9,L:(small?90:128),ph:1,ring:0,rank:0,th:0,al:1,tint:1,gx:0,gy:0};
+
+/* quanto do cardume está verde em cada momento da história */
+const RATIO={hero:.55,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
+const ORDER=Object.keys(RATIO);
+let mode='hero', idx=0, prog=0, ratio=.55, t=0, heroWas=1;
+const foods=[], rings=[], giants=[], oc=d.createElement('canvas').getContext('2d');
+let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1;
+const ptr={x:-999,y:-999,at:-1e9};
+addEventListener('pointermove',e=>{ptr.x=e.clientX;ptr.y=e.clientY;ptr.at=performance.now()},{passive:true});
+addEventListener('touchmove',e=>{const p=e.touches[0];if(p){ptr.x=p.clientX;ptr.y=p.clientY;ptr.at=performance.now()}},{passive:true});
+
+const secs=$$('[data-mode]');
+function detect(){const mid=H*.5;
+  for(const s of secs){const r=s.getBoundingClientRect();
+    if(r.top<=mid&&r.bottom>mid){if(s.dataset.mode!==mode)enter(s.dataset.mode);prog=clamp((mid-r.top)/r.height,0,1);return}}}
+function center(){if(mode==='gather'){const b=$('#ctaBig').getBoundingClientRect();
+    if(b.bottom>0&&b.top<H)return{x:b.left+b.width/2,y:b.top+b.height/2}}
+  return{x:W/2,y:H/2}}
+function enter(m){mode=m;idx=ORDER.indexOf(m);if(m!=='gather')giant=null;
+  if(m==='vortex'||m==='gather'){const c=center();[...fish,hero].forEach(f=>f.th=Math.atan2(f.y-c.y,f.x-c.x))}
+  if(m==='gather'&&!giantDone&&!RM)startGiant()}
+
+function steer(f,A,V,turn,dt){let df=A-f.a;df=Math.atan2(Math.sin(df),Math.cos(df));f.a+=df*Math.min(1,turn*dt);f.v+=(V-f.v)*Math.min(1,1.8*dt)}
+function seek(f,x,y,maxV,turn,dt){const dx=x-f.x,dy=y-f.y;steer(f,Math.atan2(dy,dx),Math.min(maxV,24+Math.hypot(dx,dy)*1.1),turn,dt)}
+const spd=f=>(18+f.depth*54)*(small?.8:1);
+/* nado livre: sempre para a direita, voltando devagar para a própria faixa */
+function swim(f,mult,dt){const pull=clamp((f.ly*H-f.y)/H*2.4,-.45,.45);
+  steer(f,.1*Math.sin(t*.5+f.ph)+pull,spd(f)*mult,1.3,dt);
+  const m=f.L;if(f.x>W+m){f.x=-m;f.y=f.ly*H}else if(f.x<-m*3)f.x=W+m}
+function orbit(f,c,r,dt,turn){f.th+=(f.depth*40+44)/r*dt;seek(f,c.x+r*Math.cos(f.th+.3),c.y+r*Math.sin(f.th+.3),150,turn,dt)}
+
+/* Peixe gigante no convite: o cardume inteiro forma um peixe no formato da série */
+function startGiant(){const L=Math.min(W*(small?.94:.8),1000), P=new Path2D();shape(P,L,0);oc.setTransform(1,0,0,1,L,L);
+  for(const f of fish){let x=0,y=0,n=0;do{x=rnd(-L*.52,L*.48);y=rnd(-L*.08,L*.08);n++}while(n<60&&!oc.isPointInPath(P,x+L,y+L));f.gx=x;f.gy=y}
+  hero.gx=L*.33;hero.gy=-L*.012;giant={t0:t,L,cx:W*.5,cy:H*(small?.3:.32)};giantDone=true}
+
+function update(dt){
+  const c=center(), R=small?110:150, live=performance.now()-ptr.at<2500;
+  const vMin=Math.min(W,H)*(small?.36:.3), vMax=Math.hypot(W,H)*.62;
+  const tr=RATIO[mode]+(mode==='reach'?.18*prog:0); ratio+=(tr-ratio)*Math.min(1,dt*1.2);
+  const k=Math.floor(4+prog*40);
+  const fd=foods.length&&t-foods[foods.length-1].t<2.6?foods[foods.length-1]:null, reach=Math.max(W,H)*.6;
+  let gAge=0,gox=0;
+  if(giant){gAge=t-giant.t0;gox=gAge>3.2?(gAge-3.2)*W*.3:0;if(gAge>6.6){giant=null;enter('gather')}}
+  gs+=((giant?.42:1)-gs)*Math.min(1,dt*2);
+  for(let i=0;i<fish.length;i++){const f=fish[i];
+    let tn=f.rank<ratio?1:0;
+    if(giant){const kk=Math.min(1,dt*(gAge<3.2?2.2:4));
+      f.x+=(giant.cx+f.gx+gox-f.x)*kk;f.y+=(giant.cy+f.gy+Math.sin(t*3+f.gx/giant.L*7)*giant.L*.012-f.y)*kk;
+      steer(f,0,40,3,dt);f.al+=(.95-f.al)*Math.min(1,dt*2);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);continue}
+    let al=f.extra?0:.75, free=true;
+    if(fd&&f.al>.03&&Math.hypot(fd.x-f.x,fd.y-f.y)<reach){free=false;al=.9;seek(f,fd.x+Math.cos(f.ph*3)*16,fd.y+Math.sin(f.ph*3)*16,320,4.5,dt)}
+    else if(mode==='portal'){const j=followers.indexOf(f);
+      if(j>-1&&j<k){free=false;tn=j<k*.55?1:0;const back=46+j*12*K,lat=((j%2)?1:-1)*(12+(j*23)%70)*K;
+        seek(f,hero.x-Math.cos(hero.a)*back-Math.sin(hero.a)*lat,hero.y-Math.sin(hero.a)*back+Math.cos(hero.a)*lat,170,2.6,dt)}
+      else al=f.extra?0:.5}
+    else if(mode==='vortex'){free=false;al=1;orbit(f,c,vMin+f.ring*(vMax-vMin),dt,2.4)}
+    else if(mode==='hire'){al=f.extra?0:.5}
+    else if(mode==='reach'){al=.75}
+    else if(mode==='alone'){al=.05;tn=0}
+    else if(mode==='team'){if(f.team){free=false;tn=1;al=.95;const j=team.indexOf(f),row=(j>>1)+1,side=(j%2)?1:-1;
+        seek(f,hero.x-Math.cos(hero.a)*row*58*K-Math.sin(hero.a)*side*row*34*K,hero.y-Math.sin(hero.a)*row*58*K+Math.cos(hero.a)*side*row*34*K,190,2.8,dt)}
+      else al=f.extra?0:.42}
+    else if(mode==='talks'){al=f.extra?0:.4}
+    else if(mode==='gather'){if(!f.extra&&(i%2===0||f.team)){free=false;al=.95;orbit(f,c,(small?78:100)+f.ring*(small?120:210),dt,2.6)}
+      else al=f.extra?0:.25}
+    if(free)swim(f,mode==='alone'?.45:1,dt);
+    if(live){const dx=f.x-ptr.x,dy=f.y-ptr.y,dd=Math.hypot(dx,dy);if(dd<R)steer(f,Math.atan2(dy,dx),f.v+90*(1-dd/R),6*(1-dd/R),dt)}
+    f.al+=(al-f.al)*Math.min(1,dt*1.3);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);
+    f.x+=Math.cos(f.a)*f.v*dt;f.y+=Math.sin(f.a)*f.v*dt;
+  }
+  /* o peixe do Matheus: verde no presente (capa), cinza no flashback, verde de novo quando conhece a série */
+  const h=hero, ht=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;
+  if(ht&&!heroWas&&mode!=='hero')rings.push({x:h.x,y:h.y,t});
+  heroWas=ht;
+  if(giant){const kk=Math.min(1,dt*2.4);h.x+=(giant.cx+h.gx+gox-h.x)*kk;h.y+=(giant.cy+h.gy-h.y)*kk;steer(h,0,40,3,dt);h.v=0}
+  else{
+    if(fd)seek(h,fd.x,fd.y,300,4,dt);
+    else if(mode==='fan2')seek(h,W*(small?.5:.3)+30*Math.sin(t*.5),H*(small?.78:.55)+20*Math.cos(t*.4),60,1.6,dt);
+    else if(mode==='portal')seek(h,W*.55+W*.3*Math.sin(t*.21),H*.5+H*.22*Math.sin(t*.34),110,1.8,dt);
+    else if(mode==='vortex')orbit(h,c,vMin*1.04,dt,2.6);
+    else if(mode==='alone')seek(h,W*.5+60*Math.sin(t*.3),H*.56+30*Math.sin(t*.47),26,.9,dt);
+    else if(mode==='team')seek(h,W*.55+W*.24*Math.sin(t*.16),H*.5+H*.16*Math.sin(t*.27),96,1.5,dt);
+    else if(mode==='gather')orbit(h,c,small?70:92,dt,2.6);
+    else swim(h,.9,dt);
+    if(live){const dx=h.x-ptr.x,dy=h.y-ptr.y,dd=Math.hypot(dx,dy);if(dd<R)steer(h,Math.atan2(dy,dx),h.v+70*(1-dd/R),5*(1-dd/R),dt)}
+    h.x+=Math.cos(h.a)*h.v*dt;h.y+=Math.sin(h.a)*h.v*dt;
+  }
+  h.tint+=(ht-h.tint)*Math.min(1,dt*1.1);
+  /* Easter egg: os gigantes nascem enquanto a pessoa clica sem parar e vão embora quando ela para */
+  for(let i=giants.length-1;i>=0;i--){const g=giants[i];
+    g.grow=Math.min(1,g.grow+dt*1.5);g.tint+=((g.rank<Math.max(ratio,.35)?1:0)-g.tint)*Math.min(1,dt*2);
+    if(t-lastClick>1.4)g.swim=true;
+    if(g.swim){steer(g,0,150+g.L*.12,1.2,dt)}else{steer(g,g.a+.3*Math.sin(t*.8+g.ph)*dt,14,1,dt)}
+    g.x+=Math.cos(g.a)*g.v*dt;g.y+=Math.sin(g.a)*g.v*dt;
+    if(g.x-g.L*.6>W)giants.splice(i,1)}
+}
+
+/* cinza de papel da intro; o verde é #00BFB3 */
+function color(f){const g=46+f.depth*60, s=.5+.5*f.depth, tn=f.tint;
+  return 'rgb('+((g*(1-tn))|0)+','+((g+(191*s-g)*tn)|0)+','+((g+(179*s-g)*tn)|0)+')'}
+/* O peixe da série: corpo fino e comprido (altura ~13% do comprimento), afina antes do rabo, rabo em V aberto */
+function shape(p,L,w){const hh=L*.062, tx=-L*.4, c=Math.cos(w), s=Math.sin(w);
+  const R=(px,py)=>[tx+(px-tx)*c-py*s,(px-tx)*s+py*c];
+  p.moveTo(L*.5,0);
+  p.bezierCurveTo(L*.3,-hh*1.45,-L*.12,-hh*1.5,tx,-hh*.14);
+  let q=R(-L*.45,-L*.012),e=R(-L*.535,-L*.088);p.quadraticCurveTo(q[0],q[1],e[0],e[1]);
+  q=R(-L*.49,-L*.03);e=R(-L*.468,0);p.quadraticCurveTo(q[0],q[1],e[0],e[1]);
+  q=R(-L*.49,L*.03);e=R(-L*.535,L*.088);p.quadraticCurveTo(q[0],q[1],e[0],e[1]);
+  q=R(-L*.45,L*.012);p.quadraticCurveTo(q[0],q[1],tx,hh*.14);
+  p.bezierCurveTo(-L*.12,hh*1.5,L*.3,hh*1.45,L*.5,0);p.closePath()}
+function drawFish(f,L){const w=Math.sin(t*(2.6+f.v*.035)+f.ph)*.18;
+  ctx.save();ctx.translate(f.x,f.y);ctx.rotate(f.a+Math.sin(t*1.3+f.ph)*.035);
+  ctx.beginPath();shape(ctx,L,w);ctx.fillStyle=color(f);ctx.fill();ctx.restore()}
+function ripple(x,y,age,max,col){for(let r=0;r<3;r++){const a=age-r*.25;if(a<0||a>max)continue;
+  ctx.strokeStyle=col+(.4*(1-a/max))+')';ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(x,y,6+a*90,0,TAU);ctx.stroke()}}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(const fo of foods){const age=t-fo.t;if(age>2.6)continue;ripple(fo.x,fo.y,age,1.3,'rgba(244,242,238,');
+    ctx.fillStyle='rgba(244,242,238,'+(.75*(1-age/2.6))+')';
+    for(let j=0;j<6;j++){ctx.beginPath();ctx.arc(fo.x+Math.cos(j*1.7)*(5+j*2.4),fo.y+Math.sin(j*2.3)*(4+j*2.2),1.8,0,TAU);ctx.fill()}}
+  for(const r of rings){const age=t-r.t;if(age<1.8)ripple(r.x,r.y,age,1.8,'rgba(0,191,179,')}
+  for(const f of fish){if(f.al<.01)continue;ctx.globalAlpha=f.al;drawFish(f,f.L*gs)}
+  ctx.globalAlpha=1;drawFish(hero,hero.L*gs);
+  for(const g of giants){ctx.globalAlpha=.9;drawFish(g,g.L*(1-Math.pow(1-g.grow,3)))}
+  ctx.globalAlpha=1;
+}
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;detect();update(dt);draw();requestAnimationFrame(frame)}
+addEventListener('resize',()=>size(false));
+if(RM){
+  /* sem movimento: um quadro parado que muda de estado com a rolagem */
+  const still=()=>{detect();ratio=RATIO[mode];
+    for(const f of fish){f.al=mode==='alone'?.05:(f.extra?0:.6);f.tint=f.rank<ratio?1:0}
+    hero.tint=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;draw()};
+  addEventListener('scroll',still,{passive:true});addEventListener('resize',still);still();
+}else requestAnimationFrame(frame);
+
+/* Toque na água: alimenta o cardume. Clicar sem parar faz nascer peixes cada vez maiores. */
+const hint=$('#hint'); let fed=0;
+d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter'))return;
+  foods.push({x:e.clientX,y:e.clientY,t});if(foods.length>4)foods.shift();
+  clicks=clicks.filter(c=>t-c<2.5);clicks.push(t);lastClick=t;
+  if(clicks.length>=5){const n=clicks.length-4;
+    giants.push({x:e.clientX,y:e.clientY,a:rnd(-.25,.25),v:0,L:Math.min(Math.max(W,H)*1.7,(small?120:170)*Math.pow(1.32,n)),
+      grow:0,rank:Math.random(),depth:1,ph:rnd(0,TAU),tint:0,swim:false});
+    if(giants.length>9)giants.shift()}
+  fed++;if(fed===1)hint.textContent='Eles gostam de você.';else if(clicks.length===5)hint.textContent='Continue. Tem peixe grande vindo.'});
+
+/* topo, barra de progresso e revelação suave do texto */
+const top=$('#top'), bar=$('#bar');
+addEventListener('scroll',()=>{top.classList.toggle('solid',scrollY>60);
+  bar.style.transform='scaleX('+clamp(scrollY/(root.scrollHeight-innerHeight),0,1)+')'},{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2,rootMargin:'0px 0px -8% 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* ---------- Convite ---------- */
+const val=id=>$('#'+id).value.trim(), show=(id,ph)=>val(id)?esc(val(id)):'<i>['+ph+']</i>', g=(id,ph)=>val(id)||'['+ph+']';
+const lBody=$('#lBody'), lSubj=$('#lSubj'), lMail=$('#lMail'), toast=$('#toast'), tema=$('#fTema');
+let plain='';
+function render(){
+  const subj='Convite para palestra'+(val('fEvento')?' · '+val('fEvento'):'');lSubj.textContent=subj;
+  lBody.innerHTML='Oi Matheus, quero te convidar para falar.\n\n<b>Evento:</b> '+show('fEvento','nome do evento')+'\n<b>Tema:</b> '+esc(tema.value)+
+    '\n<b>Data:</b> '+show('fData','data')+'\n<b>Cidade:</b> '+show('fCidade','cidade')+'\n<b>Público:</b> '+show('fPublico','quem vai assistir')+
+    '\n<b>O que as pessoas devem levar embora:</b> '+show('fLevar','o objetivo')+'\n\n'+show('fNome','seu nome');
+  plain='Oi Matheus, quero te convidar para falar.\n\nEvento: '+g('fEvento','nome do evento')+'\nTema: '+tema.value+'\nData: '+g('fData','data')+
+    '\nCidade: '+g('fCidade','cidade')+'\nPúblico: '+g('fPublico','quem vai assistir')+'\nO que as pessoas devem levar embora: '+g('fLevar','o objetivo')+'\n\n'+g('fNome','seu nome');
+  lMail.href='mailto:eu@matheushoracio.com.br?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(plain);
+}
+$('#form').addEventListener('input',render);
+$('#form').addEventListener('submit',e=>e.preventDefault());
+$('#lCopy').addEventListener('click',()=>{
+  const full='Para: eu@matheushoracio.com.br\nAssunto: '+lSubj.textContent+'\n\n'+plain;
+  const fb=()=>{const r=d.createRange();r.selectNodeContents(lBody);const s=getSelection();s.removeAllRanges();s.addRange(r);toast.textContent='Selecionei o texto. Use o copiar do seu aparelho.'};
+  try{navigator.clipboard.writeText(full).then(()=>{toast.textContent='Convite copiado. Agora é só colar no seu e-mail.'},fb)}catch(e){fb()}
+});
+render();
+})();
+</script>
+</body>
+</html>
