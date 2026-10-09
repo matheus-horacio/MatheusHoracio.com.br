@@ -164,6 +164,8 @@ footer a:hover{color:var(--fg)}
   .row2{grid-template-columns:1fr 1fr}
   .nums{grid-template-columns:repeat(3,minmax(0,1fr))}
   .says{grid-template-columns:1fr 1fr;gap:48px 64px}
+  .says .wide{grid-column:1/-1;max-width:62rem}
+  .says .wide p{font-size:clamp(1.2rem,2vw,1.5rem)}
 }
 @media (min-width:1000px){
   :root{--heroH:100svh}
@@ -218,16 +220,20 @@ footer a:hover{color:var(--fg)}
     <div class="beat" data-mode="fan1"><div class="blk stack rv">
       <p class="eyebrow">2016</p>
       <h2 class="h2">Antes de dar certo, deu bem errado.</h2>
-      <p class="body">Eu tinha um canal no YouTube, legendando e dublando vídeo. Perdi tudo por direitos autorais. Vieram os strikes e o canal caiu. Demorei anos para entender que aquilo me libertou e me possibilitou iniciar outros projetos.</p>
+      <p class="body">Eu sempre fui um cara da internet. Passei pelos cursos de Administração, Engenharia Elétrica e Publicidade e Propaganda, mas o que eu queria mesmo era criar alguma coisa.</p>
+      <p class="body">Em 2016, na faculdade de Administração, criei um canal no YouTube para entregar conteúdo de valor através de vídeos legendados e dublados. Eu pegava sermões e pregações, legendava e dublava. Teve dublagem que passou de <b>1 milhão de visualizações</b>, e vários vídeos viralizaram em outras redes.</p>
+      <p class="body">Até que perdi tudo por direitos autorais. Vieram os strikes e o canal caiu. Demorei anos para entender que aquilo me libertou e me possibilitou iniciar outros projetos.</p>
     </div></div>
     <div class="beat" data-mode="fan2"><div class="blk r stack rv">
       <p class="eyebrow">2020</p>
       <h2 class="h2">Em 2020 eu conheci <em>The Chosen.</em></h2>
       <p class="body">Vi uma série sobre um Jesus e personagens humanos que, naquele momento, ainda não era o normal. Hoje é. A série naturalizou isso.</p>
+      <p class="body">Eu quis entregar os meus poucos <b>pães e peixes</b>. Criei uma página sobre a série, fiz alguns posts e parei. Achei que já tinha feito a minha parte.</p>
     </div></div>
     <div class="beat" data-mode="portal"><div class="blk stack rv">
       <p class="eyebrow">2021</p>
-      <p class="quote">Em 2021 eu decidi uma coisa em voz alta: <em>eu vou ser o maior portal de The Chosen da América Latina.</em></p>
+      <p class="body">Em 2021 eu voltei. O The Chosen ainda não era famoso, mas eu senti no coração que <b>Deus tinha algo para mim ali</b>.</p>
+      <p class="quote">E decidi uma coisa em voz alta: <em>eu vou ser o maior portal de The Chosen da América Latina.</em></p>
       <p class="body">Blog, YouTube, Instagram, Facebook e TikTok. Sem verba, sem equipe e sem a permissão de ninguém.</p>
       <p class="body">Criei um ecossistema que entregava conteúdo de valor para os fãs da série. Teve momentos que o blog ultrapassou a marca de <b>cem mil visualizações mensais</b>. As redes sociais passaram de <b>cem mil seguidores</b>.</p>
     </div></div>
@@ -321,6 +327,7 @@ footer a:hover{color:var(--fg)}
     <div class="beat stack" style="padding-top:0">
       <p class="eyebrow rv">Quem trabalha comigo</p>
       <div class="says">
+        <blockquote class="rv wide"><p>“Matheus é um profissional extremamente criativo, dedicado e com uma visão muito à frente. Ele está sempre buscando novas ideias, acompanhando tendências e explorando novas possibilidades, especialmente nas áreas de inovação e inteligência artificial. […] É um líder que realmente se preocupa com as pessoas e procura apoiar cada membro da equipe da melhor maneira possível.”</p><cite><b>Rebecca Campos</b> · Ex-Community Manager no The Chosen</cite></blockquote>
         <blockquote class="rv"><p>“Uma das mentes mais criativas e estratégicas que já conheci, mas, principalmente, com clareza sobre como transformar isso em resultado.”</p><cite><b>David Cavalcante</b> · Operations Lead no The Chosen Brasil</cite></blockquote>
         <blockquote class="rv"><p>“Sua capacidade de estruturar processos claros, definir fluxos e organizar prioridades cria um ambiente mais eficiente, produtivo e sustentável.”</p><cite><b>Barbara Cordeli</b> · Audiovisual Productions no The Chosen Brasil</cite></blockquote>
         <blockquote class="rv"><p>“Não guarda conhecimento para si. Orienta, capacita e incentiva as pessoas ao seu redor a pensarem de forma autônoma.”</p><cite><b>Fabricia Erler</b> · Content Creator e Community Manager no The Chosen Brasil</cite></blockquote>
@@ -437,6 +444,8 @@ const READ={hero:.6,fan1:.4,fan2:.4,portal:.3,hire:.3,reach:.4,team:.28,talks:.2
 let mode='hero', idx=0, prog=0, ratio=.55, t=0, heroWas=1;
 const foods=[], rings=[], giants=[], oc=d.createElement('canvas').getContext('2d');
 let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1;
+/* os "poucos pães e peixes": 2 peixinhos verdes aparecem ao lado do peixe dele e, no portal, viram cardume */
+const loaves=[0,1].map(j=>({x:-99,y:-99,a:0,v:40,depth:.75,L:small?46:62,ph:j*2+.5,al:0,tint:1,j}));
 const ptr={x:-999,y:-999,at:-1e9};
 addEventListener('pointermove',e=>{ptr.x=e.clientX;ptr.y=e.clientY;ptr.at=performance.now()},{passive:true});
 addEventListener('touchmove',e=>{const p=e.touches[0];if(p){ptr.x=p.clientX;ptr.y=p.clientY;ptr.at=performance.now()}},{passive:true});
@@ -519,6 +528,13 @@ function update(dt){
     h.x+=Math.cos(h.a)*h.v*dt;h.y+=Math.sin(h.a)*h.v*dt;
   }
   h.tint+=(ht-h.tint)*Math.min(1,dt*1.1);
+  const lv=!giant&&((mode==='fan2'&&prog>.6)||mode==='portal');
+  for(const l of loaves){
+    if(lv&&l.al<.02){l.x=h.x-Math.cos(h.a)*30;l.y=h.y+(l.j?20:-20);l.a=h.a}
+    l.al+=((lv?1:0)-l.al)*Math.min(1,dt*1.5);
+    if(l.al>.01){const side=l.j?1:-1, back=(44+l.j*16)*K, lat=side*22*K;
+      seek(l,h.x-Math.cos(h.a)*back-Math.sin(h.a)*lat,h.y-Math.sin(h.a)*back+Math.cos(h.a)*lat,200,3,dt);
+      l.x+=Math.cos(l.a)*l.v*dt;l.y+=Math.sin(l.a)*l.v*dt}}
   /* Easter egg: os gigantes nascem enquanto a pessoa clica sem parar e vão embora quando ela para */
   for(let i=giants.length-1;i>=0;i--){const g=giants[i];
     g.grow=Math.min(1,g.grow+dt*1.5);g.tint+=((g.rank<Math.max(ratio,.35)?1:0)-g.tint)*Math.min(1,dt*2);
@@ -554,6 +570,7 @@ function draw(){
   for(const r of rings){const age=t-r.t;if(age<1.8)ripple(r.x,r.y,age,1.8,'rgba(0,191,179,')}
   for(const f of fish){if(f.al<.01)continue;ctx.globalAlpha=f.al;drawFish(f,f.L*gs)}
   ctx.globalAlpha=1;drawFish(hero,hero.L*gs);
+  for(const l of loaves){if(l.al>.01){ctx.globalAlpha=l.al;drawFish(l,l.L)}}
   for(const g of giants){ctx.globalAlpha=.9;drawFish(g,g.L*(1-Math.pow(1-g.grow,3)))}
   ctx.globalAlpha=1;
 }
