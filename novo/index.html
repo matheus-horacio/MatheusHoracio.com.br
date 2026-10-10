@@ -129,6 +129,13 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .strip figure{margin:0;flex:0 0 clamp(220px,64vw,290px);scroll-snap-align:start}
 .strip img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:2px;background:#111}
 .strip figcaption{margin-top:10px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.bs-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bs-nav{display:flex;gap:8px}
+.arw{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(3,3,4,.6);color:var(--fg);font-size:18px;display:grid;place-items:center;transition:background .2s,border-color .2s,opacity .2s}
+.arw:hover:not(:disabled){border-color:var(--teal);background:rgba(0,191,179,.14)}
+.arw:disabled{opacity:.3;cursor:default}
+.strip{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent);mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent)}
+.strip.end{-webkit-mask-image:none;mask-image:none}
 .tools{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .tools li{position:relative;padding:14px 0 14px 26px;border-bottom:1px solid var(--line);color:var(--ink);font-size:15.5px;line-height:1.55;text-shadow:0 0 14px rgba(3,3,4,.95)}
 .tools li::before{content:'';position:absolute;left:2px;top:25px;width:12px;height:2px;background:var(--teal)}
@@ -318,26 +325,25 @@ footer a:hover{color:var(--fg)}
 </section>
 <!-- Bastidores: prova social logo depois de ele entrar no mundo da série -->
 <section class="backstage" data-mode="hire" aria-label="Bastidores">
-  <div class="wrap"><p class="eyebrow">Bastidores</p><p class="cap" style="margin-top:6px">Deslize para o lado para ver mais.</p></div>
+  <div class="wrap bs-head"><p class="eyebrow">Bastidores</p><div class="bs-nav"><button type="button" class="arw" data-dir="-1" aria-label="Fotos anteriores">←</button><button type="button" class="arw" data-dir="1" aria-label="Próximas fotos">→</button></div></div>
   <div class="strip" tabindex="0" aria-label="Fotos dos bastidores">
     <figure><img src="/assets/img/matheus-e-jonathan.webp" alt="Matheus Horácio e Jonathan Roumie, o Jesus de The Chosen" loading="lazy"><figcaption>Com Jonathan Roumie, o Jesus da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-e-paras-patel.webp" alt="Matheus Horácio e Paras Patel, o Mateus de The Chosen, no set de filmagens" loading="lazy"><figcaption>Com Paras Patel, o Mateus da série</figcaption></figure>
+    <figure><img src="/assets/img/time-the-chosen-e-cast.webp" alt="Matheus Horácio com a equipe The Chosen Brasil, Jonathan Roumie, Paras Patel e Lara Silva em São Paulo" loading="lazy"><figcaption>Com o elenco em São Paulo</figcaption></figure>
     <figure><img src="/assets/img/pre-estreia-em-sp.webp" alt="Matheus Horácio com Dallas e Amanda Jenkins e a equipe The Chosen Brasil" loading="lazy"><figcaption>Com Dallas e Amanda Jenkins e a equipe</figcaption></figure>
     <figure><img src="/assets/img/matheus-horacio-e-derral-eves.webp" alt="Matheus Horácio e Derral Eves, cofundador e produtor executivo de The Chosen" loading="lazy"><figcaption>Com Derral Eves, cofundador da série</figcaption></figure>
     <figure><img src="/assets/img/matheus-e-jey-no-set.webp" alt="Matheus Horácio e Jey Reis no set de filmagens de The Chosen em Midlothian, Texas" loading="lazy"><figcaption>No set de filmagens, no Texas</figcaption></figure>
     <figure><img src="/assets/img/matheys-tyler-thompson-e-ryan-swanson.webp" alt="Matheus Horácio com os roteiristas de The Chosen, Ryan Swanson e Tyler Thompson" loading="lazy"><figcaption>Com os roteiristas da série</figcaption></figure>
     <figure><img src="/assets/img/matheus-horacio-jey-e-cast.webp" alt="Matheus Horácio, Shahar Isaac, Abe Bueno Jallad, Vanessa Benavente e Jey Reis" loading="lazy"><figcaption>Com parte do elenco da série</figcaption></figure>
     <figure><img src="/assets/img/matheus-jey-e-judas-iscariotes-luke-dimyan.webp" alt="Matheus Horácio, Jey Reis e Luke Dimyan, o Judas Iscariotes de The Chosen" loading="lazy"><figcaption>Com Luke Dimyan, o Judas Iscariotes</figcaption></figure>
-    <figure><img src="/assets/img/time-the-chosen-e-cast.webp" alt="Matheus Horácio com a equipe The Chosen Brasil, Jonathan Roumie, Paras Patel e Lara Silva em São Paulo" loading="lazy"><figcaption>Com o elenco em São Paulo</figcaption></figure>
-    <figure><img src="/assets/img/matheus-horacio-e-paras-patel.webp" alt="Matheus Horácio e Paras Patel, o Mateus de The Chosen, no set de filmagens" loading="lazy"><figcaption>Com Paras Patel, o Mateus da série</figcaption></figure>
   </div>
 </section>
 <section data-mode="reach">
   <div class="wrap">
     <div class="beat"><div class="blk r stack rv">
-      <p class="eyebrow">O desafio</p>
-      <p class="body">Naquela época, a série ainda não tinha nem uma fração do reconhecimento que tem hoje. Por isso, eu estava sempre atento a oportunidades que pudessem apresentá-la a mais pessoas.</p>
-      <p class="eyebrow step">A ideia</p>
-      <p class="body">Foi quando uma trend do Neymar começou a dominar o meu For You. Um filtro fazia parecer que a pessoa tinha tirado uma selfie com ele, e milhares de pessoas estavam usando. Então pensei:</p>
+      <p class="eyebrow">Uma das ideias</p>
+      <p class="body">No começo, a gente tinha muitos desafios, e o maior era fazer a série ser conhecida. Naquela época, ela ainda não tinha nem uma fração do reconhecimento que tem hoje. Por isso, eu estava sempre atento a oportunidades que pudessem apresentá-la a mais pessoas. Testamos vários caminhos, e um deles foi este.</p>
+      <p class="body">Uma trend do Neymar uma trend do Neymar começou a dominar o meu For You. Um filtro fazia parecer que a pessoa tinha tirado uma selfie com ele, e milhares de pessoas estavam usando. Então pensei:</p>
       <h2 class="h2">Se funciona com um jogador de futebol, por que não funcionaria com <em>Jesus?</em></h2>
       <p class="eyebrow step">O resultado</p>
       <p class="body">A partir dessa ideia, criei um filtro usando imagens do Jesus da série. O resultado foi <b>mais de 11 milhões de aberturas no Instagram e seis mil vídeos publicados no TikTok</b>, tudo isso sem um centavo de mídia paga.</p>
@@ -431,7 +437,7 @@ footer a:hover{color:var(--fg)}
       <p class="quote">É por isso que, quando me chamam para falar sobre processo e delegação, eu não estou dando opinião. <em>Estou mostrando cicatriz.</em></p>
     </div></div>
     <div class="beat stack" style="padding-top:0">
-      <p class="eyebrow rv">Me ouça falar</p>
+      <p class="eyebrow rv">Entrevistas e podcasts</p>
       <div class="vids">
         <a class="vid rv" href="https://www.youtube.com/watch?v=VHHQHCHeOyc" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/VHHQHCHeOyc/maxresdefault.jpg" width="1280" height="720" alt="Matheus Horácio no JesusCopy falando dos bastidores da sexta temporada de The Chosen" loading="lazy"><i aria-hidden="true">▶</i></span><small>JesusCopy · YouTube</small><b>Copiando Jesus: bastidores e a sexta temporada de The Chosen</b></a>
         <a class="vid rv" href="https://www.youtube.com/live/VSACOxcCFQ0?t=1747" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/VSACOxcCFQ0/maxresdefault.jpg" width="1280" height="720" alt="Matheus Horácio no palco com Dallas Jenkins, criador de The Chosen" loading="lazy"><i aria-hidden="true">▶</i></span><small>Ao vivo · YouTube</small><b>No palco com Dallas Jenkins, criador e diretor de The Chosen</b></a>
@@ -703,6 +709,16 @@ addEventListener('scroll',()=>{top.classList.toggle('solid',scrollY>60);
   bar.style.transform='scaleX('+clamp(scrollY/(root.scrollHeight-innerHeight),0,1)+')'},{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2,rootMargin:'0px 0px -8% 0px'});
 $$('.rv').forEach(el=>io.observe(el));
+
+
+/* Bastidores: setas, aviso de que dá para deslizar e um "empurrãozinho" na primeira vez */
+const strip=$('.strip'), prevB=$('.arw[data-dir="-1"]'), nextB=$('.arw[data-dir="1"]');
+function arrows(){const max=strip.scrollWidth-strip.clientWidth-4;prevB.disabled=strip.scrollLeft<=4;nextB.disabled=strip.scrollLeft>=max;strip.classList.toggle('end',strip.scrollLeft>=max)}
+[prevB,nextB].forEach(b=>b.addEventListener('click',()=>{const w=strip.querySelector('figure').offsetWidth+14;
+  strip.scrollBy({left:+b.dataset.dir*w*(innerWidth>900?2:1),behavior:RM?'auto':'smooth'})}));
+strip.addEventListener('scroll',arrows,{passive:true});arrows();
+if(!RM){const pio=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;pio.disconnect();
+  setTimeout(()=>{if(strip.scrollLeft>4)return;strip.scrollBy({left:110,behavior:'smooth'});setTimeout(()=>strip.scrollBy({left:-110,behavior:'smooth'}),750)},500)},{threshold:.6});pio.observe(strip)}
 
 /* ---------- Convite ---------- */
 const val=id=>$('#'+id).value.trim(), show=(id,ph)=>val(id)?esc(val(id)):'<i>['+ph+']</i>', g=(id,ph)=>val(id)||'['+ph+']';
