@@ -184,7 +184,12 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .eggs-pan p b{font-weight:inherit;color:var(--fg);font-variation-settings:'wght' 640}
 .eggs-pan p::before{content:'·';color:var(--mute);width:14px;flex:none;text-align:center}
 .eggs-pan p.ok::before{content:'✓';color:var(--teal-ink)}
-.egg-toast{position:fixed;left:50%;top:calc(80px + env(safe-area-inset-top,0px));translate:-50% -10px;z-index:13;max-width:min(440px,calc(100vw - 32px));padding:12px 18px;border-radius:12px;background:rgba(3,3,4,.95);border:1px solid var(--teal);color:var(--fg);font-size:14.5px;line-height:1.45;text-align:center;opacity:0;pointer-events:none;transition:opacity .35s,translate .35s var(--ease)}
+/* no celular, quando a bandeja de letras aparece, o contador sobe para não ficar em cima dela */
+@media (max-width:700px){
+  body.tray-on .eggs{bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+  body.tray-on .eggs-pan{bottom:calc(124px + env(safe-area-inset-bottom,0px))}
+}
+.egg-toast{position:fixed;left:50%;top:calc(80px + env(safe-area-inset-top,0px));translate:-50% -10px;z-index:13;width:max-content;max-width:min(440px,calc(100vw - 32px));padding:12px 18px;border-radius:12px;background:rgba(3,3,4,.95);border:1px solid var(--teal);color:var(--fg);font-size:14.5px;line-height:1.45;text-align:center;opacity:0;pointer-events:none;transition:opacity .35s,translate .35s var(--ease)}
 .egg-toast.on{opacity:1;translate:-50% 0}
 .egg-dim{position:fixed;inset:0;z-index:5;background:rgba(3,3,4,.93);opacity:0;transition:opacity .8s}
 .egg-dim.on{opacity:1}
@@ -873,10 +878,10 @@ function closeCard(){$('#eggDim').classList.remove('on');$('#eggCard').hidden=tr
 $('#eggClose').addEventListener('click',closeCard);
 d.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#eggCard').hidden)closeCard()});
 function takeLetter(el){if(el.classList.contains('got'))return;const i=+el.dataset.i;el.classList.add('got');got[i]=true;
-  tray.hidden=false;slots[i].textContent=WORD[i];slots[i].classList.add('on');
+  tray.hidden=false;d.body.classList.add('tray-on');slots[i].textContent=WORD[i];slots[i].classList.add('on');
   const n=got.filter(Boolean).length;
   if(n===1)say('Você achou uma letra escondida. Faltam 8. Continue lendo.');
-  if(n===WORD.length){setTimeout(()=>{tray.hidden=true;if(!RM)ichthys(1,false);
+  if(n===WORD.length){setTimeout(()=>{tray.hidden=true;d.body.classList.remove('tray-on');if(!RM)ichthys(1,false);
     window.__secret('escolhido',true);openCard('Você também foi <em>escolhido.</em>','“Venham, sigam-me, e eu os farei pescadores de homens.” Mateus 4:19')},700)}}
 $$('.egg').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();takeLetter(el)});
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();takeLetter(el)}})});
