@@ -110,6 +110,18 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .nums div{display:grid;gap:8px}
 .nums b{font-family:var(--serif);font-weight:500;font-size:clamp(2.8rem,6.4vw,5rem);line-height:.9}
 .nums span{color:var(--ink);font-size:15px;max-width:30ch}
+.nums.sm{gap:18px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
+.nums.sm b{font-size:clamp(2rem,4.4vw,3.4rem);color:var(--teal)}
+.nums.sm span{font-size:13.5px}
+.stack .step{margin-top:14px}
+.stat{display:flex;gap:18px;align-items:baseline;border-top:1px solid var(--line);padding-top:20px;margin-top:6px}
+.stat b{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,5vw,3.8rem);line-height:.9;color:var(--teal);white-space:nowrap;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.stat span{color:var(--ink);font-size:15.5px;line-height:1.5;max-width:36ch;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.skills{padding-block:clamp(36px,6vh,64px) 0}
+.sk{display:grid;gap:1px;background:var(--line);border-block:1px solid var(--line);margin-top:18px}
+.sk div{background:rgba(3,3,4,.88);padding:20px 0;display:grid;gap:6px;align-content:start}
+.sk h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.25rem,2vw,1.5rem);line-height:1.15}
+.sk p{color:var(--ink);font-size:15px;line-height:1.5}
 .says{display:grid;gap:32px}
 .says blockquote{margin:0;display:grid;gap:12px;border-left:2px solid var(--teal);padding-left:20px}
 .says p{font-size:clamp(1.1rem,1.7vw,1.28rem);line-height:1.55;font-variation-settings:'wght' 460;color:var(--fg)}
@@ -165,10 +177,13 @@ footer a:hover{color:var(--fg)}
   .nums{grid-template-columns:repeat(3,minmax(0,1fr))}
   .says{grid-template-columns:1fr 1fr;gap:48px 64px}
   .says .wide{grid-column:1/-1;max-width:62rem}
+  .sk{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sk div{padding:22px 22px}
   .says .wide p{font-size:clamp(1.2rem,2vw,1.5rem)}
 }
 @media (min-width:1000px){
   :root{--heroH:100svh}
+  .sk{grid-template-columns:repeat(4,minmax(0,1fr))}
   .hero{padding-bottom:9vh}
   .two{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
   .tlist article{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:10px 56px;align-items:baseline}
@@ -210,6 +225,18 @@ footer a:hover{color:var(--fg)}
       <a class="link" href="#fa">Minha história ↓</a>
     </div>
     <p class="hint" id="hint">Toque na água.</p>
+  </div>
+</section>
+
+<section class="skills" data-mode="hero" aria-label="O que eu faço">
+  <div class="wrap">
+    <p class="eyebrow">O que eu faço</p>
+    <div class="sk">
+      <div><h3>Construção de audiência</h3><p>De zero a mais de 100 mil seguidores, sem verba.</p></div>
+      <div><h3>Estratégia de lançamento</h3><p>As temporadas 3, 4 e 5 do The Chosen no Brasil.</p></div>
+      <div><h3>Conteúdo e comunidade</h3><p>O calendário editorial e a estrutura de conteúdo que o time usa até hoje.</p></div>
+      <div><h3>Automação e IA</h3><p>Mais de 8 horas por mês devolvidas a cada pessoa do time.</p></div>
+    </div>
   </div>
 </section>
 
@@ -267,10 +294,18 @@ footer a:hover{color:var(--fg)}
 <section data-mode="reach">
   <div class="wrap">
     <div class="beat"><div class="blk r stack rv">
+      <p class="eyebrow">O desafio</p>
       <p class="body">Naquela época, a série ainda não tinha nem uma fração do reconhecimento que tem hoje. Por isso, eu estava sempre atento a oportunidades que pudessem apresentá-la a mais pessoas.</p>
+      <p class="eyebrow step">A ideia</p>
       <p class="body">Foi quando uma trend do Neymar começou a dominar o meu For You. Um filtro fazia parecer que a pessoa tinha tirado uma selfie com ele, e milhares de pessoas estavam usando. Então pensei:</p>
       <h2 class="h2">Se funciona com um jogador de futebol, por que não funcionaria com <em>Jesus?</em></h2>
+      <p class="eyebrow step">O resultado</p>
       <p class="body">A partir dessa ideia, criei um filtro usando imagens do Jesus da série. O resultado foi <b>mais de 11 milhões de aberturas no Instagram e seis mil vídeos publicados no TikTok</b>, tudo isso sem um centavo de mídia paga.</p>
+      <div class="nums sm">
+        <div><b>11 mi</b><span>de aberturas no Instagram</span></div>
+        <div><b>6 mil</b><span>vídeos publicados no TikTok</span></div>
+        <div><b>R$ 0</b><span>em mídia paga</span></div>
+      </div>
     </div></div>
     <div class="beat" style="padding-top:0"><div class="blk stack rv">
       <p class="body">Essa experiência me ensinou algo que levo comigo até hoje:</p>
@@ -302,6 +337,7 @@ footer a:hover{color:var(--fg)}
       <p class="body">Depois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei promovido. Aí veio a parte difícil: entregar o operacional que era meu.</p>
       <h2 class="h2">Aprendi a delegar depois de quebrar por <em>não delegar.</em></h2>
       <p class="body">Hoje lidero várias pessoas e respondo pela criação do The Chosen Brasil. Os elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei bastante e aprendi.</p>
+      <div class="stat"><b>+8 h</b><span>por mês devolvidas a cada pessoa do time depois que automatizei os fluxos de trabalho.</span></div>
     </div></div>
     <div class="beat stack" style="padding-top:0">
       <div class="roles rv">
