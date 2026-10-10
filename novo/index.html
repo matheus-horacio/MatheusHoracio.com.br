@@ -73,7 +73,9 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .body b{color:var(--fg);font-weight:inherit;font-variation-settings:'wght' 620}
 .stack{display:grid;gap:20px}
 .blk{max-width:40rem}
-.blk.r{margin-left:auto}
+/* toda a história numa coluna central de leitura */
+.blk,.blk.r{margin-inline:auto}
+.chapter > .wrap > .chap{max-width:40rem;margin-inline:auto}
 
 .hero{min-height:var(--heroH);display:flex;align-items:flex-end;padding-block:96px 44px}
 .hero .display{max-width:13ch}
