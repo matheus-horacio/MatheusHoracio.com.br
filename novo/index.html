@@ -191,6 +191,7 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .acts2 .btn{background:var(--paper-ink);color:var(--paper)}
 .acts2 .btn:hover{background:#000}
 .acts2 .btn.line{background:transparent;color:var(--paper-ink);box-shadow:inset 0 0 0 1.5px var(--paper-ink)}
+.mailhelp{font-size:13px;line-height:1.5;color:#5A5A62}
 .toast{font-size:13px;color:#00756C;min-height:1.3em}
 .addr{margin-top:22px;color:var(--ink);font-size:15px}
 .addr span{color:var(--fg);user-select:all;-webkit-user-select:all}
@@ -388,11 +389,11 @@ footer a:hover{color:var(--fg)}
       <p class="eyebrow step">Ferramentas que construí para o time</p>
       <ul class="tools">
         <li>Um relatório interativo com os números das redes, que o time consulta todo dia para decidir os próximos passos.</li>
-        <li>Um sistema que mostra os melhores posts do Brasil e dos times globais, para fazer curadoria.</li>
-        <li>Uma busca que encontra qualquer fala de personagem nas legendas de todos os episódios.</li>
-        <li>Uma automação em que o briefing feito no Notion já vira tarefa no Asana para o time.</li>
+        <li>Um sistema de curadoria para planejar posts de alto alcance, a partir dos melhores posts do Brasil e dos times globais.</li>
+        <li>Um sistema que facilita os cortes: o time encontra qualquer fala da série com a temporada, o episódio e a minutagem exatos.</li>
+        <li>Automações que deixam o fluxo de cada conteúdo muito mais fluido: o briefing vira tarefa de aprovação, de design, de vídeo e de copy, e cada pessoa do time recebe a sua.</li>
       </ul>
-      <p class="body">Também criei um ambiente em que as pessoas se sentem ouvidas, trazem ideias e conversam abertamente. <b>Um ambiente saudável</b>, o oposto do que eu vivi quando fazia tudo sozinho.</p>
+      <p class="body">Também crio um ambiente em que as pessoas se sentem ouvidas, trazem ideias e conversam abertamente. <b>Um ambiente saudável</b> para trabalhar.</p>
     </div></div>
     <div class="beat stack" style="padding-top:0">
       <div class="roles rv">
@@ -408,12 +409,12 @@ footer a:hover{color:var(--fg)}
       <p class="cap">O time que eu ajudei a construir, com Jonathan Roumie e Paras Patel no Cristo Redentor. Começamos em duas pessoas. Hoje somos várias.</p>
     </div>
     <div class="beat stack" style="padding-top:0">
-      <p class="body rv">A gente construiu as redes do The Chosen Brasil do zero. Hoje são <b>3,9 mi no Instagram</b>, <b>2,6 mi no Facebook</b>, <b>1,26 mi no YouTube</b>, com mais de 217 milhões de visualizações, e <b>quase 1 mi no TikTok</b>.</p>
-      <p class="body rv">Nada disso foi feito por uma pessoa só. São as estratégias de social dos lançamentos das temporadas 3, 4 e 5 no Brasil: eu conduzo, e um time que eu ajudei a montar faz acontecer.</p>
+      <p class="body rv">A gente construiu as redes do The Chosen Brasil do zero. Em outubro de 2026, somos <b>3,9 mi no Instagram</b>, <b>2,6 mi no Facebook</b>, <b>1,26 mi no YouTube</b>, com mais de 217 milhões de visualizações, e <b>quase 1 mi no TikTok</b>.</p>
+      <p class="body rv">Nada disso foi feito por uma pessoa só. São estratégias de social para diversas campanhas, como o Natal com The Chosen e as temporadas 3, 4 e 5, nos cinemas e depois no streaming, entre muitas outras. Nelas, eu conduzo um time in-house maravilhoso no The Chosen Brasil para entregar os melhores resultados.</p>
       <div class="nums rv" style="margin-top:16px">
         <div><b>+8 mi</b><span>de seguidores somando Instagram, Facebook, YouTube e TikTok</span></div>
         <div><b>+1 bi</b><span>de visualizações nas redes sociais</span></div>
-        <div><b>54%</b><span>dos brasileiros conhecem a série. Nos Estados Unidos, são 38%.</span></div>
+        <div><b>65%</b><span>dos brasileiros conhecem a série. Nos Estados Unidos, são 43%.</span></div>
       </div>
     </div>
     <div class="beat stack" style="padding-top:0">
@@ -459,7 +460,8 @@ footer a:hover{color:var(--fg)}
       </div>
       <div class="free rv" style="margin-top:28px">
         <b>Não cobro cachê.</b>
-        <p>Nem em igrejas, ONGs e projetos sem fins lucrativos, nem em empresas e organizações. Em qualquer contexto, deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã.</p>
+        <p>Nem em igrejas, ONGs e projetos sociais, nem em empresas e organizações. Em qualquer contexto, deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã.</p>
+        <p>Como a agenda é limitada, eu avalio cada convite com carinho. Me conte sobre o evento e o público, e a gente conversa para ver se faz sentido eu estar com vocês.</p>
         <p>Já palestrei no 12º Seminário de Comunicação Social da Arquidiocese do Rio de Janeiro e no Movimento Encontrão, em Curitiba.</p>
       </div>
     </div>
@@ -496,11 +498,12 @@ footer a:hover{color:var(--fg)}
       <div class="letter">
         <div class="hd"><b>Para:</b> eu@matheushoracio.com.br<br><b>Assunto:</b> <span id="lSubj">Convite para palestra</span></div>
         <div class="bd" id="lBody"></div>
-        <p class="note">Sem cachê. Deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã.</p>
+        <p class="note">Sem cachê. Deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã. Cada convite é avaliado de acordo com a agenda.</p>
         <div class="acts2">
-          <a class="btn" id="lMail" href="mailto:eu@matheushoracio.com.br">Abrir no meu e-mail</a>
+          <a class="btn" id="lMail" href="mailto:eu@matheushoracio.com.br">Enviar por e-mail</a>
           <button class="btn line" type="button" id="lCopy">Copiar convite</button>
         </div>
+        <p class="mailhelp">“Enviar por e-mail” abre o seu aplicativo de e-mail com o convite pronto. Se nada abrir, use “Copiar convite” e cole no seu e-mail.</p>
         <p class="toast" id="toast" role="status"></p>
       </div>
     </div>
