@@ -653,7 +653,7 @@ const followers=bases.filter(f=>!f.team).sort(()=>Math.random()-.5);
 const hero={x:W*.7,y:H*.5,ly:.5,a:0,v:40,depth:.9,L:(small?90:128),ph:1,ring:0,rank:0,th:0,al:1,tint:1,gx:0,gy:0};
 
 /* quanto do cardume está verde em cada momento da história */
-const RATIO={hero:.55,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
+const RATIO={hero:.35,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
 const ORDER=Object.keys(RATIO);
 /* nas cenas de leitura o cardume fica discreto; nos momentos-chave (capa, redemoinho, convite) aparece forte */
 const READ={hero:.6,fan1:.4,fan2:.4,portal:.3,hire:.3,reach:.4,team:.28,talks:.26};
@@ -677,15 +677,18 @@ function enter(m){mode=m;idx=ORDER.indexOf(m);if(m!=='gather')giant=null;
   if(m==='vortex'||m==='gather'){const c=center();[...fish,hero].forEach(f=>f.th=Math.atan2(f.y-c.y,f.x-c.x))}
   /* Easter egg da chegada: um peixe verde enorme atravessa a tela atrás do título do convite */
   if(m==='gather'&&!giantDone&&!RM&&!form){giantDone=true;const L=small?W*1.7:Math.min(W*1.05,1500);
-    giants.push({x:-L*.6,y:H*(small?.3:.34),a:0,v:small?150:210,L,grow:1,rank:0,depth:1,ph:0,tint:1,swim:true,al:.55})}}
+    giants.push({x:W+L*.6,y:H*(small?.3:.34),a:Math.PI,v:small?150:210,L,grow:1,rank:0,depth:1,ph:0,tint:1,swim:true,al:.55})}}
 
 function steer(f,A,V,turn,dt){let df=A-f.a;df=Math.atan2(Math.sin(df),Math.cos(df));f.a+=df*Math.min(1,turn*dt);f.v+=(V-f.v)*Math.min(1,1.8*dt)}
 function seek(f,x,y,maxV,turn,dt){const dx=x-f.x,dy=y-f.y;steer(f,Math.atan2(dy,dx),Math.min(maxV,24+Math.hypot(dx,dy)*1.1),turn,dt)}
 const spd=f=>(18+f.depth*54)*(small?.8:1);
 /* nado livre: sempre para a direita, voltando devagar para a própria faixa */
-function swim(f,mult,dt){const pull=clamp((f.ly*H-f.y)/H*2.4,-.45,.45);
-  steer(f,.1*Math.sin(t*.5+f.ph)+pull,spd(f)*mult,1.3,dt);
-  const m=f.L;if(f.x>W+m){f.x=-m;f.y=f.ly*H}else if(f.x<-m*3)f.x=W+m}
+/* Nadar contra a corrente: cinza vai com a corrente (direita); quem vira verde dá meia-volta e nada para a esquerda */
+function swim(f,mult,dt,left){const pull=clamp((f.ly*H-f.y)/H*2.4,-.45,.45), w=.1*Math.sin(t*.5+f.ph);
+  steer(f,left?Math.PI-pull+w:pull+w,spd(f)*mult,1.3,dt);
+  const m=f.L;
+  if(left){if(f.x<-m){f.x=W+m;f.y=f.ly*H}else if(f.x>W+m*3)f.x=-m}
+  else{if(f.x>W+m){f.x=-m;f.y=f.ly*H}else if(f.x<-m*3)f.x=W+m}}
 function orbit(f,c,r,dt,turn,sy=1){f.th+=(f.depth*40+44)/r*dt;seek(f,c.x+r*Math.cos(f.th+.3),c.y+r*sy*Math.sin(f.th+.3),150,turn,dt)}
 
 /* Peixe gigante no convite: o cardume inteiro forma um peixe no formato da série */
@@ -715,7 +718,7 @@ function update(dt){
     let al=f.extra?0:(READ[mode]??.75), free=true;
     if(fd&&f.al>.03&&Math.hypot(fd.x-f.x,fd.y-f.y)<reach){free=false;al=.9;seek(f,fd.x+Math.cos(f.ph*3)*16,fd.y+Math.sin(f.ph*3)*16,320,4.5,dt)}
     else if(mode==='portal'){const j=followers.indexOf(f);
-      if(j>-1&&j<k){free=false;tn=j<k*.55?1:0;const back=46+j*12*K,lat=((j%2)?1:-1)*(12+(j*23)%70)*K;
+      if(j>-1&&j<k){free=false;tn=1;const back=46+j*12*K,lat=((j%2)?1:-1)*(12+(j*23)%70)*K;
         al=.7;seek(f,hero.x-Math.cos(hero.a)*back-Math.sin(hero.a)*lat,hero.y-Math.sin(hero.a)*back+Math.cos(hero.a)*lat,170,2.6,dt)}}
     else if(mode==='vortex'){free=false;al=1;orbit(f,c,vMin+f.ring*(vMax-vMin),dt,2.4)}
     else if(mode==='reach'){al=.4}
@@ -725,7 +728,7 @@ function update(dt){
 }
     else if(mode==='gather'){if(!f.extra&&(i%2===0||f.team)){free=false;al=.7;orbit(f,{x:c.x,y:c.y+14},(small?120:200)+f.ring*(small?90:240),dt,2.6,.3)}
       else al=f.extra?0:.25}
-    if(free)swim(f,mode==='alone'?.45:1,dt);
+    if(free)swim(f,mode==='alone'?.45:1,dt,tn>0);
     if(live){const dx=f.x-ptr.x,dy=f.y-ptr.y,dd=Math.hypot(dx,dy);if(dd<R)steer(f,Math.atan2(dy,dx),f.v+90*(1-dd/R),6*(1-dd/R),dt)}
     f.al+=(al-f.al)*Math.min(1,dt*1.3);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);
     f.x+=Math.cos(f.a)*f.v*dt;f.y+=Math.sin(f.a)*f.v*dt;
@@ -737,16 +740,18 @@ function update(dt){
   if(form){const kk=Math.min(1,dt*2.4);h.x+=(h.fp.x-h.x)*kk;h.y+=(h.fp.y-h.y)*kk;steer(h,h.fp.a,20,4,dt);h.v=0}
   else if(giant){const kk=Math.min(1,dt*2.4), p=gpos(h,gox,0);h.x+=(p[0]-h.x)*kk;h.y+=(p[1]-h.y)*kk;steer(h,gA,40,3,dt);h.v=0}
   else{
+    const hx0=h.x;
     if(fd)seek(h,fd.x,fd.y,300,4,dt);
-    else if(mode==='fan2')seek(h,W*(small?.5:.3)+30*Math.sin(t*.5),H*(small?.78:.55)+20*Math.cos(t*.4),60,1.6,dt);
-    else if(mode==='portal')seek(h,W*.55+W*.3*Math.sin(t*.21),H*.5+H*.22*Math.sin(t*.34),110,1.8,dt);
     else if(mode==='vortex')orbit(h,c,vMin*1.04,dt,2.6);
     else if(mode==='alone')seek(h,W*.5+60*Math.sin(t*.3),H*.56+30*Math.sin(t*.47),26,.9,dt);
-    else if(mode==='team')seek(h,W*.55+W*.24*Math.sin(t*.16),H*.5+H*.16*Math.sin(t*.27),96,1.5,dt);
     else if(mode==='gather')orbit(h,{x:c.x,y:c.y+14},small?110:190,dt,2.6,.3);
-    else swim(h,.9,dt);
+    else swim(h,mode==='portal'?1.15:mode==='team'?1:.9,dt,ht>0);
     if(live){const dx=h.x-ptr.x,dy=h.y-ptr.y,dd=Math.hypot(dx,dy);if(dd<R)steer(h,Math.atan2(dy,dx),h.v+70*(1-dd/R),5*(1-dd/R),dt)}
     h.x+=Math.cos(h.a)*h.v*dt;h.y+=Math.sin(h.a)*h.v*dt;
+    /* quando ele dá a volta na tela, quem nada com ele (seguidores, time, pães e peixes) vai junto */
+    const jump=h.x-hx0;
+    if(Math.abs(jump)>W*.5){if(mode==='portal')followers.slice(0,k).forEach(f=>f.x+=jump);
+      if(mode==='team')team.forEach(f=>f.x+=jump);loaves.forEach(l=>l.x+=jump)}
   }
   h.tint+=(ht-h.tint)*Math.min(1,dt*1.1);
   const lv=!giant&&((mode==='fan2'&&prog>.6)||mode==='portal');
@@ -758,11 +763,12 @@ function update(dt){
       l.x+=Math.cos(l.a)*l.v*dt;l.y+=Math.sin(l.a)*l.v*dt}}
   /* Easter egg: os gigantes nascem enquanto a pessoa clica sem parar e vão embora quando ela para */
   for(let i=giants.length-1;i>=0;i--){const g=giants[i];
-    g.grow=Math.min(1,g.grow+dt*1.5);g.tint+=((g.rank<Math.max(ratio,.35)?1:0)-g.tint)*Math.min(1,dt*2);
+    const gt=g.rank<Math.max(ratio,.35)?1:0;
+    g.grow=Math.min(1,g.grow+dt*1.5);g.tint+=(gt-g.tint)*Math.min(1,dt*2);
     if(t-lastClick>1.4)g.swim=true;
-    if(g.swim){steer(g,0,150+g.L*.12,1.2,dt)}else{steer(g,g.a+.3*Math.sin(t*.8+g.ph)*dt,14,1,dt)}
+    if(g.swim){steer(g,gt?Math.PI:0,150+g.L*.12,1.2,dt)}else{steer(g,g.a+.3*Math.sin(t*.8+g.ph)*dt,14,1,dt)}
     g.x+=Math.cos(g.a)*g.v*dt;g.y+=Math.sin(g.a)*g.v*dt;
-    if(g.x-g.L*.6>W)giants.splice(i,1)}
+    if((g.x-g.L*.6>W&&Math.cos(g.a)>0)||(g.x+g.L*.6<0&&Math.cos(g.a)<0))giants.splice(i,1)}
 }
 
 /* cinza de papel da intro; o verde é #00BFB3 */
