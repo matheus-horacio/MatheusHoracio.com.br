@@ -124,6 +124,26 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .sk div{background:rgba(3,3,4,.88);padding:20px 0;display:grid;gap:6px;align-content:start}
 .sk h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.25rem,2vw,1.5rem);line-height:1.15}
 .sk p{color:var(--ink);font-size:15px;line-height:1.5}
+.backstage{padding-block:clamp(24px,5vh,56px)}
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px max(var(--gut),calc((100% - var(--max))/2 + var(--gut))) 10px;scrollbar-width:thin;scrollbar-color:var(--teal) transparent}
+.strip figure{margin:0;flex:0 0 clamp(220px,64vw,290px);scroll-snap-align:start}
+.strip img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:2px;background:#111}
+.strip figcaption{margin-top:10px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.tools{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.tools li{position:relative;padding:14px 0 14px 26px;border-bottom:1px solid var(--line);color:var(--ink);font-size:15.5px;line-height:1.55;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.tools li::before{content:'';position:absolute;left:2px;top:25px;width:12px;height:2px;background:var(--teal)}
+.vids{display:grid;gap:22px}
+.vid{display:grid;gap:8px;text-decoration:none;align-content:start}
+.vid .th{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border-radius:2px;background:#111;margin-bottom:6px}
+.vid .th img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.vid:hover .th img{transform:scale(1.04)}
+.vid .th i{position:absolute;left:50%;top:50%;translate:-50% -50%;width:56px;height:56px;border-radius:50%;background:rgba(244,242,238,.92);color:#000;display:grid;place-items:center;font-style:normal;font-size:18px;padding-left:3px}
+.vid small{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-ink)}
+.vid b{font-weight:inherit;font-variation-settings:'wght' 620;font-size:17px;line-height:1.35;color:var(--fg)}
+.vlist{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--line)}
+.vlist a{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--fg);font-size:15.5px;line-height:1.4}
+.vlist a span{flex:none;color:var(--mute);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.vlist a:hover{color:var(--teal-ink)}
 .says{display:grid;gap:32px}
 .says blockquote{margin:0;display:grid;gap:12px;border-left:2px solid var(--teal);padding-left:20px}
 .says p{font-size:clamp(1.1rem,1.7vw,1.28rem);line-height:1.55;font-variation-settings:'wght' 460;color:var(--fg)}
@@ -180,6 +200,7 @@ footer a:hover{color:var(--fg)}
   .nums{grid-template-columns:repeat(3,minmax(0,1fr))}
   .says{grid-template-columns:1fr 1fr;gap:48px 64px}
   .says .wide{grid-column:1/-1;max-width:62rem}
+  .vids{grid-template-columns:1fr 1fr}
   .sk{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sk div{padding:22px 22px}
   .says .wide p{font-size:clamp(1.2rem,2vw,1.5rem)}
@@ -236,7 +257,7 @@ footer a:hover{color:var(--fg)}
     <p class="eyebrow">O que eu faço</p>
     <p class="body" style="margin-top:14px">Hoje eu lidero toda a parte criativa do The Chosen Brasil.</p>
     <div class="sk">
-      <div><h3>Construção de audiência</h3><p>Do portal de fã com 100 mil seguidores aos mais de 5 milhões do The Chosen Brasil. Em outubro de 2026, no Instagram, éramos maiores que a conta dos Estados Unidos: 3,9 mi contra 3,7 mi.</p></div>
+      <div><h3>Construção de audiência</h3><p>Do portal de fã com 100 mil seguidores aos mais de 7 milhões do The Chosen Brasil. Em outubro de 2026, no Instagram, éramos maiores que a conta dos Estados Unidos: 3,9 mi contra 3,7 mi.</p></div>
       <div><h3>Estratégia de social para lançamentos</h3><p>As campanhas de lançamento das temporadas 3, 4 e 5 do The Chosen Brasil nas redes sociais.</p></div>
       <div><h3>Conteúdo e comunidade</h3><p>Milhões de visualizações por mês no YouTube, no Instagram e no Facebook, com o calendário editorial que o time usa até hoje.</p></div>
       <div><h3>Automação e IA</h3><p>Mais de 8 horas por mês devolvidas a cada pessoa do time.</p></div>
@@ -295,6 +316,21 @@ footer a:hover{color:var(--fg)}
     </div>
   </div>
 </section>
+<!-- Bastidores: prova social logo depois de ele entrar no mundo da série -->
+<section class="backstage" data-mode="hire" aria-label="Bastidores">
+  <div class="wrap"><p class="eyebrow">Bastidores</p><p class="cap" style="margin-top:6px">Deslize para o lado para ver mais.</p></div>
+  <div class="strip" tabindex="0" aria-label="Fotos dos bastidores">
+    <figure><img src="/assets/img/matheus-e-jonathan.webp" alt="Matheus Horácio e Jonathan Roumie, o Jesus de The Chosen" loading="lazy"><figcaption>Com Jonathan Roumie, o Jesus da série</figcaption></figure>
+    <figure><img src="/assets/img/pre-estreia-em-sp.webp" alt="Matheus Horácio com Dallas e Amanda Jenkins e a equipe The Chosen Brasil" loading="lazy"><figcaption>Com Dallas e Amanda Jenkins e a equipe</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-e-derral-eves.webp" alt="Matheus Horácio e Derral Eves, cofundador e produtor executivo de The Chosen" loading="lazy"><figcaption>Com Derral Eves, cofundador da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-e-jey-no-set.webp" alt="Matheus Horácio e Jey Reis no set de filmagens de The Chosen em Midlothian, Texas" loading="lazy"><figcaption>No set de filmagens, no Texas</figcaption></figure>
+    <figure><img src="/assets/img/matheys-tyler-thompson-e-ryan-swanson.webp" alt="Matheus Horácio com os roteiristas de The Chosen, Ryan Swanson e Tyler Thompson" loading="lazy"><figcaption>Com os roteiristas da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-jey-e-cast.webp" alt="Matheus Horácio, Shahar Isaac, Abe Bueno Jallad, Vanessa Benavente e Jey Reis" loading="lazy"><figcaption>Com parte do elenco da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-jey-e-judas-iscariotes-luke-dimyan.webp" alt="Matheus Horácio, Jey Reis e Luke Dimyan, o Judas Iscariotes de The Chosen" loading="lazy"><figcaption>Com Luke Dimyan, o Judas Iscariotes</figcaption></figure>
+    <figure><img src="/assets/img/time-the-chosen-e-cast.webp" alt="Matheus Horácio com a equipe The Chosen Brasil, Jonathan Roumie, Paras Patel e Lara Silva em São Paulo" loading="lazy"><figcaption>Com o elenco em São Paulo</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-e-paras-patel.webp" alt="Matheus Horácio e Paras Patel, o Mateus de The Chosen, no set de filmagens" loading="lazy"><figcaption>Com Paras Patel, o Mateus da série</figcaption></figure>
+  </div>
+</section>
 <section data-mode="reach">
   <div class="wrap">
     <div class="beat"><div class="blk r stack rv">
@@ -340,9 +376,16 @@ footer a:hover{color:var(--fg)}
     <div class="beat"><div class="blk stack rv">
       <p class="body">Depois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei promovido. Aí veio a parte difícil: entregar o operacional que era meu.</p>
       <h2 class="h2">Aprendi a delegar depois de quebrar por <em>não delegar.</em></h2>
-      <p class="body">Hoje lidero várias pessoas e respondo pela criação do The Chosen Brasil. Os elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei bastante e aprendi.</p>
+      <p class="body">Hoje lidero seis pessoas e respondo pela criação do The Chosen Brasil. Várias outras já passaram pelo meu time, e também dou direcionamento e suporte ao time da América Latina. Os elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei bastante e aprendi.</p>
       <p class="body">Quando o time esbarrava em problemas de fluxo, eu ia atrás de soluções com <b>automação e inteligência artificial</b>. Hoje o time é autônomo, trabalha organizado e não vive sobrecarregado.</p>
       <div class="stat"><b>+8 h</b><span>por mês devolvidas a cada pessoa do time depois que automatizei os fluxos de trabalho.</span></div>
+      <p class="eyebrow step">Ferramentas que construí para o time</p>
+      <ul class="tools">
+        <li>Um relatório interativo com os números das redes, que o time consulta todo dia para decidir os próximos passos.</li>
+        <li>Um sistema que mostra os melhores posts do Brasil e dos times globais, para fazer curadoria.</li>
+        <li>Uma busca que encontra qualquer fala de personagem nas legendas de todos os episódios.</li>
+        <li>Uma automação em que o briefing feito no Notion já vira tarefa no Asana para o time.</li>
+      </ul>
       <p class="body">Também criei um ambiente em que as pessoas se sentem ouvidas, trazem ideias e conversam abertamente. <b>Um ambiente saudável</b>, o oposto do que eu vivi quando fazia tudo sozinho.</p>
     </div></div>
     <div class="beat stack" style="padding-top:0">
@@ -359,13 +402,21 @@ footer a:hover{color:var(--fg)}
       <p class="cap">O time que eu ajudei a construir, com Jonathan Roumie e Paras Patel no Cristo Redentor. Começamos em duas pessoas. Hoje somos várias.</p>
     </div>
     <div class="beat stack" style="padding-top:0">
+      <p class="body rv">Quando eu entrei, em 2022, o The Chosen Brasil tinha pouco mais de 100 mil seguidores. Hoje são <b>3,9 mi no Instagram</b>, <b>2,6 mi no Facebook</b> e <b>1,26 mi no YouTube</b>, que começou do zero e já passou de 217 milhões de visualizações.</p>
       <p class="body rv">Nada disso foi feito por uma pessoa só. São as estratégias de social dos lançamentos das temporadas 3, 4 e 5 no Brasil: eu conduzo, e um time que eu ajudei a montar faz acontecer.</p>
       <div class="nums rv" style="margin-top:16px">
-        <div><b>+5 mi</b><span>de seguidores nas redes do The Chosen Brasil</span></div>
+        <div><b>+7,7 mi</b><span>de seguidores somando Instagram, Facebook e YouTube</span></div>
         <div><b>+1 bi</b><span>de visualizações nas redes sociais</span></div>
         <div><b>54%</b><span>dos brasileiros conhecem a série. Nos Estados Unidos, são 38%.</span></div>
       </div>
     </div>
+    <div class="beat" style="padding-top:0"><div class="blk stack rv">
+      <p class="eyebrow">Um caso recente</p>
+      <h3 class="h2" style="font-size:clamp(1.7rem,3.4vw,2.6rem)">A estreia da temporada 6 nas igrejas.</h3>
+      <p class="body">O episódio 1 da temporada 6 foi exibido em muitas igrejas do Brasil. Eu cuidei do social e da mídia paga no Meta Ads, guiando e direcionando o time.</p>
+      <p class="body">Para isso, criei um relatório interativo com os números das redes. O time olhava todo dia, e era ele que mostrava se a gente mantinha a rota ou pivotava.</p>
+      <div class="stat"><b>+50 mil</b><span>inscrições para a exibição do episódio nas igrejas.</span></div>
+    </div></div>
     <div class="beat stack" style="padding-top:0">
       <p class="eyebrow rv">Quem faz e já fez parte do meu time</p>
       <div class="says">
@@ -387,10 +438,23 @@ footer a:hover{color:var(--fg)}
       <p class="quote">É por isso que, quando me chamam para falar sobre processo e delegação, eu não estou dando opinião. <em>Estou mostrando cicatriz.</em></p>
     </div></div>
     <div class="beat stack" style="padding-top:0">
+      <p class="eyebrow rv">Me ouça falar</p>
+      <div class="vids">
+        <a class="vid rv" href="https://www.youtube.com/watch?v=VHHQHCHeOyc" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/VHHQHCHeOyc/maxresdefault.jpg" width="1280" height="720" alt="Matheus Horácio no JesusCopy falando dos bastidores da sexta temporada de The Chosen" loading="lazy"><i aria-hidden="true">▶</i></span><small>JesusCopy · YouTube</small><b>Copiando Jesus: bastidores e a sexta temporada de The Chosen</b></a>
+        <a class="vid rv" href="https://www.youtube.com/live/VSACOxcCFQ0?t=1747" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/VSACOxcCFQ0/maxresdefault.jpg" width="1280" height="720" alt="Matheus Horácio no palco com Dallas Jenkins, criador de The Chosen" loading="lazy"><i aria-hidden="true">▶</i></span><small>Ao vivo · YouTube</small><b>No palco com Dallas Jenkins, criador e diretor de The Chosen</b></a>
+      </div>
+      <ul class="vlist rv">
+        <li><a href="https://www.youtube.com/watch?v=QbWesSc60TQ" target="_blank" rel="noopener">Bacon 161: a ascensão de The Chosen no Brasil<span>Podcast ↗</span></a></li>
+        <li><a href="https://www.youtube.com/watch?v=CnSxRg4hOmE" target="_blank" rel="noopener">Santo Café: entrevista exclusiva com The Chosen Brasil<span>Podcast ↗</span></a></li>
+        <li><a href="https://youtu.be/zK_41LcrZ5w" target="_blank" rel="noopener">Encontro com o elenco de The Chosen no Brasil<span>YouTube ↗</span></a></li>
+        <li><a href="https://www.instagram.com/reels/DHHmhbQNp9h/" target="_blank" rel="noopener">Entrevista ao Gospel Channel Brasil<span>Instagram ↗</span></a></li>
+      </ul>
+    </div>
+    <div class="beat stack" style="padding-top:0">
       <p class="eyebrow rv">Sobre o que eu falo</p>
       <div class="tlist">
         <article class="rv"><h3>Como criar e estruturar conteúdo para as redes sociais</h3><p>Calendário editorial, formatos e processo, do jeito que eu montei do zero no The Chosen Brasil e que o time usa até hoje.</p></article>
-        <article class="rv"><h3>Como se constrói audiência</h3><p>De zero a 100 mil seguidores sem verba, como fã, aos mais de 5 milhões do The Chosen Brasil. O que dá para copiar disso na sua realidade, com o que você já tem na mão.</p></article>
+        <article class="rv"><h3>Como se constrói audiência</h3><p>De zero a 100 mil seguidores sem verba, como fã, aos mais de 7 milhões do The Chosen Brasil. O que dá para copiar disso na sua realidade, com o que você já tem na mão.</p></article>
         <article class="rv"><h3>Como montar um time de social que entrega mais</h3><p>Delegação, processo e automação: como eu saí do operacional sem quebrar e devolvi mais de 8 horas por mês a cada pessoa do time.</p></article>
         <article class="rv"><h3>Como ter impacto e ser visto nas redes sociais</h3><p>Por que ideias como o filtro de 11 milhões de aberturas, sem mídia paga, funcionam: as pessoas querem uma ferramenta para expressar a própria mensagem.</p></article>
       </div>
@@ -631,7 +695,7 @@ if(RM){
 
 /* Toque na água: alimenta o cardume. Clicar sem parar faz nascer peixes cada vez maiores. */
 const hint=$('#hint'); let fed=0;
-d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter'))return;
+d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter,.strip'))return;
   foods.push({x:e.clientX,y:e.clientY,t});if(foods.length>4)foods.shift();
   clicks=clicks.filter(c=>t-c<2.5);clicks.push(t);lastClick=t;
   if(clicks.length>=5){const n=clicks.length-4;
