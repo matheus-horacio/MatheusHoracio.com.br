@@ -650,14 +650,14 @@ fish.sort((p,q)=>p.depth-q.depth);
 const bases=fish.filter(f=>!f.extra);
 const team=bases.filter(f=>f.depth>.45).slice(0,10); team.forEach(f=>{f.team=true;f.rank=rnd(0,.3)});
 const followers=bases.filter(f=>!f.team).sort(()=>Math.random()-.5);
-const hero={x:W*.7,y:H*.5,ly:.5,a:0,v:40,depth:.9,L:(small?90:128),ph:1,ring:0,rank:0,th:0,al:1,tint:1,gx:0,gy:0};
+const hero={x:W*.7,y:H*.5,ly:.5,a:0,v:40,depth:.9,L:(small?90:128),ph:1,ring:0,rank:0,th:0,al:1,tint:0,gx:0,gy:0};
 
 /* quanto do cardume está verde em cada momento da história */
-const RATIO={hero:.35,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
+const RATIO={hero:.15,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
 const ORDER=Object.keys(RATIO);
 /* nas cenas de leitura o cardume fica discreto; nos momentos-chave (capa, redemoinho, convite) aparece forte */
 const READ={hero:.6,fan1:.4,fan2:.4,portal:.3,hire:.3,reach:.4,team:.28,talks:.26};
-let mode='hero', idx=0, prog=0, ratio=.55, t=0, heroWas=1;
+let mode='hero', idx=0, prog=0, ratio=.15, t=0, heroWas=0, heroWon=0;
 const foods=[], rings=[], giants=[], oc=d.createElement('canvas').getContext('2d');
 let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1, form=null;
 /* os "poucos pães e peixes": 2 peixinhos verdes aparecem ao lado do peixe dele e, no portal, viram cardume */
@@ -709,21 +709,22 @@ function update(dt){
   gs+=((form?.36:giant?(giant.vert?.34:.42):1)-gs)*Math.min(1,dt*2);
   const gA=giant&&giant.vert?-Math.PI/2:0;
   for(let i=0;i<fish.length;i++){const f=fish[i];
-    let tn=f.rank<ratio?1:0;
+    /* regra: um peixe verde nunca volta a ser cinza */
+    if(f.rank<ratio)f.won=1;let tn=f.won?1:0;
     if(form){const kk=Math.min(1,dt*2.4);f.x+=(f.fp.x-f.x)*kk;f.y+=(f.fp.y-f.y)*kk;steer(f,f.fp.a,20,4,dt);
-      f.al+=(form.alpha-f.al)*Math.min(1,dt*2);f.tint+=(1-f.tint)*Math.min(1,dt*2);continue}
+      f.al+=(form.alpha-f.al)*Math.min(1,dt*2);if(form.all)f.won=1;f.tint+=((f.won?1:0)-f.tint)*Math.min(1,dt*2);continue}
     if(giant){const kk=Math.min(1,dt*(gAge<3.2?2.2:4)), p=gpos(f,gox,Math.sin(t*3+f.gx/giant.L*7)*giant.L*.012);
       f.x+=(p[0]-f.x)*kk;f.y+=(p[1]-f.y)*kk;
       steer(f,gA,40,3,dt);f.al+=(.95-f.al)*Math.min(1,dt*2);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);continue}
     let al=f.extra?0:(READ[mode]??.75), free=true;
     if(fd&&f.al>.03&&Math.hypot(fd.x-f.x,fd.y-f.y)<reach){free=false;al=.9;seek(f,fd.x+Math.cos(f.ph*3)*16,fd.y+Math.sin(f.ph*3)*16,320,4.5,dt)}
     else if(mode==='portal'){const j=followers.indexOf(f);
-      if(j>-1&&j<k){free=false;tn=1;const back=46+j*12*K,lat=((j%2)?1:-1)*(12+(j*23)%70)*K;
+      if(j>-1&&j<k){free=false;f.won=1;tn=1;const back=46+j*12*K,lat=((j%2)?1:-1)*(12+(j*23)%70)*K;
         al=.7;seek(f,hero.x-Math.cos(hero.a)*back-Math.sin(hero.a)*lat,hero.y-Math.sin(hero.a)*back+Math.cos(hero.a)*lat,170,2.6,dt)}}
     else if(mode==='vortex'){free=false;al=1;orbit(f,c,vMin+f.ring*(vMax-vMin),dt,2.4)}
     else if(mode==='reach'){al=.4}
-    else if(mode==='alone'){al=.05;tn=0}
-    else if(mode==='team'){if(f.team){free=false;tn=1;al=.75;const j=team.indexOf(f),row=(j>>1)+1,side=(j%2)?1:-1;
+    else if(mode==='alone'){al=.18}
+    else if(mode==='team'){if(f.team){free=false;f.won=1;tn=1;al=.75;const j=team.indexOf(f),row=(j>>1)+1,side=(j%2)?1:-1;
         seek(f,hero.x-Math.cos(hero.a)*row*58*K-Math.sin(hero.a)*side*row*34*K,hero.y-Math.sin(hero.a)*row*58*K+Math.cos(hero.a)*side*row*34*K,190,2.8,dt)}
 }
     else if(mode==='gather'){if(!f.extra&&(i%2===0||f.team)){free=false;al=.7;orbit(f,{x:c.x,y:c.y+14},(small?120:200)+f.ring*(small?90:240),dt,2.6,.3)}
@@ -734,7 +735,8 @@ function update(dt){
     f.x+=Math.cos(f.a)*f.v*dt;f.y+=Math.sin(f.a)*f.v*dt;
   }
   /* o peixe do Matheus: verde no presente (capa), cinza no flashback, verde de novo quando conhece a série */
-  const h=hero, ht=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;
+  if(idx>2||(mode==='fan2'&&prog>.4)||(form&&form.all))heroWon=1;
+  const h=hero, ht=heroWon;
   if(ht&&!heroWas&&mode!=='hero')rings.push({x:h.x,y:h.y,t});
   heroWas=ht;
   if(form){const kk=Math.min(1,dt*2.4);h.x+=(h.fp.x-h.x)*kk;h.y+=(h.fp.y-h.y)*kk;steer(h,h.fp.a,20,4,dt);h.v=0}
@@ -763,7 +765,7 @@ function update(dt){
       l.x+=Math.cos(l.a)*l.v*dt;l.y+=Math.sin(l.a)*l.v*dt}}
   /* Easter egg: os gigantes nascem enquanto a pessoa clica sem parar e vão embora quando ela para */
   for(let i=giants.length-1;i>=0;i--){const g=giants[i];
-    const gt=g.rank<Math.max(ratio,.35)?1:0;
+    if(g.rank<Math.max(ratio,.35))g.won=1;const gt=g.won?1:0;
     g.grow=Math.min(1,g.grow+dt*1.5);g.tint+=(gt-g.tint)*Math.min(1,dt*2);
     if(t-lastClick>1.4)g.swim=true;
     if(g.swim){steer(g,gt?Math.PI:0,150+g.L*.12,1.2,dt)}else{steer(g,g.a+.3*Math.sin(t*.8+g.ph)*dt,14,1,dt)}
@@ -807,8 +809,8 @@ addEventListener('resize',()=>size(false));
 if(RM){
   /* sem movimento: um quadro parado que muda de estado com a rolagem */
   const still=()=>{detect();ratio=RATIO[mode];
-    for(const f of fish){f.al=mode==='alone'?.05:(f.extra?0:.6);f.tint=f.rank<ratio?1:0}
-    hero.tint=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;draw()};
+    for(const f of fish){f.al=mode==='alone'?.18:(f.extra?0:.6);if(f.rank<ratio)f.won=1;f.tint=f.won?1:0}
+    if(idx>2||(mode==='fan2'&&prog>.4))heroWon=1;hero.tint=heroWon;draw()};
   addEventListener('scroll',still,{passive:true});addEventListener('resize',still);still();
 }else requestAnimationFrame(frame);
 
@@ -865,13 +867,13 @@ eggsBtn.addEventListener('click',()=>{const o=eggsPan.hidden;eggsPan.hidden=!o;e
 paintEggs();
 
 /* o cardume desenha o ichthys, o peixe dos primeiros cristãos */
-function ichthys(alpha,idle){const w=small?Math.min(W*.86,520):Math.min(W*.46,600), cx=W*.5, cy=H*(small?.36:.4);
+function ichthys(alpha,idle,all){const w=small?Math.min(W*.86,520):Math.min(W*.46,600), cx=W*.5, cy=H*(small?.36:.4);
   const curve=(sg,tt)=>{const p0=[-.55*w,.2*w*sg],p1=[-.05*w,-.62*w*sg],p2=[.5*w,0],u=1-tt;
     return{x:cx+u*u*p0[0]+2*u*tt*p1[0]+tt*tt*p2[0],y:cy+u*u*p0[1]+2*u*tt*p1[1]+tt*tt*p2[1],
       a:Math.atan2(2*u*(p1[1]-p0[1])+2*tt*(p2[1]-p1[1]),2*u*(p1[0]-p0[0])+2*tt*(p2[0]-p1[0]))}};
   const half=Math.ceil(fish.length/2);
   fish.forEach((f,i)=>{f.fp=curve(i%2?-1:1,Math.min(1,Math.floor(i/2)/Math.max(1,half-1)))});
-  hero.fp=curve(1,.97);form={alpha,idle}}
+  hero.fp=curve(1,.97);form={alpha,idle,all}}
 
 /* 1. ESCOLHIDO: 9 letras escondidas nos textos, na ordem da leitura */
 const WORD='ESCOLHIDO', tray=$('#tray'), got=new Array(WORD.length).fill(false);
@@ -887,7 +889,7 @@ function takeLetter(el){if(el.classList.contains('got'))return;const i=+el.datas
   tray.hidden=false;d.body.classList.add('tray-on');slots[i].textContent=WORD[i];slots[i].classList.add('on');
   const n=got.filter(Boolean).length;
   if(n===1)say('Você achou uma letra escondida. Faltam 8. Continue lendo.');
-  if(n===WORD.length){setTimeout(()=>{tray.hidden=true;d.body.classList.remove('tray-on');if(!RM)ichthys(1,false);
+  if(n===WORD.length){setTimeout(()=>{tray.hidden=true;d.body.classList.remove('tray-on');if(!RM)ichthys(1,false,true);
     window.__secret('escolhido',true);openCard('Você também foi <em>escolhido.</em>','“Venham, sigam-me, e eu os farei pescadores de homens.” Mateus 4:19')},700)}}
 $$('.egg').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();takeLetter(el)});
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();takeLetter(el)}})});
