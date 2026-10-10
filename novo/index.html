@@ -125,7 +125,7 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .sk h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.25rem,2vw,1.5rem);line-height:1.15}
 .sk p{color:var(--ink);font-size:15px;line-height:1.5}
 .backstage{padding-block:clamp(24px,5vh,56px)}
-.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px max(var(--gut),calc((100% - var(--max))/2 + var(--gut))) 10px;scrollbar-width:thin;scrollbar-color:var(--teal) transparent}
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px max(var(--gut),calc((100% - var(--max))/2 + var(--gut))) 10px;scroll-padding-inline:max(var(--gut),calc((100% - var(--max))/2 + var(--gut)));scrollbar-width:thin;scrollbar-color:var(--teal) transparent}
 .strip figure{margin:0;flex:0 0 clamp(220px,64vw,290px);scroll-snap-align:start}
 .strip img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:2px;background:#111}
 .strip figcaption{margin-top:10px;font-size:13.5px;line-height:1.45;color:var(--ink)}
