@@ -1,34 +1,24 @@
 ---
-# Este arquivo é o molde. NÃO edite aqui.
-# Todo o conteúdo vem de _data/conteudo.yml, editável em app.pagescms.org
+# Este arquivo é o molde do site.
+# A história fica aqui no código. SEO, perguntas frequentes e dados para o Google e as IAs
+# vêm de _data/conteudo.yml, editável em app.pagescms.org.
 ---
 {% assign c = site.data.conteudo %}
-{% assign t = c.tema %}
-{% assign _s = c.contato.assunto | url_encode | replace: '+', '%20' %}
-{% capture _b %}{{ c.contato.corpo }}
-
-Evento:
-Data:
-Público:
-Cidade:
-{% endcapture %}
-{% assign _b = _b | url_encode | replace: '+', '%20' %}
-{% assign mailto = "mailto:" | append: c.contato.email | append: "?subject=" | append: _s | append: "&body=" | append: _b %}
 <!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; frame-src https://www.youtube.com;">
-
 <title>{{ c.seo.titulo }}</title>
 <meta name="description" content="{{ c.seo.descricao }}">
 <meta name="author" content="{{ c.nav.marca }}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#030304">
 <link rel="canonical" href="{{ site.url }}/">
 <link rel="icon" href="{{ c.seo.favicon }}">
 <link rel="apple-touch-icon" href="{{ c.seo.favicon }}">
-
+<link rel="alternate" type="text/plain" href="{{ site.url }}/llms.txt" title="Resumo para IAs">
 <meta property="og:type" content="profile">
 <meta property="og:url" content="{{ site.url }}/">
 <meta property="og:title" content="{{ c.seo.titulo }}">
@@ -42,566 +32,792 @@ Cidade:
 <meta name="twitter:title" content="{{ c.seo.titulo }}">
 <meta name="twitter:description" content="{{ c.seo.descricao }}">
 <meta name="twitter:image" content="{{ site.url }}{{ c.seo.imagem }}">
-
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ c.seo.analytics }}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','{{ c.seo.analytics }}');</script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&display=swap">
 <style>
+/* Layout: um mar escuro fixo atrás de tudo. Regra dos peixes: cinza é uma pessoa, verde é alguém alcançado pela mensagem.
+   O cardume nada sempre para a direita (a história andando) e fica mais verde a cada capítulo. */
 :root{
-  --k:{{ t.cor_texto }}; --w:{{ t.cor_fundo }};
-  --ink:{{ t.cor_texto_corpo_claro }}; --ink-d:{{ t.cor_texto_corpo_escuro }};
-  --teal:{{ t.cor_destaque }};
-  --mute:#6E6E76; --mute-d:#8E8E98;
-  --hair:rgba(0,0,0,.14); --hairD:rgba(255,255,255,.17);
-  --gut:clamp(26px,6vw,72px);
-  --max:1360px;
-  --f:'Archivo',system-ui,-apple-system,Segoe UI,sans-serif;
-  --nav:56px;
-  --ease:cubic-bezier(.16,1,.3,1);
+  --bg:#030304; --fg:#F4F2EE; --ink:#C6C6CC; --mute:#85858D; --line:rgba(255,255,255,.13);
+  --teal:#00BFB3; --teal-ink:#5FE3D8; --paper:#F2F0EA; --paper-ink:#18181A;
+  --serif:'Libre Bodoni','Bodoni 72',Didot,Georgia,serif;
+  --sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --gut:clamp(20px,6vw,88px); --max:1200px; --ease:cubic-bezier(.16,1,.3,1);
+  --heroH:86svh;
+  color-scheme:dark;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:var(--nav);-webkit-text-size-adjust:100%}
-body{background:var(--w);color:var(--k);font-family:var(--f);font-size:17px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{display:block;width:100%;height:100%;object-fit:cover}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,191,179,.15)}
+.skip{position:fixed;left:12px;top:-60px;z-index:30;padding:10px 16px;border-radius:4px;background:var(--fg);color:var(--bg);text-decoration:none;font-size:14px}
+.skip:focus{top:12px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
 a{color:inherit}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-::selection{background:var(--k);color:var(--w)}
+::selection{background:var(--teal);color:#000}
+:focus-visible{outline:2px solid var(--teal-ink);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
 
-.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--gut)}
-.lbl{font-size:11px;font-variation-settings:'wght' 620;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
-h1,h2,.statement p{font-variation-settings:'wdth' 80,'wght' 800;letter-spacing:-.034em;line-height:.92}
-p{text-wrap:pretty}
-h1,h2,h3{text-wrap:balance}
+/* camadas: foto da capa < peixes < vinheta < texto < granulação */
+.hero-bg{position:absolute;top:0;left:0;width:100%;height:var(--heroH);z-index:-1;overflow:hidden;margin:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 22%;filter:grayscale(1) contrast(1.08) brightness(.66)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.5) 0%,rgba(3,3,4,.05) 26%,rgba(3,3,4,.5) 56%,var(--bg) 100%)}
+#sea{position:fixed;inset:0;width:100vw;height:100lvh;z-index:0;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(130% 95% at 50% 50%,transparent 50%,rgba(0,0,0,.7) 100%)}
+main,header{position:relative;z-index:1}
+body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E")}
 
-.dark{background:var(--k);color:var(--w)}
-.dark .lbl{color:var(--mute-d)}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gut)}
+.bar{position:fixed;top:0;left:0;right:0;height:2px;z-index:12;background:var(--teal);transform-origin:left center;transform:scaleX(0)}
+.top{position:fixed;inset:0 0 auto 0;z-index:10;padding-top:env(safe-area-inset-top,0px);transition:background .4s}
+.top.solid{background:rgba(3,3,4,.97);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line)}
+.top .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--serif);font-size:19px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:99px;text-decoration:none;
+  background:var(--teal);color:#001513;font-size:15px;font-variation-settings:'wght' 650;transition:background .25s}
+.btn:hover{background:var(--teal-ink)}
+.btn.sm{min-height:44px;padding:0 20px;font-size:14px}
+.link{display:inline-flex;align-items:center;min-height:48px;color:var(--ink);text-decoration:none;font-size:15px;font-variation-settings:'wght' 550}
+.link:hover{color:var(--fg)}
 
-section{padding-block:clamp(72px,9vw,124px)}
-.head{display:flex;align-items:center;gap:14px;margin-bottom:clamp(32px,3.6vw,46px)}
-.head::after{content:'';flex:1;height:1px;background:var(--hair)}
-.dark .head::after{background:var(--hairD)}
+.eyebrow{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-ink);font-variation-settings:'wght' 600}
+.chap{font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,2vw,1.4rem);color:var(--teal-ink);display:flex;align-items:center;gap:14px}
+.chap::after{content:'';flex:0 0 48px;height:1px;background:currentColor;opacity:.6}
+.display{font-family:var(--serif);font-weight:500;font-size:clamp(2.3rem,6.2vw,5.2rem);line-height:1.05;letter-spacing:-.015em}
+.display em,.h2 em{font-style:italic;color:var(--teal)}
+.h2{font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4.2vw,3.3rem);line-height:1.1;letter-spacing:-.01em}
+.quote{font-size:clamp(1.35rem,2.8vw,2.1rem);line-height:1.3;letter-spacing:-.015em;font-variation-settings:'wdth' 92,'wght' 560}
+.quote em{font-style:normal;color:var(--teal)}
+.body{font-size:clamp(1.06rem,1.6vw,1.17rem);line-height:1.7;color:var(--ink);max-width:56ch}
+/* sombra escura atrás das letras: os peixes passam por trás sem atrapalhar a leitura */
+.body,.quote,.h2,.display,.says p,.tlist p,.nums span,.free p,.cap,.eyebrow,.chap,.roles{text-shadow:0 0 14px rgba(3,3,4,.95),0 0 4px rgba(3,3,4,.9)}
+.body b{color:var(--fg);font-weight:inherit;font-variation-settings:'wght' 620}
+.stack{display:grid;gap:20px}
+/* mais espaço acima de um título do que abaixo; o rótulo fica colado ao título que ele apresenta */
+.stack > .h2:not(:first-child),.stack > .quote:not(:first-child){margin-top:14px}
+.stack > .eyebrow + .h2,.stack > .eyebrow + .quote,.stack > .eyebrow + .body{margin-top:-6px}
+.blk{max-width:40rem}
+/* toda a história numa coluna central de leitura */
+.blk,.blk.r{margin-inline:auto}
+.chapter > .wrap > .chap{max-width:40rem;margin-inline:auto}
 
-.nav{position:sticky;top:0;z-index:60;height:var(--nav);display:flex;align-items:center;
-  background:var(--k);border-bottom:1px solid rgba(255,255,255,.12);color:var(--w)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%}
-/* Todo alvo tocável tem no mínimo 44px de altura (mínimo da Apple e da WCAG) */
-.nav .brand{display:inline-flex;align-items:center;min-height:44px;font-variation-settings:'wdth' 80,'wght' 800;
-  font-size:15px;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
-.nav ul{display:none;list-style:none;gap:26px}
-.nav a.lnk{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;font-size:13.5px;
-  font-variation-settings:'wght' 560;color:#C6C6CE;transition:color .2s}
-.nav a.lnk:hover{color:var(--w)}
-.nav .mini{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;
-  background:var(--w);color:var(--k);text-decoration:none;
-  padding:0 18px;font-size:13px;font-variation-settings:'wght' 700;border-radius:2px;white-space:nowrap}
+.hero{min-height:var(--heroH);display:flex;align-items:flex-end;padding-block:96px 44px}
+.hero .display{max-width:13ch}
+.hero .body{max-width:42ch;color:#DADADF}
+.hero .eyebrow{letter-spacing:.1em}
+@media (max-width:420px){.hero .eyebrow{font-size:12px;letter-spacing:.05em}}
+.hero .acts{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}
+.hint{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.06em;color:var(--mute)}
+.hint::before{content:'';width:22px;height:1px;background:var(--teal)}
 
-.hero{position:relative;min-height:calc(100svh - var(--nav));display:flex;align-items:flex-end;
-  background:#000;color:#fff;overflow:hidden;padding-block:clamp(56px,10vh,92px)}
-.hero .bg{position:absolute;inset:0;z-index:0}
-.hero .bg img{filter:grayscale(1) contrast(1.14) brightness({{ c.capa.escurecer }}%)}
-.hero .bg::after{content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.12) 30%,rgba(0,0,0,.8) 76%,#000 100%)}
-.hero .wrap{position:relative;z-index:1;width:100%}
-.hero h1{font-size:clamp(1.75rem,8.6vw,6.6rem);max-width:none}
-.hero h1 span{display:block;overflow:hidden}
-.hero h1 span i{display:block;font-style:normal;text-wrap:balance;transform:translateY(105%);animation:up 1s var(--ease) forwards}
-.hero h1 span:nth-child(2) i{animation-delay:.12s}
-@keyframes up{to{transform:none}}
-.hero .sub{margin-top:clamp(18px,3vh,30px);max-width:50ch;font-size:clamp(1rem,4.1vw,1.2rem);
-  line-height:1.58;color:#D2D2D8;opacity:0;animation:fade .8s ease .65s forwards}
-.hero .sub strong{color:#fff;font-variation-settings:'wght' 680;font-weight:inherit}
-.hero .sub p{margin:0}
-.hero .act{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:clamp(22px,3.6vh,34px);
-  opacity:0;animation:fade .8s ease .9s forwards}
-.hero .act .txt{display:inline-flex;align-items:center;min-height:44px;font-size:14.5px;
-  font-variation-settings:'wght' 620;color:#C4C4CC}
-@keyframes fade{to{opacity:1}}
+.chapter{padding-block:clamp(90px,13vh,140px) 0}
+.chapter > .wrap > .chap{margin-bottom:clamp(36px,6vh,60px)}
+.beat{padding-block:clamp(40px,7vh,84px)}
+.beat:first-of-type{padding-top:0}
 
-.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  max-width:100%;overflow-wrap:anywhere;text-align:center;
-  background:var(--w);color:var(--k);text-decoration:none;
-  padding:16px clamp(16px,4.6vw,26px);font-size:clamp(13.5px,3.6vw,15px);
-  font-variation-settings:'wght' 700;border:2px solid var(--w);
-  border-radius:2px;transition:background .2s,color .2s}
-.cta:hover{background:transparent;color:var(--w)}
-.light .cta{background:var(--k);color:var(--w);border-color:var(--k)}
-.light .cta:hover{background:transparent;color:var(--k)}
+/* o redemoinho ocupa uma tela só: sem prender a rolagem */
+.vortex{position:relative}
+.vortex .stick{min-height:62svh;display:grid;place-items:center;text-align:center;padding:48px var(--gut)}
+.center-chap{justify-content:center;margin-bottom:28px}
+.center-chap::before{content:'';flex:0 0 48px;height:1px;background:currentColor;opacity:.6}
+.vortex .yr{font-family:var(--serif);font-size:17px;letter-spacing:.3em;color:var(--ink);margin-bottom:16px}
 
-.chapter{display:grid;gap:clamp(26px,4vw,56px)}
-/* título de capítulo quebra em 2 ou 3 linhas: 0.92 é apertado demais para texto corrido em display */
-.chapter h2{font-size:clamp(1.95rem,7.4vw,3.4rem);line-height:1;max-width:15ch;margin-bottom:clamp(18px,2.4vw,26px)}
-.chapter p{font-size:clamp(1.02rem,3.9vw,1.14rem);line-height:1.72;color:var(--ink);margin-bottom:1.05em;max-width:62ch}
-.chapter p:last-child{margin-bottom:0}
-.chapter strong{color:var(--k);font-variation-settings:'wght' 660;font-weight:inherit}
-.dark .chapter p{color:var(--ink-d)}
-.dark .chapter strong{color:var(--w)}
-.port{position:relative;aspect-ratio:4/5;background:#111;overflow:hidden;border-radius:2px}
-.port--larga{aspect-ratio:4/3}   /* foto de grupo não cabe em recorte vertical */
-.port img{filter:grayscale(.2) contrast(1.05)}
-.port figcaption{position:absolute;inset:auto 0 0 0;padding:60px 16px 14px;color:#fff;font-size:12.5px;line-height:1.4;
-  background:linear-gradient(0deg,rgba(0,0,0,.88),transparent)}
+.two{display:grid;gap:clamp(28px,5vw,72px);align-items:center}
+.photo{margin:0;position:relative;overflow:hidden;border-radius:2px;background:#111;max-width:100%}
+.photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(.9);transition:filter 1.4s var(--ease)}
+.photo.in img,.rv.in .photo img{filter:grayscale(0) contrast(1.02) brightness(.95)}
+.cap{margin-top:12px;font-size:13px;line-height:1.5;color:var(--mute)}
+.ar43{aspect-ratio:4/3}.ar169{aspect-ratio:16/9}
 
-.statement{padding-block:clamp(52px,9vw,110px)}
-.statement p{font-size:clamp(1.9rem,8.4vw,4.6rem);max-width:19ch;line-height:1.02}
+.roles{display:grid;gap:1px;background:var(--line);border-block:1px solid var(--line)}
+.roles div{background:rgba(3,3,4,.84);padding:18px 0;display:flex;justify-content:space-between;gap:20px;align-items:baseline}
+.roles span{font-size:12.5px;letter-spacing:.14em;color:var(--mute);font-variant-numeric:tabular-nums;white-space:nowrap}
+.roles b{font-family:var(--serif);font-weight:500;font-size:clamp(1.2rem,2.4vw,1.7rem);text-align:right}
+.roles div:last-child b{color:var(--teal)}
+.nums{display:grid;gap:28px}
+.nums div{display:grid;gap:8px}
+.nums b{font-family:var(--serif);font-weight:500;font-size:clamp(2.8rem,6.4vw,5rem);line-height:.9}
+.nums span{color:var(--ink);font-size:15px;max-width:30ch}
+.nums.sm{gap:18px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
+.nums.sm b{font-size:clamp(2rem,4.4vw,3.4rem);color:var(--teal)}
+.nums.sm span{font-size:13.5px}
+.stack .step{margin-top:14px}
+.stat{display:flex;gap:18px;align-items:center;border-top:1px solid var(--line);padding-top:20px;margin-top:6px}
+.stat b{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,5vw,3.8rem);line-height:.9;color:var(--teal);white-space:nowrap;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.stat span{color:var(--ink);font-size:15.5px;line-height:1.5;max-width:36ch;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.skills{padding-block:clamp(36px,6vh,64px) 0}
+.sk{display:grid;gap:1px;background:var(--line);border-block:1px solid var(--line);margin-top:18px}
+.sk div{background:rgba(3,3,4,.88);padding:20px 0;display:grid;gap:6px;align-content:start}
+.sk h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.25rem,2vw,1.5rem);line-height:1.15}
+.sk p{color:var(--ink);font-size:15px;line-height:1.5}
+.backstage{padding-block:clamp(24px,5vh,56px)}
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px max(var(--gut),calc((100% - var(--max))/2 + var(--gut))) 10px;scroll-padding-inline:max(var(--gut),calc((100% - var(--max))/2 + var(--gut)));scrollbar-width:thin;scrollbar-color:var(--teal) transparent}
+.strip figure{margin:0;flex:0 0 clamp(220px,64vw,290px);scroll-snap-align:start}
+.strip img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:2px;background:#111}
+.strip figcaption{margin-top:10px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.bs-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.bs-nav{display:flex;gap:8px}
+.arw{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(3,3,4,.6);color:var(--fg);font-size:18px;display:grid;place-items:center;transition:background .2s,border-color .2s,opacity .2s}
+.arw:hover:not(:disabled){border-color:var(--teal);background:rgba(0,191,179,.14)}
+.arw:disabled{opacity:.3;cursor:default}
+.strip{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent);mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent)}
+.strip.end{-webkit-mask-image:none;mask-image:none}
+.tools{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.tools li{position:relative;padding:14px 0 14px 26px;border-bottom:1px solid var(--line);color:var(--ink);font-size:15.5px;line-height:1.55;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.tools li::before{content:'';position:absolute;left:2px;top:25px;width:12px;height:2px;background:var(--teal)}
+.vids{display:grid;gap:22px}
+.vid{display:grid;gap:8px;text-decoration:none;align-content:start}
+.vid .th{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border-radius:2px;background:#111;margin-bottom:6px}
+.vid .th img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.vid:hover .th img{transform:scale(1.04)}
+.vid .th i{position:absolute;left:50%;top:50%;translate:-50% -50%;width:56px;height:56px;border-radius:50%;background:rgba(244,242,238,.92);color:#000;display:grid;place-items:center;font-style:normal;font-size:18px;padding-left:3px}
+.vid small{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-ink)}
+.vid b{font-weight:inherit;font-variation-settings:'wght' 620;font-size:17px;line-height:1.35;color:var(--fg)}
+.vlist{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--line)}
+.vlist a{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--fg);font-size:15.5px;line-height:1.4}
+.vlist a span{flex:none;color:var(--mute);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.vlist a:hover{color:var(--teal-ink)}
+.faq{padding-block:clamp(70px,10vh,110px) 0}
+.faqs{margin-top:28px;border-top:1px solid var(--line)}
+.faqs details{border-bottom:1px solid var(--line)}
+.faqs summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:18px;align-items:center;min-height:56px;padding:16px 0;font-size:clamp(1.05rem,1.8vw,1.2rem);font-variation-settings:'wght' 600;line-height:1.35;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.faqs summary::-webkit-details-marker{display:none}
+.faqs summary::after{content:'+';flex:none;font-size:26px;line-height:1;color:var(--teal);transition:transform .3s var(--ease)}
+.faqs details[open] summary::after{transform:rotate(45deg)}
+.faqs summary:hover{color:var(--teal-ink)}
+.faqs .a{padding:0 0 22px;color:var(--ink);line-height:1.7;max-width:62ch;text-shadow:0 0 14px rgba(3,3,4,.95)}
+.faqs .a p+p{margin-top:.8em}
+.says{display:grid;gap:32px}
+.says blockquote{margin:0;display:grid;gap:12px;border-left:2px solid var(--teal);padding-left:20px}
+.says p{font-size:clamp(1.1rem,1.7vw,1.28rem);line-height:1.55;font-variation-settings:'wght' 460;color:var(--fg)}
+.says cite{font-style:normal;font-size:13.5px;color:var(--mute)}
+.says cite b{color:var(--fg);font-weight:inherit;font-variation-settings:'wght' 620}
 
-.bleed{position:relative;height:clamp(280px,54vh,620px);background:#111}
-.bleed figcaption{position:absolute;inset:auto 0 0 0;padding:74px var(--gut) 24px;color:#fff;font-size:13.5px;line-height:1.5;
-  background:linear-gradient(0deg,rgba(0,0,0,.9),transparent)}
-.bleed figcaption b{display:block;font-variation-settings:'wdth' 82,'wght' 780;font-size:clamp(1.15rem,4.6vw,1.9rem);
-  letter-spacing:-.02em;line-height:1.06;margin-bottom:6px}
+.tlist{border-top:1px solid var(--line)}
+.tlist article{display:grid;gap:10px;padding:30px 0;border-bottom:1px solid var(--line)}
+.tlist h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,3vw,2.3rem);line-height:1.12}
+.tlist p{color:var(--ink);max-width:58ch}
+.tlist .fmt{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-ink)}
+.free{display:grid;gap:8px;max-width:60ch}
+.free b{font-family:var(--serif);font-weight:500;font-size:clamp(1.4rem,2.6vw,1.9rem)}
+.free p{color:var(--ink);font-size:15.5px}
 
-.proof{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--hairD);
-  border-block:1px solid var(--hairD)}
-.proof div{background:var(--k);padding:26px 16px 30px}
-.proof b{display:block;font-variation-settings:'wdth' 66,'wght' 800;font-size:clamp(2.1rem,9.4vw,4.2rem);
-  line-height:.86;letter-spacing:-.04em}
-.proof span{display:block;margin-top:10px;color:var(--mute-d);font-size:13.5px;line-height:1.5}
-.note{margin-top:clamp(26px,3.4vw,38px);max-width:62ch;color:var(--ink-d);line-height:1.72;
-  font-size:clamp(1.02rem,3.9vw,1.14rem)}
-.note p{margin-bottom:1.05em}
-.note p:last-child{margin-bottom:0}
-.note strong{color:var(--w);font-variation-settings:'wght' 660;font-weight:inherit}
+.invite{padding-block:clamp(110px,16vh,170px) 8vh}
+.invite .head{text-align:center;max-width:52rem;margin-inline:auto}
+.invite .head .body{max-width:46ch}
+.invite .head .body{margin-inline:auto}
+.cta-big{margin-top:36px;display:flex;justify-content:center}
+.cta-big .btn{min-height:60px;padding:0 36px;font-size:17px;box-shadow:0 0 0 10px rgba(0,191,179,.1)}
+.inv{display:grid;gap:clamp(24px,4vw,56px);margin-top:9vh;scroll-margin-top:90px}
+.form{display:grid;gap:16px;align-content:start}
+.field{display:grid;gap:7px;min-width:0}
+.field span{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-variation-settings:'wght' 600}
+.field input,.field select{width:100%;min-height:50px;padding:0 15px;border-radius:3px;border:1px solid var(--line);background:rgba(16,16,18,.92);color:var(--fg);font:inherit;font-size:16px}
+.field input::placeholder{color:#8A8A92}
+.field input:focus,.field select:focus{outline:none;border-color:var(--teal)}
+/* o select do Safari cresce com o texto da opção mais longa: trava a largura e desenha a seta */
+.form,.inv{grid-template-columns:minmax(0,1fr);min-width:0}
+.field{grid-template-columns:minmax(0,1fr);overflow:hidden}
+.field select{width:100%}
+.field select{min-width:0;max-width:100%;height:50px;-webkit-appearance:none;appearance:none;padding-right:42px;text-overflow:ellipsis;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%235FE3D8' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center}
+.field select option{background:#101012;color:#F4F2EE}
+.row2{display:grid;gap:16px}
+.letter{background:var(--paper);color:var(--paper-ink);border-radius:3px;padding:clamp(22px,3vw,34px);display:grid;gap:16px;align-content:start;min-width:0}
+.letter .hd{font-size:13.5px;line-height:1.8;color:#55555C;border-bottom:1px solid rgba(0,0,0,.12);padding-bottom:12px;overflow-wrap:anywhere}
+.letter .hd b{color:var(--paper-ink);font-weight:inherit;font-variation-settings:'wght' 650}
+.letter .bd{font-size:15.5px;line-height:1.75;white-space:pre-line;overflow-wrap:anywhere}
+.letter .bd b{font-weight:inherit;font-variation-settings:'wght' 650}
+.letter i{font-style:normal;color:#6E6E76}
+.letter .note{font-size:13px;color:#4A4A52;line-height:1.55;border-left:2px solid var(--teal);padding-left:12px}
+.acts2{display:flex;flex-wrap:wrap;gap:10px}
+.acts2 .btn{background:var(--paper-ink);color:var(--paper)}
+.acts2 .btn:hover{background:#000}
+.acts2 .btn.line{background:transparent;color:var(--paper-ink);box-shadow:inset 0 0 0 1.5px var(--paper-ink)}
+.mailhelp{font-size:13px;line-height:1.5;color:#5A5A62}
+.toast{font-size:13px;color:#00756C;min-height:1.3em}
+.addr{margin-top:22px;color:var(--ink);font-size:15px}
+.addr span{color:var(--fg);user-select:all;-webkit-user-select:all}
+footer{margin-top:12vh;padding-block:28px calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between;align-items:center;color:var(--mute);font-size:14px}
+footer nav{display:flex;gap:22px}
+footer a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)}
+footer a:hover{color:var(--fg)}
 
-.talks{border-top:1px solid var(--hair)}
-.talk{display:grid;grid-template-columns:38px 1fr;gap:8px 16px;padding:24px 0;border-bottom:1px solid var(--hair)}
-.talk .k{font-size:12.5px;font-variation-settings:'wght' 680;color:var(--mute);padding-top:6px}
-.talk h3{font-size:clamp(1.16rem,5vw,1.66rem);font-variation-settings:'wdth' 86,'wght' 730;
-  line-height:1.12;letter-spacing:-.022em}
-.talk p{grid-column:1/-1;color:var(--ink);font-size:15.5px;line-height:1.62;max-width:62ch}
-.talk .meta{grid-column:1/-1;font-size:13px;letter-spacing:.01em;color:var(--mute)}
+.js .rv{opacity:.3;transform:translateY(20px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
 
-.where{margin-top:26px;font-size:15.5px;line-height:1.6;color:var(--ink);max-width:60ch}
-.where p{margin:0}
-.where strong{color:var(--k);font-variation-settings:'wght' 700;font-weight:inherit}
-
-.fee{display:grid;gap:14px;margin-top:clamp(34px,4.4vw,56px)}
-.fee article{border:1px solid var(--hair);border-radius:3px;padding:clamp(22px,3vw,32px);background:#FAFAF9}
-.fee .tagf{display:inline-block;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
-  font-variation-settings:'wght' 720;padding:6px 11px;border-radius:2px;margin-bottom:14px}
-.fee .destaque{background:var(--teal);color:#000}
-.fee .escuro{background:var(--k);color:var(--w)}
-.fee h3{font-size:clamp(1.12rem,4.6vw,1.4rem);font-variation-settings:'wdth' 90,'wght' 740;
-  line-height:1.16;letter-spacing:-.018em;margin-bottom:10px}
-.fee p{color:var(--ink);font-size:15px;line-height:1.65}
-.fee .kick{display:block;margin-top:12px;font-variation-settings:'wght' 720;color:var(--k)}
-.fee-note{margin-top:18px;font-size:15px;line-height:1.55;color:var(--mute);max-width:70ch}
-
-.vids{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(12px,1.6vw,18px)}
-.vids--destaque{grid-template-columns:1fr;margin-bottom:clamp(14px,1.8vw,20px)}
-.vids--destaque h3{font-size:clamp(1.02rem,4.4vw,1.28rem);font-variation-settings:'wght' 700;margin-top:14px}
-.vid{position:relative;text-decoration:none;display:block}
-.vid .th{display:block;position:relative;aspect-ratio:16/9;overflow:hidden;background:#111;border-radius:2px}
-.vid .th img{transition:transform .55s var(--ease)}
-.vid:hover .th img{transform:scale(1.05)}
-.vid .th::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.18);transition:background .3s}
-.vid:hover .th::after{background:rgba(0,0,0,0)}
-.vid .play{position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:2;width:46px;height:46px;border-radius:50%;
-  background:rgba(255,255,255,.94);display:grid;place-items:center;transition:transform .3s var(--ease)}
-.vid:hover .play{transform:scale(1.1)}
-.vid .play svg{width:18px;height:18px;fill:#000;margin-left:2px}
-.vid h3{margin-top:11px;font-size:14.5px;font-variation-settings:'wght' 660;line-height:1.34;letter-spacing:-.01em}
-.vid .src{display:block;margin-top:5px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute-d)}
-
-.says{display:grid;gap:clamp(24px,3vw,38px)}
-.says blockquote{border-left:2px solid var(--hair);padding-left:20px}
-.says blockquote p{font-size:clamp(1.02rem,4.1vw,1.16rem);line-height:1.6;color:var(--ink)}
-.says cite{display:block;margin-top:13px;font-style:normal;font-size:13.5px;
-  font-variation-settings:'wght' 700;color:var(--k);letter-spacing:-.01em}
-.says cite span{display:block;margin-top:4px;font-size:13px;line-height:1.4;font-variation-settings:'wght' 500;
-  letter-spacing:.01em;color:var(--mute)}
-
-.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.shots button{position:relative;aspect-ratio:4/3;overflow:hidden;background:#eee;display:block;width:100%;border-radius:2px}
-.shots img{transition:transform .6s var(--ease)}
-.shots button:hover img{transform:scale(1.06)}
-/* O corte de linhas fica num elemento INTERNO. Aplicado na figcaption, o padding
-   brigava com o -webkit-box e vazava uma terceira linha cortada ao meio. */
-.shots figcaption{position:absolute;inset:auto 0 0 0;padding:32px 12px 11px;color:#fff;font-size:12.5px;line-height:1.4;
-  text-align:left;background:linear-gradient(0deg,rgba(0,0,0,.86),transparent)}
-.shots figcaption span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.shots button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-
-.lb{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.96);display:none;
-  grid-template-rows:1fr auto;padding:clamp(12px,3vw,40px)}
-.lb.on{display:grid}
-.lb .stage{position:relative;display:grid;place-items:center;min-height:0}
-.lb img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
-.lb .cap{color:#D6D6DC;font-size:13.5px;line-height:1.5;text-align:center;padding:14px 40px 4px;max-width:78ch;margin:0 auto}
-.lb .x{position:absolute;top:clamp(10px,2.4vw,26px);right:clamp(10px,2.4vw,26px);z-index:3;width:44px;height:44px;
-  border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px;line-height:1;display:grid;place-items:center}
-.lb .arw{position:absolute;top:50%;translate:0 -50%;z-index:3;width:46px;height:46px;border-radius:50%;
-  background:rgba(255,255,255,.12);color:#fff;font-size:22px;display:grid;place-items:center}
-.lb .arw.p{left:0}
-.lb .arw.n{right:0}
-.lb .x:hover,.lb .arw:hover{background:rgba(255,255,255,.26)}
-.lb .cnt{position:absolute;bottom:clamp(10px,2vw,20px);left:50%;translate:-50% 0;z-index:3;
-  font-size:11.5px;letter-spacing:.16em;color:#8E8E98}
-
-.faq .head::after{display:none}          /* evita risco duplicado sobre as perguntas */
-.faq details{border-bottom:1px solid var(--hair)}
-.faq details:first-of-type{border-top:1px solid var(--hair)}
-.faq summary{list-style:none;cursor:pointer;padding:20px 48px 20px 0;position:relative;
-  font-size:clamp(1.02rem,4.2vw,1.22rem);font-variation-settings:'wdth' 90,'wght' 700;
-  line-height:1.3;letter-spacing:-.018em}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:'+';position:absolute;right:4px;top:18px;font-size:24px;
-  font-variation-settings:'wght' 400;color:var(--mute);transition:transform .3s var(--ease)}
-.faq details[open] summary::after{transform:rotate(45deg)}
-.faq .a{padding:0 0 22px;color:var(--ink);font-size:15.5px;line-height:1.7;max-width:66ch}
-.faq .a p+p{margin-top:.8em}
-
-.end h2{font-size:clamp(2.1rem,8.2vw,4rem);max-width:14ch;margin-bottom:18px}
-.end p{color:var(--ink-d);max-width:48ch;margin-bottom:28px;font-size:clamp(1rem,4vw,1.1rem);line-height:1.62}
-.badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-  font-variation-settings:'wght' 700;color:var(--teal);margin-bottom:16px}
-.badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--teal)}
-footer{border-top:1px solid var(--hairD);margin-top:clamp(48px,8vw,96px);padding-top:26px;
-  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end}
-footer nav{display:flex;gap:22px;flex-wrap:wrap;font-size:14px}
-footer nav a{display:inline-flex;align-items:center;min-height:44px}
-footer a{text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
-footer a:hover{border-bottom-color:currentColor}
-
-.rv{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s var(--ease)}
-.rv.in{opacity:1;transform:none}
-
-/* Granulação de filme: tira o aspecto de preto e branco chapado de template.
-   Para remover, apague este bloco inteiro. */
-body::after{content:'';position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.03;
-  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
-  background-size:140px 140px}
-@media(prefers-reduced-motion:reduce){body::after{display:none}}
-
-@media(min-width:700px){
-  .proof{grid-template-columns:repeat(4,1fr)}
-  .proof div{padding:26px 18px 30px}
-  .fee{grid-template-columns:1fr 1fr}
-  .vids{grid-template-columns:repeat(2,1fr)}
-  .vids--destaque{grid-template-columns:repeat(2,1fr)}
-  .says{grid-template-columns:1fr 1fr}
-  .shots{grid-template-columns:repeat(3,1fr);gap:8px}
-  .talk{grid-template-columns:44px 1fr;gap:10px 18px}
-  .nav ul{display:flex;gap:16px}
-  .nav a.lnk{font-size:12.5px}
+@media (min-width:760px){
+  .row2{grid-template-columns:1fr 1fr}
+  .nums{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .says{grid-template-columns:1fr 1fr;gap:48px 64px}
+  .says .wide{grid-column:1/-1;max-width:62rem}
+  .vids{grid-template-columns:1fr 1fr}
+  .sk{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sk div{padding:22px 22px}
+  .says .wide p{font-size:clamp(1.2rem,2vw,1.5rem)}
 }
-@media(min-width:1024px){
-  .nav ul{display:flex;gap:26px}
-  .nav a.lnk{font-size:13.5px}
-  .hero h1{font-size:clamp(3.4rem,7.4vw,6.6rem);max-width:none}
-  .chapter{grid-template-columns:repeat(12,1fr);gap:clamp(30px,3.4vw,56px)}
-  .chapter figure{grid-column:1/span 5;position:sticky;top:calc(var(--nav) + 28px)}
-  .chapter .body{grid-column:7/-1}
-  /* grid-row:1 obrigatório: sem ele o texto cai para a linha de baixo,
-     porque o cursor de auto-posicionamento não volta para colunas anteriores */
-  .chapter--flip figure{grid-column:8/-1;grid-row:1}
-  .chapter--flip .body{grid-column:1/span 6;grid-row:1}
-  .chapter--text .body{grid-column:3/span 8}
-  .vids{grid-template-columns:repeat(4,1fr)}
-  .vids--destaque{grid-template-columns:repeat(2,1fr)}
-  .statement p{font-size:clamp(3rem,5.6vw,5.2rem)}
-  .talk{grid-template-columns:52px minmax(0,1.02fr) minmax(0,1fr);align-items:baseline;padding:28px 0}
-  .talk p{grid-column:3;grid-row:1;margin:0}
-  .talk .meta{grid-column:2;grid-row:2;margin-top:-12px}
-  .shots{grid-template-columns:repeat(4,1fr)}
-  .faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:0 clamp(30px,4vw,64px)}
-  .faq > .fh{grid-column:1;position:sticky;top:calc(var(--nav) + 28px);align-self:start}
-  .faq > details{grid-column:2}
-  .end .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(30px,4vw,64px);align-items:end}
-  .end footer{grid-column:1/-1}
+@media (min-width:1000px){
+  :root{--heroH:100svh}
+  .sk{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .hero{padding-bottom:9vh}
+  .two{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+  .tlist article{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:10px 56px;align-items:baseline}
+  .tlist article p{grid-column:2;grid-row:1/span 2}
+  .inv{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+  .letter{position:sticky;top:96px}
 }
-@media(prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .hero h1 span i{transform:none}
-  .hero .sub,.hero .act{opacity:1}
-  .rv{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .js .rv{opacity:1;transform:none}
 }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="wrap">
-    <a class="brand" href="#topo">{{ c.nav.marca }}</a>
-    <ul>
-      {% for l in c.nav.links %}<li><a class="lnk" href="#{{ l.ancora }}">{{ l.texto }}</a></li>{% endfor %}
-    </ul>
-    <a class="mini" href="{{ mailto }}">{{ c.nav.botao }}</a>
-  </div>
-</nav>
+<a class="skip" href="#convite">Pular para o convite</a>
+<figure class="hero-bg"><img src="/assets/img/matheus-e-paras-patel-1.webp" width="2400" height="1350" fetchpriority="high" alt="Matheus Horácio de figurino no set de The Chosen, ao lado de Paras Patel, o Mateus da série"></figure>
+<canvas id="sea" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
+<div class="bar" id="bar" aria-hidden="true"></div>
 
-<header class="hero" id="topo">
-  <div class="bg"><img src="{{ c.capa.imagem }}" alt="{{ c.capa.imagem_alt }}" fetchpriority="high"></div>
+<header class="top" id="top">
   <div class="wrap">
-    <h1><span><i>{{ c.capa.titulo_linha1 }}</i></span><span><i>{{ c.capa.titulo_linha2 }}</i></span></h1>
-    <div class="sub">{{ c.capa.subtitulo | markdownify }}</div>
-    <div class="act">
-      <a class="cta" href="{{ mailto }}">{{ c.capa.botao }}</a>
-      <a class="txt" href="#historia">{{ c.capa.link_secundario }}</a>
-    </div>
+    <a class="brand" href="#inicio">Matheus Horácio</a>
+    <a class="btn sm" href="#convite">Convidar</a>
   </div>
 </header>
 
 <main>
+<!-- CAPA: o presente. O cardume já está verde. -->
+<section class="hero" id="inicio" data-mode="hero">
+  <div class="wrap stack">
+    <p class="eyebrow">Comunicador · Creative Lead · Palestrante</p>
+    <h1 class="display">De fã a <em>líder criativo</em> do The Chosen Brasil.</h1>
+    <p class="body">Em 2021, construí o maior portal de The Chosen no Brasil e cheguei a mais de <b>100 mil seguidores</b> nas redes sociais, sem verba nenhuma. Em 2022, a série me contratou.</p>
+    <div class="acts">
+      <a class="btn" href="#convite">Chamar para falar</a>
+      <a class="link" href="#fa">Minha história ↓</a>
+    </div>
+    <p class="hint" id="hint">Toque na água.</p>
+  </div>
+</section>
 
-{% if c.travessia.visivel %}
-<section class="{% if c.travessia.tema == 'escuro' %}dark{% else %}light{% endif %}" id="historia">
+<section class="skills" data-mode="hero" aria-label="O que eu faço">
   <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.travessia.rotulo }}</span></div>
-    <div class="chapter rv">
-      <figure class="port">
-        <img src="{{ c.travessia.imagem }}" alt="{{ c.travessia.imagem_alt }}" loading="lazy">
-        <figcaption>{{ c.travessia.imagem_legenda }}</figcaption>
+    <p class="eyebrow">O que eu faço</p>
+    <p class="body" style="margin-top:14px">Hoje eu lidero toda a parte criativa do The Chosen Brasil.</p>
+    <div class="sk">
+      <div><h3>Construção de audiência</h3><p>Do portal de fã com 100 mil seguidores aos mais de 8 milhões do The Chosen Brasil. Em outubro de 2026, no Instagram, somos maiores que a conta dos Estados Unidos: 3,9 mi contra 3,7 mi.</p></div>
+      <div><h3>Estratégia de social para lançamentos</h3><p>As campanhas de lançamento das temporadas 3, 4 e 5 do The Chosen Brasil nas redes sociais.</p></div>
+      <div><h3>Conteúdo e comunidade</h3><p>Milhões de visualizações por mês no YouTube, no Instagram e no Facebook, com o calendário editorial que o time usa até hoje.</p></div>
+      <div><h3>Automação e IA</h3><p>Mais de 8 horas por mês devolvidas a cada pessoa do time.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1. O FÃ: flashback, tudo cinza. O peixe do Matheus fica verde ao conhecer a série; depois o público começa a seguir. -->
+<section class="chapter" id="fa">
+  <div class="wrap">
+    <p class="chap rv">O fã</p>
+    <div class="beat" data-mode="fan1"><div class="blk stack rv">
+      <p class="eyebrow">2016</p>
+      <h2 class="h2">Antes de dar certo, deu bem errado.</h2>
+      <p class="body">Eu sempre fui um cara da internet. Passei pelos cursos de Administração, Engenharia Elétrica e Publicidade e Propaganda, mas o que eu queria mesmo era criar alguma coisa.</p>
+      <p class="body">Em 2016, na faculdade de Administração, criei um canal no YouTube para entregar conteúdo de valor através de vídeos legendados e dublados. Eu pegava sermões e pregações, legendava e dublava. Teve dublagem que passou de <b>1 milhão de visualizações</b>, e vários vídeos viralizaram em outras redes.</p>
+      <p class="body">Até que perdi tudo por direitos autorais. Vieram os strikes e o canal caiu. Demorei anos para entender que aquilo me libertou e me possibilitou iniciar outros projetos.</p>
+    </div></div>
+    <div class="beat" data-mode="fan2"><div class="blk r stack rv">
+      <p class="eyebrow">2020</p>
+      <h2 class="h2">Em 2020 eu conheci <em>The Chosen.</em></h2>
+      <p class="body">Vi uma série em que Jesus e os personagens eram humanos, algo que naquela época ainda não era normal. Hoje é. A série naturalizou isso.</p>
+      <p class="body">Eu quis entregar os meus poucos <b>pães e peixes</b>, para que outras pessoas também tivessem contato com a série e fossem impactadas por ela, assim como eu tinha sido. Criei uma página, fiz alguns posts e parei. Achei que já tinha feito a minha parte.</p>
+    </div></div>
+    <div class="beat" data-mode="portal"><div class="blk stack rv">
+      <p class="eyebrow">2021</p>
+      <p class="body">Em 2021 eu voltei. O The Chosen ainda não era famoso, mas eu senti no coração que <b>Deus tinha algo para mim ali</b>.</p>
+      <p class="quote">E decidi uma coisa em voz alta: <em>eu vou ser o maior portal de The Chosen da América Latina.</em></p>
+      <p class="body">Blog, YouTube, Instagram, Facebook e TikTok. Sem verba, sem equipe e sem a permissão de ninguém.</p>
+      <p class="body">Criei um ecossistema que entregava conteúdo de valor para os fãs da série. Teve momentos que o blog ultrapassou a marca de <b>cem mil visualizações mensais</b>. As redes sociais passaram de <b>cem mil seguidores</b>.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 2. O CHAMADO: o redemoinho. Depois o primeiro time e o filtro, com a frase-ponte que explica por que ele foi atrás da trend. -->
+<section class="vortex" id="chamado" data-mode="vortex">
+  <div class="stick"><div>
+    <p class="chap center-chap">O chamado</p>
+    <p class="yr">2022</p>
+    <h2 class="display">Em 2022 a série me <em>chamou.</em></h2>
+  </div></div>
+</section>
+<section data-mode="hire">
+  <div class="wrap">
+    <div class="beat two" style="padding-top:0">
+      <div class="rv">
+        <figure class="photo ar43">
+          <img src="/assets/img/dallas-jenkins-diogenes-e-matheus-horacio.webp" width="1600" height="1200" alt="Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo" loading="lazy">
+        </figure>
+        <p class="cap">Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo.</p>
+      </div>
+      <div class="stack rv">
+        <p class="body">Quando o The Chosen conheceu o trabalho que eu já vinha construindo, me convidou para fazer parte do <b>primeiro time no Brasil</b>. Éramos apenas duas pessoas e começamos sem um manual pronto, sem calendário editorial e sem uma estrutura definida para as redes sociais.</p>
+        <p class="body">Como organização e processos sempre fizeram parte da minha forma de trabalhar, assumi essa frente. <b>Criei o calendário editorial, organizei os fluxos e ajudei a construir a estrutura que orienta o conteúdo de The Chosen no Brasil até hoje.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Bastidores: prova social logo depois de ele entrar no mundo da série -->
+<section class="backstage" data-mode="hire" aria-label="Bastidores">
+  <div class="wrap bs-head"><p class="eyebrow">Bastidores</p><div class="bs-nav"><button type="button" class="arw" data-dir="-1" aria-label="Fotos anteriores">←</button><button type="button" class="arw" data-dir="1" aria-label="Próximas fotos">→</button></div></div>
+  <div class="strip" tabindex="0" aria-label="Fotos dos bastidores">
+    <figure><img src="/assets/img/matheus-e-jonathan.webp" alt="Matheus Horácio e Jonathan Roumie, o Jesus de The Chosen" loading="lazy"><figcaption>Com Jonathan Roumie, o Jesus da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-e-paras-patel.webp" alt="Matheus Horácio e Paras Patel, o Mateus de The Chosen, no set de filmagens" loading="lazy"><figcaption>Com Paras Patel, o Mateus da série</figcaption></figure>
+    <figure><img src="/assets/img/time-the-chosen-e-cast.webp" alt="Matheus Horácio com a equipe The Chosen Brasil, Jonathan Roumie, Paras Patel e Lara Silva em São Paulo" loading="lazy"><figcaption>Com o elenco em São Paulo</figcaption></figure>
+    <figure><img src="/assets/img/pre-estreia-em-sp.webp" alt="Matheus Horácio com Dallas e Amanda Jenkins e a equipe The Chosen Brasil" loading="lazy"><figcaption>Com Dallas e Amanda Jenkins e a equipe</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-e-derral-eves.webp" alt="Matheus Horácio e Derral Eves, cofundador e produtor executivo de The Chosen" loading="lazy"><figcaption>Com Derral Eves, cofundador da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-e-jey-no-set.webp" alt="Matheus Horácio e Jey Reis no set de filmagens de The Chosen em Midlothian, Texas" loading="lazy"><figcaption>No set de filmagens, no Texas</figcaption></figure>
+    <figure><img src="/assets/img/matheys-tyler-thompson-e-ryan-swanson.webp" alt="Matheus Horácio com os roteiristas de The Chosen, Ryan Swanson e Tyler Thompson" loading="lazy"><figcaption>Com os roteiristas da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-horacio-jey-e-cast.webp" alt="Matheus Horácio, Shahar Isaac, Abe Bueno Jallad, Vanessa Benavente e Jey Reis" loading="lazy"><figcaption>Com parte do elenco da série</figcaption></figure>
+    <figure><img src="/assets/img/matheus-jey-e-judas-iscariotes-luke-dimyan.webp" alt="Matheus Horácio, Jey Reis e Luke Dimyan, o Judas Iscariotes de The Chosen" loading="lazy"><figcaption>Com Luke Dimyan, o Judas Iscariotes</figcaption></figure>
+  </div>
+</section>
+<section data-mode="reach">
+  <div class="wrap">
+    <div class="beat"><div class="blk r stack rv">
+      <p class="eyebrow">Uma das ideias</p>
+      <p class="body">No começo, a gente tinha muitos desafios, e o maior era fazer a série ser conhecida. Naquela época, ela ainda não tinha nem uma fração do reconhecimento que tem hoje. Por isso, eu estava sempre atento a oportunidades que pudessem apresentá-la a mais pessoas. Testamos vários caminhos, e um deles foi este.</p>
+      <p class="body">Uma trend do Neymar começou a dominar o meu For You. Um filtro fazia parecer que a pessoa tinha tirado uma selfie com ele, e milhares de pessoas estavam usando. Então pensei:</p>
+      <h2 class="h2">Se funciona com um jogador de futebol, por que não funcionaria com <em>Jesus?</em></h2>
+      <p class="eyebrow step">O resultado</p>
+      <p class="body">A partir dessa ideia, criei um filtro usando imagens do Jesus da série. O resultado foi <b>mais de 11 milhões de aberturas no Instagram e seis mil vídeos publicados no TikTok</b>, tudo isso sem um centavo de mídia paga.</p>
+      <div class="nums sm">
+        <div><b>11 mi</b><span>de aberturas no Instagram</span></div>
+        <div><b>6 mil</b><span>vídeos publicados no TikTok</span></div>
+        <div><b>R$ 0</b><span>em mídia paga</span></div>
+      </div>
+    </div></div>
+    <div class="beat" style="padding-top:0"><div class="blk stack rv">
+      <p class="body">Essa experiência me ensinou algo que levo comigo até hoje:</p>
+      <p class="quote">As pessoas não querem apenas receber a sua mensagem. <em>Elas querem uma ferramenta para expressar a própria mensagem.</em></p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 3. A QUEDA: o cardume some. Fica só o peixe dele. -->
+<section class="chapter" id="queda" data-mode="alone">
+  <div class="wrap">
+    <p class="chap rv">A queda</p>
+    <div class="beat"><div class="blk stack rv">
+      <p class="eyebrow">2024</p>
+      <h2 class="h2">Fazer tudo funcionava. Até parar de funcionar.</h2>
+      <p class="body">Em 2024 eu tive um burnout e fiquei três meses afastado. Foi tudo ou nada, e eu não sabia se voltaria.</p>
+    </div></div>
+    <div class="beat" style="padding-top:0"><div class="blk r stack rv">
+      <p class="quote">O burnout não foi o fracasso. <em>O fracasso foi fazer tudo sozinho.</em> O burnout foi a conta chegando.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 4. A VOLTA: o time chega e nada em formação com ele. -->
+<section class="chapter" id="volta" data-mode="team">
+  <div class="wrap">
+    <p class="chap rv">A volta</p>
+    <div class="beat"><div class="blk stack rv">
+      <p class="body">Depois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei promovido. Aí veio a parte difícil: entregar o operacional que era meu.</p>
+      <h2 class="h2">Aprendi a delegar depois de quebrar por <em>não delegar.</em></h2>
+      <p class="body">Hoje lidero seis pessoas e respondo pela criação do The Chosen Brasil. Várias outras já passaram pelo meu time, e também dou direcionamento e suporte ao time da América Latina. Os elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei bastante e aprendi.</p>
+      <p class="body">Quando o time esbarrava em problemas de fluxo, eu ia atrás de soluções com <b>automação e inteligência artificial</b>. Hoje o time é autônomo, trabalha organizado e não vive sobrecarregado.</p>
+      <div class="stat"><b>+8 h</b><span>por mês devolvidas a cada pessoa do time depois que automatizei os fluxos de trabalho.</span></div>
+      <p class="eyebrow step">Ferramentas que construí para o time</p>
+      <ul class="tools">
+        <li>Um relatório interativo com os números das redes, que o time consulta todo dia para decidir os próximos passos.</li>
+        <li>Um sistema de curadoria para planejar posts de alto alcance, a partir dos melhores posts do Brasil e dos times globais.</li>
+        <li>Um sistema que facilita os cortes: o time encontra qualquer fala da série com a temporada, o episódio e a minutagem exatos.</li>
+        <li>Automações que deixam o fluxo de cada conteúdo muito mais fluido: o briefing vira tarefa de aprovação, de design, de vídeo e de copy, e cada pessoa do time recebe a sua.</li>
+      </ul>
+      <p class="body">Também crio um ambiente em que as pessoas se sentem ouvidas, trazem ideias e conversam abertamente. <b>Um ambiente saudável</b> para trabalhar.</p>
+    </div></div>
+    <div class="beat stack" style="padding-top:0">
+      <div class="roles rv">
+        <div><span>OUT 2022</span><b>Social Media Manager</b></div>
+        <div><span>AGO 2024</span><b>Content Manager</b></div>
+        <div><span>JAN 2026</span><b>Creative Lead</b></div>
+      </div>
+    </div>
+    <div class="beat" style="padding-top:0">
+      <figure class="photo ar169 rv">
+        <img src="/assets/img/no-cristo-redentor.webp" width="2400" height="1350" alt="Matheus Horácio com a equipe do The Chosen Brasil, Jonathan Roumie e Paras Patel no Cristo Redentor" loading="lazy">
       </figure>
-      <div class="body">
-        <h2>{{ c.travessia.titulo }}</h2>
-        {{ c.travessia.texto | markdownify }}
+      <p class="cap">O time que eu ajudei a construir, com Jonathan Roumie e Paras Patel no Cristo Redentor. Começamos em duas pessoas. Hoje somos várias.</p>
+    </div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="body rv">A gente construiu as redes do The Chosen Brasil do zero. Em outubro de 2026, somos <b>3,9 mi no Instagram</b>, <b>2,6 mi no Facebook</b>, <b>1,26 mi no YouTube</b>, com mais de 217 milhões de visualizações, e <b>quase 1 mi no TikTok</b>.</p>
+      <p class="body rv">Nada disso foi feito por uma pessoa só. São estratégias de social para diversas campanhas, como o Natal com The Chosen e as temporadas 3, 4 e 5, nos cinemas e depois no streaming, entre muitas outras. Nelas, eu conduzo um time in-house maravilhoso no The Chosen Brasil para entregar os melhores resultados.</p>
+      <div class="nums rv" style="margin-top:16px">
+        <div><b>+8 mi</b><span>de seguidores somando Instagram, Facebook, YouTube e TikTok</span></div>
+        <div><b>+1 bi</b><span>de visualizações nas redes sociais</span></div>
+        <div><b>65%</b><span>dos brasileiros conhecem a série. Nos Estados Unidos, são 43%.</span></div>
+      </div>
+    </div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="eyebrow rv">Quem faz e já fez parte do meu time</p>
+      <div class="says">
+        <blockquote class="rv wide"><p>“Matheus é um profissional extremamente criativo, dedicado e com uma visão muito à frente. Ele está sempre buscando novas ideias, acompanhando tendências e explorando novas possibilidades, especialmente nas áreas de inovação e inteligência artificial. […] É um líder que realmente se preocupa com as pessoas e procura apoiar cada membro da equipe da melhor maneira possível.”</p><cite><b>Rebecca Campos</b> · Ex-Content Creator e Community Manager no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Uma das mentes mais criativas e estratégicas que já conheci, mas, principalmente, com clareza sobre como transformar isso em resultado.”</p><cite><b>David Cavalcante</b> · Operations Lead no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Sua capacidade de estruturar processos claros, definir fluxos e organizar prioridades cria um ambiente mais eficiente, produtivo e sustentável.”</p><cite><b>Barbara Cordeli</b> · Audiovisual Productions no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Não guarda conhecimento para si. Orienta, capacita e incentiva as pessoas ao seu redor a pensarem de forma autônoma.”</p><cite><b>Fabricia Erler</b> · Ex-Content Creator e Community Manager no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Uma habilidade rara de ver caminhos onde ainda não existe nada, e de transformar ideias em algo real, executável e estratégico.”</p><cite><b>Rafaela Caro</b> · Communication Coordinator no The Chosen Brasil</cite></blockquote>
       </div>
     </div>
   </div>
 </section>
-{% endif %}
 
-{% if c.contratacao.visivel %}
-<section class="{% if c.contratacao.tema == 'escuro' %}dark{% else %}light{% endif %}" id="contratacao">
+<!-- 5. NO SEU EVENTO: a frase da cicatriz faz a ponte para as palestras. -->
+<section class="chapter" id="palestras" data-mode="talks">
   <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.contratacao.rotulo }}</span></div>
-    <div class="chapter chapter--flip rv">
-      <figure class="port port--larga">
-        <img src="{{ c.contratacao.imagem }}" alt="{{ c.contratacao.imagem_alt }}" loading="lazy">
-        <figcaption>{{ c.contratacao.imagem_legenda }}</figcaption>
-      </figure>
-      <div class="body">
-        <h2>{{ c.contratacao.titulo }}</h2>
-        {{ c.contratacao.texto | markdownify }}
+    <p class="chap rv">No seu evento</p>
+    <div class="beat"><div class="blk stack rv">
+      <p class="quote">É por isso que, quando me chamam para falar sobre processo e delegação, eu não estou dando opinião. <em>Estou mostrando cicatriz.</em></p>
+    </div></div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="eyebrow rv">Entrevistas e podcasts</p>
+      <div class="vids">
+        <a class="vid rv" href="https://www.youtube.com/watch?v=VHHQHCHeOyc" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/VHHQHCHeOyc/maxresdefault.jpg" width="1280" height="720" alt="Matheus Horácio no JesusCopy falando dos bastidores da sexta temporada de The Chosen" loading="lazy"><i aria-hidden="true">▶</i></span><small>JesusCopy · YouTube</small><b>Copiando Jesus: bastidores e a sexta temporada de The Chosen</b></a>
+        <a class="vid rv" href="https://www.youtube.com/live/VSACOxcCFQ0?t=1747" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/VSACOxcCFQ0/maxresdefault.jpg" width="1280" height="720" alt="Matheus Horácio no palco com Dallas Jenkins, criador de The Chosen" loading="lazy"><i aria-hidden="true">▶</i></span><small>Ao vivo · YouTube</small><b>No palco com Dallas Jenkins, criador e diretor de The Chosen</b></a>
+      </div>
+      <ul class="vlist rv">
+        <li><a href="https://www.youtube.com/watch?v=QbWesSc60TQ" target="_blank" rel="noopener">Bacon 161: a ascensão de The Chosen no Brasil<span>Podcast ↗</span></a></li>
+        <li><a href="https://www.youtube.com/watch?v=CnSxRg4hOmE" target="_blank" rel="noopener">Santo Café: entrevista exclusiva com The Chosen Brasil<span>Podcast ↗</span></a></li>
+        <li><a href="https://youtu.be/zK_41LcrZ5w" target="_blank" rel="noopener">Encontro com o elenco de The Chosen no Brasil<span>YouTube ↗</span></a></li>
+        <li><a href="https://www.instagram.com/reels/DHHmhbQNp9h/" target="_blank" rel="noopener">Entrevista ao Gospel Channel Brasil<span>Instagram ↗</span></a></li>
+      </ul>
+    </div>
+    <div class="beat stack" style="padding-top:0">
+      <p class="eyebrow rv">Sobre o que eu falo</p>
+      <div class="tlist">
+        <article class="rv"><h3>Como criar e estruturar conteúdo para as redes sociais</h3><p>Calendário editorial, formatos e processo, do jeito que eu montei do zero no The Chosen Brasil e que o time usa até hoje.</p></article>
+        <article class="rv"><h3>Como se constrói audiência</h3><p>De zero a 100 mil seguidores sem verba, como fã, aos mais de 8 milhões do The Chosen Brasil. O que dá para copiar disso na sua realidade, com o que você já tem na mão.</p></article>
+        <article class="rv"><h3>Como montar um time de social que entrega mais</h3><p>Delegação, processo e automação: como eu saí do operacional sem quebrar e devolvi mais de 8 horas por mês a cada pessoa do time.</p></article>
+        <article class="rv"><h3>Como ter impacto e ser visto nas redes sociais</h3><p>Por que ideias como o filtro de 11 milhões de aberturas, sem mídia paga, funcionam: as pessoas querem uma ferramenta para expressar a própria mensagem.</p></article>
+      </div>
+      <div class="free rv" style="margin-top:28px">
+        <b>Não cobro cachê.</b>
+        <p>Nem em igrejas, ONGs e projetos sociais, nem em empresas e organizações. Em qualquer contexto, deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã.</p>
+        <p>Como a agenda é limitada, eu avalio cada convite com carinho. Me conte sobre o evento e o público, e a gente conversa para ver se faz sentido eu estar com vocês.</p>
+        <p>Já palestrei no 12º Seminário de Comunicação Social da Arquidiocese do Rio de Janeiro e no Movimento Encontrão, em Curitiba.</p>
       </div>
     </div>
   </div>
 </section>
-{% endif %}
 
-{% if c.queda.visivel %}
-<section class="{% if c.queda.tema == 'escuro' %}dark{% else %}light{% endif %}" id="queda">
-  <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.queda.rotulo }}</span></div>
-    <div class="chapter chapter--text rv">
-      <div class="body">
-        <h2>{{ c.queda.titulo }}</h2>
-        {{ c.queda.texto | markdownify }}
-      </div>
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{% if c.foto_larga.visivel %}
-<figure class="bleed">
-  <img src="{{ c.foto_larga.imagem }}" alt="{{ c.foto_larga.imagem_alt }}" loading="lazy">
-  <figcaption><b>{{ c.foto_larga.titulo }}</b>{{ c.foto_larga.legenda }}</figcaption>
-</figure>
-{% endif %}
-
-{% if c.numeros.visivel %}
-<section class="{% if c.numeros.tema == 'escuro' %}dark{% else %}light{% endif %}" id="numeros">
-  <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.numeros.rotulo }}</span></div>
-    <div class="proof rv">
-      {% for i in c.numeros.itens %}<div><b>{{ i.numero }}</b><span>{{ i.descricao }}</span></div>{% endfor %}
-    </div>
-    <div class="note">{{ c.numeros.texto | markdownify }}</div>
-  </div>
-</section>
-{% endif %}
-
-{% if c.palestras.visivel %}
-<section class="{% if c.palestras.tema == 'escuro' %}dark{% else %}light{% endif %}" id="palestras">
-  <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.palestras.rotulo }}</span></div>
-    <div class="talks">
-      {% for p in c.palestras.temas %}
-      <article class="talk">
-        <div class="k">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div>
-        <h3>{{ p.titulo }}</h3>
-        <p>{{ p.descricao }}</p>
-        <div class="meta">{{ p.formato }}</div>
-      </article>
-      {% endfor %}
-    </div>
-    <div class="where">{{ c.palestras.onde | markdownify }}</div>
-    <div class="fee rv">
-      {% for f in c.palestras.cache %}
-      <article>
-        <span class="tagf {{ f.selo_estilo }}">{{ f.selo }}</span>
-        <h3>{{ f.titulo }}</h3>
-        <p>{{ f.texto }}<span class="kick">{{ f.frase }}</span></p>
-      </article>
-      {% endfor %}
-    </div>
-    <p class="fee-note">{{ c.palestras.nota }}</p>
-  </div>
-</section>
-{% endif %}
-
-{% if c.videos.visivel %}
-<section class="{% if c.videos.tema == 'escuro' %}dark{% else %}light{% endif %}" id="videos">
-  <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.videos.rotulo }}</span></div>
-    <div class="vids vids--destaque rv">
-      {% for v in c.videos.destaques %}
-      <a class="vid" href="{{ v.link }}" target="_blank" rel="noopener">
-        <span class="th"><img src="{{ v.thumb }}" alt="{{ v.alt }}" loading="lazy"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
-        <h3>{{ v.titulo }}</h3>
-        <span class="src">{{ v.fonte }}</span>
-      </a>
-      {% endfor %}
-    </div>
-    <div class="vids rv">
-      {% for v in c.videos.itens %}
-      <a class="vid" href="{{ v.link }}" target="_blank" rel="noopener">
-        <span class="th"><img src="{{ v.thumb }}" alt="{{ v.alt }}" loading="lazy"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
-        <h3>{{ v.titulo }}</h3>
-        <span class="src">{{ v.fonte }}</span>
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{% if c.depoimentos.visivel %}
-<section class="{% if c.depoimentos.tema == 'escuro' %}dark{% else %}light{% endif %}">
-  <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.depoimentos.rotulo }}</span></div>
-    <div class="says rv">
-      {% for d in c.depoimentos.itens %}
-      <blockquote><p>&ldquo;{{ d.texto }}&rdquo;</p><cite>{{ d.autor }}<span>{{ d.cargo }}</span></cite></blockquote>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{% if c.galeria.visivel %}
-<section class="{% if c.galeria.tema == 'escuro' %}dark{% else %}light{% endif %}" id="galeria" style="padding-top:0">
-  <div class="wrap">
-    <div class="head"><span class="lbl">{{ c.galeria.rotulo }}</span></div>
-    <div class="shots rv" id="shots">
-      {% for g in c.galeria.fotos %}
-      <button type="button"><img src="{{ g.imagem }}" alt="{{ g.alt }}" loading="lazy"><figcaption><span>{{ g.legenda }}</span></figcaption></button>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-{% endif %}
 
 {% if c.perguntas.visivel %}
-<section class="{% if c.perguntas.tema == 'escuro' %}dark{% else %}light{% endif %}" id="perguntas" style="padding-top:0">
-  <div class="wrap">
-    <div class="faq">
-      <div class="fh"><div class="head" style="margin-bottom:0"><span class="lbl">{{ c.perguntas.rotulo }}</span></div></div>
-      {% for q in c.perguntas.itens %}
-      <details{% if forloop.first %} open{% endif %}>
-        <summary>{{ q.pergunta }}</summary>
-        <div class="a"><p>{{ q.resposta }}</p></div>
-      </details>
+<section class="chapter faq" id="perguntas" data-mode="talks" aria-label="Perguntas frequentes">
+  <div class="wrap"><div class="blk">
+    <h2 class="h2 rv">Perguntas frequentes</h2>
+    <div class="faqs">
+      {% for q in c.perguntas.itens %}<details class="rv"><summary>{{ q.pergunta }}</summary><div class="a">{{ q.resposta | markdownify }}</div></details>
       {% endfor %}
     </div>
-  </div>
+  </div></div>
 </section>
 {% endif %}
 
-</main>
-
-<section class="dark end" id="contato">
+<section class="invite" id="convite" data-mode="gather">
   <div class="wrap">
-    <div>
-      <span class="badge">{{ c.fim.selo }}</span>
-      <h2>{{ c.fim.titulo }}</h2>
+    <div class="head stack rv">
+      <p class="eyebrow">Agenda 2026 aberta</p>
+      <h2 class="display" style="font-size:clamp(2.3rem,6vw,5rem)">Quer essa conversa no seu <em>evento?</em></h2>
+      <p class="body">Me escreva contando quem é o público, quando seria, em que cidade e o que você quer que as pessoas levem embora.</p>
     </div>
-    <div>
-      <p>{{ c.fim.texto }}</p>
-      <a class="cta" href="{{ mailto }}">{{ c.contato.email }}</a>
-    </div>
-    <footer>
-      <div>
-        <div style="font-variation-settings:'wdth' 80,'wght' 800;font-size:1.4rem;letter-spacing:-.03em">{{ c.nav.marca }}</div>
-        <div class="lbl" style="margin-top:8px">{{ c.contato.cidade }}, {{ c.contato.estado }} · {{ c.fim.ano }}</div>
+    <div class="cta-big"><a class="btn" id="ctaBig" href="#montar">Escrever o convite</a></div>
+
+    <div class="inv" id="montar">
+      <form class="form" id="form" autocomplete="off">
+        <label class="field"><span>Nome do evento</span><input type="text" id="fEvento" name="Evento" placeholder="Ex.: Congresso de Comunicação 2026…"></label>
+        <label class="field"><span>Tema</span><select id="fTema" name="Tema">
+          <option>Como criar e estruturar conteúdo para as redes sociais</option>
+          <option>Como se constrói audiência</option>
+          <option>Como montar um time de social que entrega mais</option>
+          <option>Como ter impacto e ser visto nas redes sociais</option>
+          <option>Ainda não sei, quero conversar</option>
+        </select></label>
+        <div class="row2">
+          <label class="field"><span>Cidade</span><input type="text" id="fCidade" name="Cidade" placeholder="Ex.: Curitiba, PR…"></label>
+          <label class="field"><span>Data</span><input type="text" id="fData" name="Data" placeholder="Ex.: março de 2027…"></label>
+        </div>
+        <label class="field"><span>Quem é o público</span><input type="text" id="fPublico" name="Publico" placeholder="Ex.: 300 líderes de comunicação…"></label>
+        <label class="field"><span>O que as pessoas devem levar embora</span><input type="text" id="fLevar" name="Levar" placeholder="Ex.: como crescer sem verba…"></label>
+        <label class="field"><span>Seu nome</span><input type="text" id="fNome" name="Nome" placeholder="Ex.: Ana, da organização…"></label>
+      </form>
+      <div class="letter">
+        <div class="hd"><b>Para:</b> eu@matheushoracio.com.br<br><b>Assunto:</b> <span id="lSubj">Convite para palestra</span></div>
+        <div class="bd" id="lBody"></div>
+        <p class="note">Sem cachê. Deslocamento, alimentação e hospedagem ficam por conta da organização anfitriã. Cada convite é avaliado de acordo com a agenda.</p>
+        <div class="acts2">
+          <a class="btn" id="lMail" href="mailto:eu@matheushoracio.com.br">Enviar por e-mail</a>
+          <button class="btn line" type="button" id="lCopy">Copiar convite</button>
+        </div>
+        <p class="mailhelp">“Enviar por e-mail” abre o seu aplicativo de e-mail com o convite pronto. Se nada abrir, use “Copiar convite” e cole no seu e-mail.</p>
+        <p class="toast" id="toast" role="status"></p>
       </div>
-      <nav>
-        {% for l in c.fim.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.texto }}</a>{% endfor %}
-      </nav>
+    </div>
+    <p class="addr">Ou escreva direto para <span>eu@matheushoracio.com.br</span></p>
+    <footer>
+      <span>© 2026 Matheus Horácio · Londrina, PR</span>
+      <nav><a href="https://www.linkedin.com/in/matheushoracio/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/matheus.horacio/" target="_blank" rel="noopener">Instagram</a></nav>
     </footer>
   </div>
 </section>
+</main>
 
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada">
-  <div class="stage">
-    <button class="x" id="lbx" type="button" aria-label="Fechar">&#10005;</button>
-    <button class="arw p" id="lbp" type="button" aria-label="Foto anterior">&lsaquo;</button>
-    <button class="arw n" id="lbn" type="button" aria-label="Próxima foto">&rsaquo;</button>
-    <img id="lbimg" alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
-    <span class="cnt" id="lbcnt"></span>
-  </div>
-  <p class="cap" id="lbcap"></p>
-</div>
+{% raw %}<script>
+(function(){
+const d=document, root=d.documentElement; root.classList.add('js');
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=(s,r=d)=>r.querySelector(s), $$=(s,r=d)=>[...r.querySelectorAll(s)];
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rnd=(a,b)=>a+Math.random()*(b-a), TAU=Math.PI*2, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
+/* ---------- O mar ---------- */
+const cv=$('#sea'), ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+function size(force){const w=innerWidth,h=innerHeight;
+  if(!force&&w===W&&Math.abs(h-H)<160)return;
+  W=w;H=h;DPR=Math.min(2,devicePixelRatio||1);cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0)}
+size(true);
+const small=W<700, K=small?.62:1;
+/* quantidade: o suficiente para parecer um cardume sem cobrir o texto */
+const BASE=small?40:80, EXTRA=small?44:84, N=BASE+EXTRA;
+/* faixas: cada peixe tem a sua altura na tela, para o cardume ficar distribuído por igual */
+const lanes=[...Array(N).keys()].sort(()=>Math.random()-.5);
+const fish=[];
+for(let i=0;i<N;i++){const depth=Math.pow(Math.random(),.85), ly=(lanes[i]+rnd(.15,.85))/N;
+  fish.push({x:rnd(-80,W+80),y:ly*H,ly,a:rnd(-.1,.1),v:30,depth,L:(38+depth*depth*118)*K,ph:rnd(0,TAU),
+    ring:Math.random(),rank:Math.random(),th:0,extra:i>=BASE,al:i>=BASE?0:.75,tint:0,team:false,gx:0,gy:0})}
+fish.sort((p,q)=>p.depth-q.depth);
+const bases=fish.filter(f=>!f.extra);
+const team=bases.filter(f=>f.depth>.45).slice(0,10); team.forEach(f=>{f.team=true;f.rank=rnd(0,.3)});
+const followers=bases.filter(f=>!f.team).sort(()=>Math.random()-.5);
+const hero={x:W*.7,y:H*.5,ly:.5,a:0,v:40,depth:.9,L:(small?90:128),ph:1,ring:0,rank:0,th:0,al:1,tint:1,gx:0,gy:0};
+
+/* quanto do cardume está verde em cada momento da história */
+const RATIO={hero:.55,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
+const ORDER=Object.keys(RATIO);
+/* nas cenas de leitura o cardume fica discreto; nos momentos-chave (capa, redemoinho, convite) aparece forte */
+const READ={hero:.6,fan1:.4,fan2:.4,portal:.3,hire:.3,reach:.4,team:.28,talks:.26};
+let mode='hero', idx=0, prog=0, ratio=.55, t=0, heroWas=1;
+const foods=[], rings=[], giants=[], oc=d.createElement('canvas').getContext('2d');
+let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1;
+/* os "poucos pães e peixes": 2 peixinhos verdes aparecem ao lado do peixe dele e, no portal, viram cardume */
+const loaves=[0,1].map(j=>({x:-99,y:-99,a:0,v:40,depth:.75,L:small?46:62,ph:j*2+.5,al:0,tint:1,j}));
+const ptr={x:-999,y:-999,at:-1e9};
+addEventListener('pointermove',e=>{ptr.x=e.clientX;ptr.y=e.clientY;ptr.at=performance.now()},{passive:true});
+addEventListener('touchmove',e=>{const p=e.touches[0];if(p){ptr.x=p.clientX;ptr.y=p.clientY;ptr.at=performance.now()}},{passive:true});
+
+const secs=$$('[data-mode]');
+function detect(){const mid=H*.5;
+  for(const s of secs){const r=s.getBoundingClientRect();
+    if(r.top<=mid&&r.bottom>mid){if(s.dataset.mode!==mode)enter(s.dataset.mode);prog=clamp((mid-r.top)/r.height,0,1);return}}}
+function center(){if(mode==='gather'){const b=$('#ctaBig').getBoundingClientRect();
+    if(b.bottom>0&&b.top<H)return{x:b.left+b.width/2,y:b.top+b.height/2}}
+  return{x:W/2,y:H/2}}
+function enter(m){mode=m;idx=ORDER.indexOf(m);if(m!=='gather')giant=null;
+  if(m==='vortex'||m==='gather'){const c=center();[...fish,hero].forEach(f=>f.th=Math.atan2(f.y-c.y,f.x-c.x))}
+  /* Easter egg da chegada: um peixe verde enorme atravessa a tela atrás do título do convite */
+  if(m==='gather'&&!giantDone&&!RM){giantDone=true;const L=small?W*1.7:Math.min(W*1.05,1500);
+    giants.push({x:-L*.6,y:H*(small?.3:.34),a:0,v:small?150:210,L,grow:1,rank:0,depth:1,ph:0,tint:1,swim:true,al:.55})}}
+
+function steer(f,A,V,turn,dt){let df=A-f.a;df=Math.atan2(Math.sin(df),Math.cos(df));f.a+=df*Math.min(1,turn*dt);f.v+=(V-f.v)*Math.min(1,1.8*dt)}
+function seek(f,x,y,maxV,turn,dt){const dx=x-f.x,dy=y-f.y;steer(f,Math.atan2(dy,dx),Math.min(maxV,24+Math.hypot(dx,dy)*1.1),turn,dt)}
+const spd=f=>(18+f.depth*54)*(small?.8:1);
+/* nado livre: sempre para a direita, voltando devagar para a própria faixa */
+function swim(f,mult,dt){const pull=clamp((f.ly*H-f.y)/H*2.4,-.45,.45);
+  steer(f,.1*Math.sin(t*.5+f.ph)+pull,spd(f)*mult,1.3,dt);
+  const m=f.L;if(f.x>W+m){f.x=-m;f.y=f.ly*H}else if(f.x<-m*3)f.x=W+m}
+function orbit(f,c,r,dt,turn,sy=1){f.th+=(f.depth*40+44)/r*dt;seek(f,c.x+r*Math.cos(f.th+.3),c.y+r*sy*Math.sin(f.th+.3),150,turn,dt)}
+
+/* Peixe gigante no convite: o cardume inteiro forma um peixe no formato da série */
+/* no celular o gigante nada para cima, aproveitando a altura da tela */
+function startGiant(){const vert=H>W*1.2, L=vert?Math.min(H*.78,900):Math.min(W*.8,1000), P=new Path2D();shape(P,L,0);oc.setTransform(1,0,0,1,L,L);
+  for(const f of fish){let x=0,y=0,n=0;do{x=rnd(-L*.52,L*.48);y=rnd(-L*.08,L*.08);n++}while(n<60&&!oc.isPointInPath(P,x+L,y+L));f.gx=x;f.gy=y}
+  hero.gx=L*.33;hero.gy=-L*.012;giant={t0:t,L,vert,cx:W*.5,cy:vert?H*.5:H*.32};giantDone=true}
+function gpos(f,gox,wave){return giant.vert?[giant.cx+f.gy+wave,giant.cy-f.gx-gox]:[giant.cx+f.gx+gox,giant.cy+f.gy+wave]}
+
+function update(dt){
+  const c=center(), R=small?110:150, live=performance.now()-ptr.at<2500;
+  const vMin=Math.min(W,H)*(small?.36:.3), vMax=Math.hypot(W,H)*.62;
+  const tr=RATIO[mode]+(mode==='reach'?.18*prog:0); ratio+=(tr-ratio)*Math.min(1,dt*1.2);
+  const k=Math.floor(4+prog*40);
+  const fd=foods.length&&t-foods[foods.length-1].t<2.6?foods[foods.length-1]:null, reach=Math.max(W,H)*.6;
+  let gAge=0,gox=0;
+  if(giant){gAge=t-giant.t0;gox=gAge>3.2?(gAge-3.2)*(giant.vert?H:W)*.3:0;if(gAge>6.6){giant=null;enter('gather')}}
+  gs+=((giant?(giant.vert?.34:.42):1)-gs)*Math.min(1,dt*2);
+  const gA=giant&&giant.vert?-Math.PI/2:0;
+  for(let i=0;i<fish.length;i++){const f=fish[i];
+    let tn=f.rank<ratio?1:0;
+    if(giant){const kk=Math.min(1,dt*(gAge<3.2?2.2:4)), p=gpos(f,gox,Math.sin(t*3+f.gx/giant.L*7)*giant.L*.012);
+      f.x+=(p[0]-f.x)*kk;f.y+=(p[1]-f.y)*kk;
+      steer(f,gA,40,3,dt);f.al+=(.95-f.al)*Math.min(1,dt*2);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);continue}
+    let al=f.extra?0:(READ[mode]??.75), free=true;
+    if(fd&&f.al>.03&&Math.hypot(fd.x-f.x,fd.y-f.y)<reach){free=false;al=.9;seek(f,fd.x+Math.cos(f.ph*3)*16,fd.y+Math.sin(f.ph*3)*16,320,4.5,dt)}
+    else if(mode==='portal'){const j=followers.indexOf(f);
+      if(j>-1&&j<k){free=false;tn=j<k*.55?1:0;const back=46+j*12*K,lat=((j%2)?1:-1)*(12+(j*23)%70)*K;
+        al=.7;seek(f,hero.x-Math.cos(hero.a)*back-Math.sin(hero.a)*lat,hero.y-Math.sin(hero.a)*back+Math.cos(hero.a)*lat,170,2.6,dt)}}
+    else if(mode==='vortex'){free=false;al=1;orbit(f,c,vMin+f.ring*(vMax-vMin),dt,2.4)}
+    else if(mode==='reach'){al=.4}
+    else if(mode==='alone'){al=.05;tn=0}
+    else if(mode==='team'){if(f.team){free=false;tn=1;al=.75;const j=team.indexOf(f),row=(j>>1)+1,side=(j%2)?1:-1;
+        seek(f,hero.x-Math.cos(hero.a)*row*58*K-Math.sin(hero.a)*side*row*34*K,hero.y-Math.sin(hero.a)*row*58*K+Math.cos(hero.a)*side*row*34*K,190,2.8,dt)}
+}
+    else if(mode==='gather'){if(!f.extra&&(i%2===0||f.team)){free=false;al=.7;orbit(f,{x:c.x,y:c.y+14},(small?120:200)+f.ring*(small?90:240),dt,2.6,.3)}
+      else al=f.extra?0:.25}
+    if(free)swim(f,mode==='alone'?.45:1,dt);
+    if(live){const dx=f.x-ptr.x,dy=f.y-ptr.y,dd=Math.hypot(dx,dy);if(dd<R)steer(f,Math.atan2(dy,dx),f.v+90*(1-dd/R),6*(1-dd/R),dt)}
+    f.al+=(al-f.al)*Math.min(1,dt*1.3);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);
+    f.x+=Math.cos(f.a)*f.v*dt;f.y+=Math.sin(f.a)*f.v*dt;
+  }
+  /* o peixe do Matheus: verde no presente (capa), cinza no flashback, verde de novo quando conhece a série */
+  const h=hero, ht=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;
+  if(ht&&!heroWas&&mode!=='hero')rings.push({x:h.x,y:h.y,t});
+  heroWas=ht;
+  if(giant){const kk=Math.min(1,dt*2.4), p=gpos(h,gox,0);h.x+=(p[0]-h.x)*kk;h.y+=(p[1]-h.y)*kk;steer(h,gA,40,3,dt);h.v=0}
+  else{
+    if(fd)seek(h,fd.x,fd.y,300,4,dt);
+    else if(mode==='fan2')seek(h,W*(small?.5:.3)+30*Math.sin(t*.5),H*(small?.78:.55)+20*Math.cos(t*.4),60,1.6,dt);
+    else if(mode==='portal')seek(h,W*.55+W*.3*Math.sin(t*.21),H*.5+H*.22*Math.sin(t*.34),110,1.8,dt);
+    else if(mode==='vortex')orbit(h,c,vMin*1.04,dt,2.6);
+    else if(mode==='alone')seek(h,W*.5+60*Math.sin(t*.3),H*.56+30*Math.sin(t*.47),26,.9,dt);
+    else if(mode==='team')seek(h,W*.55+W*.24*Math.sin(t*.16),H*.5+H*.16*Math.sin(t*.27),96,1.5,dt);
+    else if(mode==='gather')orbit(h,{x:c.x,y:c.y+14},small?110:190,dt,2.6,.3);
+    else swim(h,.9,dt);
+    if(live){const dx=h.x-ptr.x,dy=h.y-ptr.y,dd=Math.hypot(dx,dy);if(dd<R)steer(h,Math.atan2(dy,dx),h.v+70*(1-dd/R),5*(1-dd/R),dt)}
+    h.x+=Math.cos(h.a)*h.v*dt;h.y+=Math.sin(h.a)*h.v*dt;
+  }
+  h.tint+=(ht-h.tint)*Math.min(1,dt*1.1);
+  const lv=!giant&&((mode==='fan2'&&prog>.6)||mode==='portal');
+  for(const l of loaves){
+    if(lv&&l.al<.02){l.x=h.x-Math.cos(h.a)*30;l.y=h.y+(l.j?20:-20);l.a=h.a}
+    l.al+=((lv?1:0)-l.al)*Math.min(1,dt*1.5);
+    if(l.al>.01){const side=l.j?1:-1, back=(44+l.j*16)*K, lat=side*22*K;
+      seek(l,h.x-Math.cos(h.a)*back-Math.sin(h.a)*lat,h.y-Math.sin(h.a)*back+Math.cos(h.a)*lat,200,3,dt);
+      l.x+=Math.cos(l.a)*l.v*dt;l.y+=Math.sin(l.a)*l.v*dt}}
+  /* Easter egg: os gigantes nascem enquanto a pessoa clica sem parar e vão embora quando ela para */
+  for(let i=giants.length-1;i>=0;i--){const g=giants[i];
+    g.grow=Math.min(1,g.grow+dt*1.5);g.tint+=((g.rank<Math.max(ratio,.35)?1:0)-g.tint)*Math.min(1,dt*2);
+    if(t-lastClick>1.4)g.swim=true;
+    if(g.swim){steer(g,0,150+g.L*.12,1.2,dt)}else{steer(g,g.a+.3*Math.sin(t*.8+g.ph)*dt,14,1,dt)}
+    g.x+=Math.cos(g.a)*g.v*dt;g.y+=Math.sin(g.a)*g.v*dt;
+    if(g.x-g.L*.6>W)giants.splice(i,1)}
+}
+
+/* cinza de papel da intro; o verde é #00BFB3 */
+function color(f){const g=46+f.depth*60, s=.5+.5*f.depth, tn=f.tint;
+  return 'rgb('+((g*(1-tn))|0)+','+((g+(191*s-g)*tn)|0)+','+((g+(179*s-g)*tn)|0)+')'}
+/* O peixe da série: corpo fino e comprido (altura ~13% do comprimento), afina antes do rabo, rabo em V aberto */
+function shape(p,L,w){const hh=L*.062, tx=-L*.4, c=Math.cos(w), s=Math.sin(w);
+  const R=(px,py)=>[tx+(px-tx)*c-py*s,(px-tx)*s+py*c];
+  p.moveTo(L*.5,0);
+  p.bezierCurveTo(L*.3,-hh*1.45,-L*.12,-hh*1.5,tx,-hh*.14);
+  let q=R(-L*.45,-L*.012),e=R(-L*.535,-L*.088);p.quadraticCurveTo(q[0],q[1],e[0],e[1]);
+  q=R(-L*.49,-L*.03);e=R(-L*.468,0);p.quadraticCurveTo(q[0],q[1],e[0],e[1]);
+  q=R(-L*.49,L*.03);e=R(-L*.535,L*.088);p.quadraticCurveTo(q[0],q[1],e[0],e[1]);
+  q=R(-L*.45,L*.012);p.quadraticCurveTo(q[0],q[1],tx,hh*.14);
+  p.bezierCurveTo(-L*.12,hh*1.5,L*.3,hh*1.45,L*.5,0);p.closePath()}
+function drawFish(f,L){const w=Math.sin(t*(2.6+f.v*.035)+f.ph)*.18;
+  ctx.save();ctx.translate(f.x,f.y);ctx.rotate(f.a+Math.sin(t*1.3+f.ph)*.035);
+  ctx.beginPath();shape(ctx,L,w);ctx.fillStyle=color(f);ctx.fill();ctx.restore()}
+function ripple(x,y,age,max,col){for(let r=0;r<3;r++){const a=age-r*.25;if(a<0||a>max)continue;
+  ctx.strokeStyle=col+(.4*(1-a/max))+')';ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(x,y,6+a*90,0,TAU);ctx.stroke()}}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(const fo of foods){const age=t-fo.t;if(age>2.6)continue;ripple(fo.x,fo.y,age,1.3,'rgba(244,242,238,');
+    ctx.fillStyle='rgba(244,242,238,'+(.75*(1-age/2.6))+')';
+    for(let j=0;j<6;j++){ctx.beginPath();ctx.arc(fo.x+Math.cos(j*1.7)*(5+j*2.4),fo.y+Math.sin(j*2.3)*(4+j*2.2),1.8,0,TAU);ctx.fill()}}
+  for(const r of rings){const age=t-r.t;if(age<1.8)ripple(r.x,r.y,age,1.8,'rgba(0,191,179,')}
+  for(const f of fish){if(f.al<.01)continue;ctx.globalAlpha=f.al;drawFish(f,f.L*gs)}
+  ctx.globalAlpha=1;drawFish(hero,hero.L*gs);
+  for(const l of loaves){if(l.al>.01){ctx.globalAlpha=l.al;drawFish(l,l.L)}}
+  for(const g of giants){ctx.globalAlpha=g.al||.9;drawFish(g,g.L*(1-Math.pow(1-g.grow,3)))}
+  ctx.globalAlpha=1;
+}
+let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;detect();update(dt);draw();requestAnimationFrame(frame)}
+addEventListener('resize',()=>size(false));
+if(RM){
+  /* sem movimento: um quadro parado que muda de estado com a rolagem */
+  const still=()=>{detect();ratio=RATIO[mode];
+    for(const f of fish){f.al=mode==='alone'?.05:(f.extra?0:.6);f.tint=f.rank<ratio?1:0}
+    hero.tint=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;draw()};
+  addEventListener('scroll',still,{passive:true});addEventListener('resize',still);still();
+}else requestAnimationFrame(frame);
+
+/* Toque na água: alimenta o cardume. Clicar sem parar faz nascer peixes cada vez maiores. */
+const hint=$('#hint'); let fed=0;
+d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter,.strip,summary,details'))return;
+  foods.push({x:e.clientX,y:e.clientY,t});if(foods.length>4)foods.shift();
+  clicks=clicks.filter(c=>t-c<2.5);clicks.push(t);lastClick=t;
+  if(clicks.length>=5){const n=clicks.length-4;
+    giants.push({x:e.clientX,y:e.clientY,a:rnd(-.25,.25),v:0,L:Math.min(Math.max(W,H)*1.7,(small?120:170)*Math.pow(1.32,n)),
+      grow:0,rank:Math.random(),depth:1,ph:rnd(0,TAU),tint:0,swim:false});
+    if(giants.length>9)giants.shift()}
+  fed++;if(fed===1)hint.textContent='Eles gostam de você.';else if(clicks.length===5)hint.textContent='Continue. Tem peixe grande vindo.'});
+
+/* topo, barra de progresso e revelação suave do texto */
+const top=$('#top'), bar=$('#bar');
+addEventListener('scroll',()=>{top.classList.toggle('solid',scrollY>60);
+  bar.style.transform='scaleX('+clamp(scrollY/(root.scrollHeight-innerHeight),0,1)+')'},{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2,rootMargin:'0px 0px -8% 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+
+
+/* Bastidores: setas, aviso de que dá para deslizar e um "empurrãozinho" na primeira vez */
+const strip=$('.strip'), prevB=$('.arw[data-dir="-1"]'), nextB=$('.arw[data-dir="1"]');
+function arrows(){const max=strip.scrollWidth-strip.clientWidth-4;prevB.disabled=strip.scrollLeft<=4;nextB.disabled=strip.scrollLeft>=max;strip.classList.toggle('end',strip.scrollLeft>=max)}
+[prevB,nextB].forEach(b=>b.addEventListener('click',()=>{const w=strip.querySelector('figure').offsetWidth+14;
+  strip.scrollBy({left:+b.dataset.dir*w*(innerWidth>900?2:1),behavior:RM?'auto':'smooth'})}));
+strip.addEventListener('scroll',arrows,{passive:true});arrows();
+if(!RM){const pio=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;pio.disconnect();
+  setTimeout(()=>{if(strip.scrollLeft>4)return;strip.scrollBy({left:110,behavior:'smooth'});setTimeout(()=>strip.scrollBy({left:-110,behavior:'smooth'}),750)},500)},{threshold:.6});pio.observe(strip)}
+
+/* ---------- Convite ---------- */
+const val=id=>$('#'+id).value.trim(), show=(id,ph)=>val(id)?esc(val(id)):'<i>['+ph+']</i>', g=(id,ph)=>val(id)||'['+ph+']';
+const lBody=$('#lBody'), lSubj=$('#lSubj'), lMail=$('#lMail'), toast=$('#toast'), tema=$('#fTema');
+let plain='';
+function render(){
+  const subj='Convite para palestra'+(val('fEvento')?' · '+val('fEvento'):'');lSubj.textContent=subj;
+  lBody.innerHTML='Oi Matheus, quero te convidar para falar.\n\n<b>Evento:</b> '+show('fEvento','nome do evento')+'\n<b>Tema:</b> '+esc(tema.value)+
+    '\n<b>Data:</b> '+show('fData','data')+'\n<b>Cidade:</b> '+show('fCidade','cidade')+'\n<b>Público:</b> '+show('fPublico','quem vai assistir')+
+    '\n<b>O que as pessoas devem levar embora:</b> '+show('fLevar','o objetivo')+'\n\n'+show('fNome','seu nome');
+  plain='Oi Matheus, quero te convidar para falar.\n\nEvento: '+g('fEvento','nome do evento')+'\nTema: '+tema.value+'\nData: '+g('fData','data')+
+    '\nCidade: '+g('fCidade','cidade')+'\nPúblico: '+g('fPublico','quem vai assistir')+'\nO que as pessoas devem levar embora: '+g('fLevar','o objetivo')+'\n\n'+g('fNome','seu nome');
+  lMail.href='mailto:eu@matheushoracio.com.br?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(plain);
+}
+$('#form').addEventListener('input',render);
+$('#form').addEventListener('submit',e=>e.preventDefault());
+$('#lCopy').addEventListener('click',()=>{
+  const full='Para: eu@matheushoracio.com.br\nAssunto: '+lSubj.textContent+'\n\n'+plain;
+  const fb=()=>{const r=d.createRange();r.selectNodeContents(lBody);const s=getSelection();s.removeAllRanges();s.addRange(r);toast.textContent='Selecionei o texto. Use o copiar do seu aparelho.'};
+  try{navigator.clipboard.writeText(full).then(()=>{toast.textContent='Convite copiado. Agora é só colar no seu e-mail.'},fb)}catch(e){fb()}
+});
+render();
+})();
+</script>{% endraw %}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"ProfilePage","@id":"{{ site.url }}/#page","url":"{{ site.url }}/","name":{{ c.seo.titulo | jsonify }},"inLanguage":"pt-BR","mainEntity":{"@id":"{{ site.url }}/#matheus"}},
-{"@type":"Person","@id":"{{ site.url }}/#matheus","name":{{ c.nav.marca | jsonify }},"url":"{{ site.url }}/","image":"{{ site.url }}{{ c.travessia.imagem }}","jobTitle":"Creative Lead","email":{{ c.contato.email | jsonify }},"description":{{ c.seo.descricao | jsonify }},"worksFor":{"@type":"Organization","name":"The Chosen Brasil","url":"https://osescolhidos.tv/"},"address":{"@type":"PostalAddress","addressLocality":{{ c.contato.cidade | jsonify }},"addressRegion":{{ c.contato.estado | jsonify }},"addressCountry":"BR"},"knowsAbout":["Construção de audiência","Estratégia de conteúdo","Comunidade digital","Redes sociais","Marketing digital","SEO","Automação de processos criativos","Comunicação cristã"],"knowsLanguage":["pt-BR","en"],"sameAs":[{{ c.contato.linkedin | jsonify }},{{ c.contato.instagram | jsonify }},{{ c.seo.wikidata | jsonify }}]},
-{"@type":"FAQPage","@id":"{{ site.url }}/#faq","mainEntity":[{% for q in c.perguntas.itens %}{"@type":"Question","name":{{ q.pergunta | jsonify }},"acceptedAnswer":{"@type":"Answer","text":{{ q.resposta | jsonify }}}}{% unless forloop.last %},{% endunless %}{% endfor %}]}
+{"@type":"WebSite","@id":"{{ site.url }}/#site","url":"{{ site.url }}/","name":{{ c.nav.marca | jsonify }},"inLanguage":"pt-BR"},
+{"@type":"ProfilePage","@id":"{{ site.url }}/#page","url":"{{ site.url }}/","name":{{ c.seo.titulo | jsonify }},"inLanguage":"pt-BR","isPartOf":{"@id":"{{ site.url }}/#site"},"dateModified":"{{ site.time | date: '%Y-%m-%d' }}","mainEntity":{"@id":"{{ site.url }}/#matheus"}},
+{"@type":"Person","@id":"{{ site.url }}/#matheus","name":{{ c.nav.marca | jsonify }},"url":"{{ site.url }}/","image":"{{ site.url }}{{ c.travessia.imagem }}","jobTitle":"Creative Lead","email":{{ c.contato.email | jsonify }},"description":{{ c.seo.descricao | jsonify }},"worksFor":{"@type":"Organization","name":"The Chosen Brasil","url":"https://osescolhidos.tv/"},"address":{"@type":"PostalAddress","addressLocality":{{ c.contato.cidade | jsonify }},"addressRegion":{{ c.contato.estado | jsonify }},"addressCountry":"BR"},"knowsAbout":["Construção de audiência","Estratégia de social para lançamentos","Estratégia de conteúdo","Comunidade digital","Redes sociais","Mídia paga","Automação de processos criativos","Inteligência artificial aplicada a conteúdo","Liderança de times criativos","Comunicação cristã"],"knowsLanguage":["pt-BR","en"],"sameAs":[{{ c.contato.linkedin | jsonify }},{{ c.contato.instagram | jsonify }},{{ c.seo.wikidata | jsonify }}]},
+{"@type":"FAQPage","@id":"{{ site.url }}/#faq","mainEntity":[{% for q in c.perguntas.itens %}{"@type":"Question","name":{{ q.pergunta | jsonify }},"acceptedAnswer":{"@type":"Answer","text":{{ q.resposta | strip_newlines | jsonify }}}}{% unless forloop.last %},{% endunless %}{% endfor %}]}
 ]}
-</script>
-
-<script>
-(function(){
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){
-    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.06});
-  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
-
-  /* FAQ em acordeão: abrir uma fecha as outras */
-  var faqs=[].slice.call(document.querySelectorAll('.faq details'));
-  faqs.forEach(function(d){
-    d.addEventListener('toggle',function(){
-      if(!d.open)return;
-      faqs.forEach(function(o){ if(o!==d && o.open) o.open=false });
-    });
-  });
-
-  var shots=document.getElementById('shots');
-  if(!shots)return;
-  var btns=[].slice.call(shots.querySelectorAll('button'));
-  var lb=document.getElementById('lb'),img=document.getElementById('lbimg'),
-      cap=document.getElementById('lbcap'),cnt=document.getElementById('lbcnt'),cur=0,last=null;
-
-  function show(i){
-    cur=(i+btns.length)%btns.length;
-    var b=btns[cur],im=b.querySelector('img');
-    img.src=im.getAttribute('src'); img.alt=im.alt;
-    /* na foto ampliada vale a descrição completa, não a legenda curta da miniatura */
-    cap.textContent=im.alt||b.querySelector('figcaption').textContent;
-    cnt.textContent=(cur+1)+' / '+btns.length;
-  }
-  function open(i){last=document.activeElement;show(i);lb.classList.add('on');
-    document.body.style.overflow='hidden';document.getElementById('lbx').focus()}
-  function close(){lb.classList.remove('on');document.body.style.overflow='';if(last)last.focus()}
-
-  btns.forEach(function(b,i){b.addEventListener('click',function(){open(i)})});
-  document.getElementById('lbx').addEventListener('click',close);
-  document.getElementById('lbp').addEventListener('click',function(){show(cur-1)});
-  document.getElementById('lbn').addEventListener('click',function(){show(cur+1)});
-  lb.addEventListener('click',function(e){if(e.target===lb||e.target.classList.contains('stage'))close()});
-  document.addEventListener('keydown',function(e){
-    if(!lb.classList.contains('on'))return;
-    if(e.key==='Escape')close();
-    else if(e.key==='ArrowLeft')show(cur-1);
-    else if(e.key==='ArrowRight')show(cur+1);
-  });
-})();
 </script>
 </body>
 </html>
