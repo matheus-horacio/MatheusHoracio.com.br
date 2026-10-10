@@ -168,6 +168,31 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .arw:disabled{opacity:.3;cursor:default}
 .strip{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent);mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent)}
 .strip.end{-webkit-mask-image:none;mask-image:none}
+.egg{position:relative;color:var(--teal-ink);text-shadow:0 0 12px rgba(0,191,179,.75);cursor:pointer;border-radius:2px}
+.egg::after{content:'';position:absolute;inset:-14px -12px}
+.egg.got{color:inherit;text-shadow:inherit;cursor:default}
+.egg:focus-visible{outline:2px solid var(--teal-ink);outline-offset:2px}
+.tray{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));translate:-50% 0;z-index:12;display:flex;gap:6px;padding:8px 10px;border-radius:99px;background:rgba(3,3,4,.92);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.tray span{width:24px;height:32px;display:grid;place-items:center;border-bottom:2px solid var(--line);font-family:var(--serif);font-size:19px;font-weight:600;color:var(--teal-ink);text-transform:uppercase}
+.tray span.on{border-color:var(--teal);animation:pop .45s var(--ease)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.25)}100%{transform:none;opacity:1}}
+.eggs{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:12;min-height:44px;padding:0 16px;border-radius:99px;background:rgba(3,3,4,.92);border:1px solid var(--teal);color:var(--fg);font-size:13.5px;font-variation-settings:'wght' 560}
+.eggs b{color:var(--teal-ink);font-weight:inherit;font-variation-settings:'wght' 760}
+.eggs-pan{position:fixed;left:14px;bottom:calc(68px + env(safe-area-inset-bottom,0px));z-index:12;width:min(320px,calc(100vw - 28px));padding:16px 18px;border-radius:6px;background:rgba(10,10,12,.97);border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.6);display:grid;gap:10px}
+.eggs-pan p{margin:0;font-size:14px;line-height:1.45;color:var(--ink);display:flex;gap:10px}
+.eggs-pan p b{font-weight:inherit;color:var(--fg);font-variation-settings:'wght' 640}
+.eggs-pan p::before{content:'·';color:var(--mute);width:14px;flex:none;text-align:center}
+.eggs-pan p.ok::before{content:'✓';color:var(--teal-ink)}
+.egg-toast{position:fixed;left:50%;top:calc(80px + env(safe-area-inset-top,0px));translate:-50% -10px;z-index:13;max-width:min(440px,calc(100vw - 32px));padding:12px 18px;border-radius:12px;background:rgba(3,3,4,.95);border:1px solid var(--teal);color:var(--fg);font-size:14.5px;line-height:1.45;text-align:center;opacity:0;pointer-events:none;transition:opacity .35s,translate .35s var(--ease)}
+.egg-toast.on{opacity:1;translate:-50% 0}
+.egg-dim{position:fixed;inset:0;z-index:5;background:rgba(3,3,4,.93);opacity:0;transition:opacity .8s}
+.egg-dim.on{opacity:1}
+body.eggmode #sea{z-index:6}
+body.eggmode .eggs,body.eggmode .eggs-pan,body.eggmode .tray{display:none}
+.egg-card{position:fixed;left:50%;bottom:calc(9vh + env(safe-area-inset-bottom,0px));translate:-50% 0;z-index:14;width:min(560px,calc(100vw - 32px));text-align:center;display:grid;gap:14px;justify-items:center}
+.egg-big{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,4.4vw,2.6rem);line-height:1.15;color:var(--fg)}
+.egg-big em{font-style:italic;color:var(--teal)}
+.egg-txt{color:var(--ink);font-size:15.5px;line-height:1.6;max-width:44ch}
 .tools{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .tools li{position:relative;padding:14px 0 14px 26px;border-bottom:1px solid var(--line);color:var(--ink);font-size:15.5px;line-height:1.55;text-shadow:0 0 14px rgba(3,3,4,.95)}
 .tools li::before{content:'';position:absolute;left:2px;top:25px;width:12px;height:2px;background:var(--teal)}
@@ -285,7 +310,18 @@ footer a:hover{color:var(--fg)}
 
 <a class="skip" href="#convite">Pular para o convite</a>
 <figure class="hero-bg"><img src="/assets/img/matheus-e-paras-patel-1.webp" width="2400" height="1350" fetchpriority="high" alt="Matheus Horácio de figurino no set de The Chosen, ao lado de Paras Patel, o Mateus da série"></figure>
+<!--
+  Oi, curioso. Você abriu o código do site, e eu gosto de gente assim.
+  Se quiser conversar sobre conteúdo, social, comunidade ou automação: eu@matheushoracio.com.br
+  Matheus
+-->
 <canvas id="sea" aria-hidden="true"></canvas>
+<div class="tray" id="tray" hidden aria-label="Palavra escondida"></div>
+<button class="eggs" id="eggs" type="button" hidden aria-expanded="false" aria-controls="eggsPan">🐟 <b id="eggsN">0</b> de 5 segredos</button>
+<div class="eggs-pan" id="eggsPan" hidden></div>
+<div class="egg-toast" id="eggToast" role="status" aria-live="polite"></div>
+<div class="egg-dim" id="eggDim" hidden></div>
+<div class="egg-card" id="eggCard" hidden role="dialog" aria-modal="true" aria-labelledby="eggBig"><p class="egg-big" id="eggBig"></p><p class="egg-txt" id="eggTxt"></p><button class="btn" type="button" id="eggClose">Voltar ao site</button></div>
 <div class="vig" aria-hidden="true"></div>
 <div class="bar" id="bar" aria-hidden="true"></div>
 
@@ -302,7 +338,7 @@ footer a:hover{color:var(--fg)}
   <div class="wrap stack">
     <p class="eyebrow">Comunicador · Creative Lead · Palestrante</p>
     <h1 class="display">De fã a <em>líder criativo</em> do The Chosen Brasil.</h1>
-    <p class="body">Em 2021, construí o maior portal de The Chosen no Brasil e cheguei a mais de <b>100 mil seguidores</b> nas redes sociais, sem verba nenhuma. Em 2022, a série me contratou.</p>
+    <p class="body"><span class="egg" data-i="0" role="button" tabindex="0" aria-label="Letra escondida">E</span>m 2021, construí o maior portal de The Chosen no Brasil e cheguei a mais de <b>100 mil seguidores</b> nas redes sociais, sem verba nenhuma. Em 2022, a série me contratou.</p>
     <div class="acts">
       <a class="btn" href="#convite">Chamar para falar</a>
       <a class="link" href="#fa">Minha história ↓</a>
@@ -314,7 +350,7 @@ footer a:hover{color:var(--fg)}
 <section class="skills" data-mode="hero" aria-label="O que eu faço">
   <div class="wrap">
     <p class="eyebrow">O que eu faço</p>
-    <p class="body" style="margin-top:14px">Hoje eu lidero toda a parte criativa do The Chosen Brasil.</p>
+    <p class="body" style="margin-top:14px">Hoje eu lidero toda a parte criativa do The Chosen Bra<span class="egg" data-i="1" role="button" tabindex="0" aria-label="Letra escondida">s</span>il.</p>
     <div class="sk">
       <div><h3>Construção de audiência</h3><p>Do portal de fã com 100 mil seguidores aos mais de 8 milhões do The Chosen Brasil. Em outubro de 2026, no Instagram, somos maiores que a conta dos Estados Unidos: 3,9 mi contra 3,7 mi.</p></div>
       <div><h3>Estratégia de social para lançamentos</h3><p>Campanhas como o Natal com The Chosen e os lançamentos das temporadas 3, 4 e 5 do The Chosen Brasil nas redes sociais, entre muitas outras.</p></div>
@@ -331,7 +367,7 @@ footer a:hover{color:var(--fg)}
     <div class="beat" data-mode="fan1"><div class="blk stack rv">
       <p class="eyebrow">2016</p>
       <h2 class="h2">Antes de dar certo, deu bem errado.</h2>
-      <p class="body">Eu sempre fui um cara da internet. Passei pelos cursos de Administração, Engenharia Elétrica e Publicidade e Propaganda, mas o que eu queria mesmo era criar alguma coisa.</p>
+      <p class="body">Eu sempre fui um <span class="egg" data-i="2" role="button" tabindex="0" aria-label="Letra escondida">c</span>ara da internet. Passei pelos cursos de Administração, Engenharia Elétrica e Publicidade e Propaganda, mas o que eu queria mesmo era criar alguma coisa.</p>
       <p class="body">Em 2016, na faculdade de Administração, criei um canal no YouTube para entregar conteúdo de valor através de vídeos legendados e dublados. Eu pegava sermões e pregações, legendava e dublava. Teve dublagem que passou de <b>1 milhão de visualizações</b>, e vários vídeos viralizaram em outras redes.</p>
       <p class="body">Até que perdi tudo por direitos autorais. Vieram os strikes e o canal caiu. Demorei anos para entender que aquilo me libertou e me possibilitou iniciar outros projetos.</p>
     </div></div>
@@ -339,7 +375,7 @@ footer a:hover{color:var(--fg)}
       <p class="eyebrow">2020</p>
       <h2 class="h2">Em 2020 eu conheci <em>The Chosen.</em></h2>
       <p class="body">Vi uma série em que Jesus e os personagens eram humanos, algo que naquela época ainda não era normal. Hoje é. A série naturalizou isso.</p>
-      <p class="body">Eu quis entregar os meus poucos <b>pães e peixes</b>, para que outras pessoas também tivessem contato com a série e fossem impactadas por ela, assim como eu tinha sido. Criei uma página, fiz alguns posts e parei. Achei que já tinha feito a minha parte.</p>
+      <p class="body">Eu quis entregar os meus p<span class="egg" data-i="3" role="button" tabindex="0" aria-label="Letra escondida">o</span>ucos <b>pães e peixes</b>, para que outras pessoas também tivessem contato com a série e fossem impactadas por ela, assim como eu tinha sido. Criei uma página, fiz alguns posts e parei. Achei que já tinha feito a minha parte.</p>
     </div></div>
     <div class="beat" data-mode="portal"><div class="blk stack rv">
       <p class="eyebrow">2021</p>
@@ -369,7 +405,7 @@ footer a:hover{color:var(--fg)}
         <p class="cap">Dallas Jenkins, Diógenes Cavalcante e Matheus Horácio na pré-estreia da Temporada 3 em São Paulo.</p>
       </div>
       <div class="stack rv">
-        <p class="body">Quando o The Chosen conheceu o trabalho que eu já vinha construindo, me convidou para fazer parte do <b>primeiro time no Brasil</b>. Éramos apenas duas pessoas e começamos sem um manual pronto, sem calendário editorial e sem uma estrutura definida para as redes sociais.</p>
+        <p class="body">Quando o The Chosen conheceu o traba<span class="egg" data-i="4" role="button" tabindex="0" aria-label="Letra escondida">l</span>ho que eu já vinha construindo, me convidou para fazer parte do <b>primeiro time no Brasil</b>. Éramos apenas duas pessoas e começamos sem um manual pronto, sem calendário editorial e sem uma estrutura definida para as redes sociais.</p>
         <p class="body">Como organização e processos sempre fizeram parte da minha forma de trabalhar, assumi essa frente. <b>Criei o calendário editorial, organizei os fluxos e ajudei a construir a estrutura que orienta o conteúdo de The Chosen no Brasil até hoje.</b></p>
       </div>
     </div>
@@ -406,7 +442,7 @@ footer a:hover{color:var(--fg)}
       </div>
     </div></div>
     <div class="beat" style="padding-top:0"><div class="blk stack rv">
-      <p class="body">Essa experiência me ensinou algo que levo comigo até hoje:</p>
+      <p class="body">Essa experiência me ensinou algo que levo comigo até <span class="egg" data-i="5" role="button" tabindex="0" aria-label="Letra escondida">h</span>oje:</p>
       <p class="quote">As pessoas não querem apenas receber a sua mensagem. <em>Elas querem uma ferramenta para expressar a própria mensagem.</em></p>
     </div></div>
   </div>
@@ -419,7 +455,7 @@ footer a:hover{color:var(--fg)}
     <div class="beat"><div class="blk stack rv">
       <p class="eyebrow">2024</p>
       <h2 class="h2">Fazer tudo funcionava. Até parar de funcionar.</h2>
-      <p class="body">Em 2024 eu tive um burnout e fiquei três meses afastado. Foi tudo ou nada, e eu não sabia se voltaria.</p>
+      <p class="body">Em 2024 eu t<span class="egg" data-i="6" role="button" tabindex="0" aria-label="Letra escondida">i</span>ve um burnout e fiquei três meses afastado. Foi tudo ou nada, e eu não sabia se voltaria.</p>
     </div></div>
     <div class="beat" style="padding-top:0"><div class="blk r stack rv">
       <p class="quote">O burnout não foi o fracasso. <em>O fracasso foi fazer tudo sozinho.</em> O burnout foi a conta chegando.</p>
@@ -432,7 +468,7 @@ footer a:hover{color:var(--fg)}
   <div class="wrap">
     <p class="chap rv">A volta</p>
     <div class="beat"><div class="blk stack rv">
-      <p class="body">Depois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei promovido. Aí veio a parte difícil: entregar o operacional que era meu.</p>
+      <p class="body"><span class="egg" data-i="7" role="button" tabindex="0" aria-label="Letra escondida">D</span>epois de muitos livros, reflexão e terapia, eu voltei. E, pasmem, voltei promovido. Aí veio a parte difícil: entregar o operacional que era meu.</p>
       <h2 class="h2">Aprendi a delegar depois de quebrar por <em>não delegar.</em></h2>
       <p class="body">Hoje lidero seis pessoas e respondo pela criação do The Chosen Brasil. Várias outras já passaram pelo meu time, e também dou direcionamento e suporte ao time da América Latina. Os elogios que hoje recebo como gestor vieram depois de muita crítica. Eu errei bastante e aprendi.</p>
       <p class="body">Quando o time esbarrava em problemas de fluxo, eu ia atrás de soluções com <b>automação e inteligência artificial</b>. Hoje o time é autônomo, trabalha organizado e não vive sobrecarregado.</p>
@@ -537,7 +573,7 @@ footer a:hover{color:var(--fg)}
     <div class="head stack rv">
       <p class="eyebrow">Agenda 2026 aberta</p>
       <h2 class="display" style="font-size:clamp(2.3rem,6vw,5rem)">Quer essa conversa no seu <em>evento?</em></h2>
-      <p class="body">Me escreva contando quem é o público, quando seria, em que cidade e o que você quer que as pessoas levem embora.</p>
+      <p class="body">Me escreva c<span class="egg" data-i="8" role="button" tabindex="0" aria-label="Letra escondida">o</span>ntando quem é o público, quando seria, em que cidade e o que você quer que as pessoas levem embora.</p>
     </div>
     <div class="cta-big"><a class="btn" id="ctaBig" href="#montar">Escrever o convite</a></div>
 
@@ -617,7 +653,7 @@ const ORDER=Object.keys(RATIO);
 const READ={hero:.6,fan1:.4,fan2:.4,portal:.3,hire:.3,reach:.4,team:.28,talks:.26};
 let mode='hero', idx=0, prog=0, ratio=.55, t=0, heroWas=1;
 const foods=[], rings=[], giants=[], oc=d.createElement('canvas').getContext('2d');
-let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1;
+let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1, form=null;
 /* os "poucos pães e peixes": 2 peixinhos verdes aparecem ao lado do peixe dele e, no portal, viram cardume */
 const loaves=[0,1].map(j=>({x:-99,y:-99,a:0,v:40,depth:.75,L:small?46:62,ph:j*2+.5,al:0,tint:1,j}));
 const ptr={x:-999,y:-999,at:-1e9};
@@ -634,7 +670,7 @@ function center(){if(mode==='gather'){const b=$('#ctaBig').getBoundingClientRect
 function enter(m){mode=m;idx=ORDER.indexOf(m);if(m!=='gather')giant=null;
   if(m==='vortex'||m==='gather'){const c=center();[...fish,hero].forEach(f=>f.th=Math.atan2(f.y-c.y,f.x-c.x))}
   /* Easter egg da chegada: um peixe verde enorme atravessa a tela atrás do título do convite */
-  if(m==='gather'&&!giantDone&&!RM){giantDone=true;const L=small?W*1.7:Math.min(W*1.05,1500);
+  if(m==='gather'&&!giantDone&&!RM&&!form){giantDone=true;const L=small?W*1.7:Math.min(W*1.05,1500);
     giants.push({x:-L*.6,y:H*(small?.3:.34),a:0,v:small?150:210,L,grow:1,rank:0,depth:1,ph:0,tint:1,swim:true,al:.55})}}
 
 function steer(f,A,V,turn,dt){let df=A-f.a;df=Math.atan2(Math.sin(df),Math.cos(df));f.a+=df*Math.min(1,turn*dt);f.v+=(V-f.v)*Math.min(1,1.8*dt)}
@@ -661,10 +697,12 @@ function update(dt){
   const fd=foods.length&&t-foods[foods.length-1].t<2.6?foods[foods.length-1]:null, reach=Math.max(W,H)*.6;
   let gAge=0,gox=0;
   if(giant){gAge=t-giant.t0;gox=gAge>3.2?(gAge-3.2)*(giant.vert?H:W)*.3:0;if(gAge>6.6){giant=null;enter('gather')}}
-  gs+=((giant?(giant.vert?.34:.42):1)-gs)*Math.min(1,dt*2);
+  gs+=((form?.36:giant?(giant.vert?.34:.42):1)-gs)*Math.min(1,dt*2);
   const gA=giant&&giant.vert?-Math.PI/2:0;
   for(let i=0;i<fish.length;i++){const f=fish[i];
     let tn=f.rank<ratio?1:0;
+    if(form){const kk=Math.min(1,dt*2.4);f.x+=(f.fp.x-f.x)*kk;f.y+=(f.fp.y-f.y)*kk;steer(f,f.fp.a,20,4,dt);
+      f.al+=(form.alpha-f.al)*Math.min(1,dt*2);f.tint+=(1-f.tint)*Math.min(1,dt*2);continue}
     if(giant){const kk=Math.min(1,dt*(gAge<3.2?2.2:4)), p=gpos(f,gox,Math.sin(t*3+f.gx/giant.L*7)*giant.L*.012);
       f.x+=(p[0]-f.x)*kk;f.y+=(p[1]-f.y)*kk;
       steer(f,gA,40,3,dt);f.al+=(.95-f.al)*Math.min(1,dt*2);f.tint+=(tn-f.tint)*Math.min(1,dt*1.4);continue}
@@ -690,7 +728,8 @@ function update(dt){
   const h=hero, ht=(mode==='hero'||idx>2||(mode==='fan2'&&prog>.4))?1:0;
   if(ht&&!heroWas&&mode!=='hero')rings.push({x:h.x,y:h.y,t});
   heroWas=ht;
-  if(giant){const kk=Math.min(1,dt*2.4), p=gpos(h,gox,0);h.x+=(p[0]-h.x)*kk;h.y+=(p[1]-h.y)*kk;steer(h,gA,40,3,dt);h.v=0}
+  if(form){const kk=Math.min(1,dt*2.4);h.x+=(h.fp.x-h.x)*kk;h.y+=(h.fp.y-h.y)*kk;steer(h,h.fp.a,20,4,dt);h.v=0}
+  else if(giant){const kk=Math.min(1,dt*2.4), p=gpos(h,gox,0);h.x+=(p[0]-h.x)*kk;h.y+=(p[1]-h.y)*kk;steer(h,gA,40,3,dt);h.v=0}
   else{
     if(fd)seek(h,fd.x,fd.y,300,4,dt);
     else if(mode==='fan2')seek(h,W*(small?.5:.3)+30*Math.sin(t*.5),H*(small?.78:.55)+20*Math.cos(t*.4),60,1.6,dt);
@@ -747,7 +786,7 @@ function draw(){
   for(const f of fish){if(f.al<.01)continue;ctx.globalAlpha=f.al;drawFish(f,f.L*gs)}
   ctx.globalAlpha=1;drawFish(hero,hero.L*gs);
   for(const l of loaves){if(l.al>.01){ctx.globalAlpha=l.al;drawFish(l,l.L)}}
-  for(const g of giants){ctx.globalAlpha=g.al||.9;drawFish(g,g.L*(1-Math.pow(1-g.grow,3)))}
+  for(const g of giants){if(form)break;ctx.globalAlpha=g.al||.9;drawFish(g,g.L*(1-Math.pow(1-g.grow,3)))}
   ctx.globalAlpha=1;
 }
 let last=performance.now();
@@ -763,13 +802,14 @@ if(RM){
 
 /* Toque na água: alimenta o cardume. Clicar sem parar faz nascer peixes cada vez maiores. */
 const hint=$('#hint'); let fed=0;
-d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter,.strip,summary,details'))return;
+d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter,.strip,summary,details,.egg,.tray,.eggs,.eggs-pan,.egg-card'))return;
+  if(window.__fishCatch&&window.__fishCatch(e.clientX,e.clientY))return;
   foods.push({x:e.clientX,y:e.clientY,t});if(foods.length>4)foods.shift();
   clicks=clicks.filter(c=>t-c<2.5);clicks.push(t);lastClick=t;
   if(clicks.length>=5){const n=clicks.length-4;
     giants.push({x:e.clientX,y:e.clientY,a:rnd(-.25,.25),v:0,L:Math.min(Math.max(W,H)*1.7,(small?120:170)*Math.pow(1.32,n)),
       grow:0,rank:Math.random(),depth:1,ph:rnd(0,TAU),tint:0,swim:false});
-    if(giants.length>9)giants.shift()}
+    if(giants.length>9)giants.shift();window.__secret&&window.__secret('gigantes')}
   fed++;if(fed===1)hint.textContent='Eles gostam de você.';else if(clicks.length===5)hint.textContent='Continue. Tem peixe grande vindo.'});
 
 /* topo, barra de progresso e revelação suave do texto */
@@ -788,6 +828,89 @@ function arrows(){const max=strip.scrollWidth-strip.clientWidth-4;prevB.disabled
 strip.addEventListener('scroll',arrows,{passive:true});arrows();
 if(!RM){const pio=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;pio.disconnect();
   setTimeout(()=>{if(strip.scrollLeft>4)return;strip.scrollBy({left:110,behavior:'smooth'});setTimeout(()=>strip.scrollBy({left:-110,behavior:'smooth'}),750)},500)},{threshold:.6});pio.observe(strip)}
+
+
+/* ================= EASTER EGGS ================= */
+const SECRETS=[
+  {k:'escolhido',name:'A palavra escondida',hint:'Algumas letras não são o que parecem.'},
+  {k:'153',name:'Os 153 peixes',hint:'Pescadores pescam.'},
+  {k:'ichthys',name:'O cardume parado',hint:'Às vezes, é só parar.'},
+  {k:'gigantes',name:'Os peixes gigantes',hint:'Quanto mais você alimenta…'},
+  {k:'aba',name:'A volta',hint:'Saia e volte.'}];
+let found=[]; try{found=JSON.parse(localStorage.getItem('mh-eggs')||'[]')}catch(e){}
+const eggsBtn=$('#eggs'), eggsPan=$('#eggsPan'), eggsN=$('#eggsN'), toastEl=$('#eggToast');
+let toastT=0;
+function say(msg,ms=4200){toastEl.textContent=msg;toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove('on'),ms)}
+function paintEggs(){eggsN.textContent=found.length;eggsBtn.hidden=!found.length;
+  eggsPan.innerHTML=SECRETS.map(x=>found.includes(x.k)?'<p class="ok"><b>'+x.name+'</b></p>':'<p>'+x.hint+'</p>').join('')}
+/* quiet: quem já mostra a própria mensagem só atualiza o contador; o aviso de 5 de 5 vem depois */
+window.__secret=(k,quiet)=>{if(found.includes(k))return false;found.push(k);try{localStorage.setItem('mh-eggs',JSON.stringify(found))}catch(e){}
+  paintEggs();const all=found.length===SECRETS.length;
+  if(all)setTimeout(()=>say('Você encontrou os 5 segredos. Poucos chegam até aqui.',6000),quiet?7000:600);
+  else if(!quiet)setTimeout(()=>say('Segredo encontrado: '+found.length+' de '+SECRETS.length+'.'),600);return true};
+const count=()=>' ('+found.length+' de '+SECRETS.length+' segredos)';
+eggsBtn.addEventListener('click',()=>{const o=eggsPan.hidden;eggsPan.hidden=!o;eggsBtn.setAttribute('aria-expanded',o)});
+paintEggs();
+
+/* o cardume desenha o ichthys, o peixe dos primeiros cristãos */
+function ichthys(alpha,idle){const w=small?Math.min(W*.86,520):Math.min(W*.46,600), cx=W*.5, cy=H*(small?.36:.4);
+  const curve=(sg,tt)=>{const p0=[-.55*w,.2*w*sg],p1=[-.05*w,-.62*w*sg],p2=[.5*w,0],u=1-tt;
+    return{x:cx+u*u*p0[0]+2*u*tt*p1[0]+tt*tt*p2[0],y:cy+u*u*p0[1]+2*u*tt*p1[1]+tt*tt*p2[1],
+      a:Math.atan2(2*u*(p1[1]-p0[1])+2*tt*(p2[1]-p1[1]),2*u*(p1[0]-p0[0])+2*tt*(p2[0]-p1[0]))}};
+  const half=Math.ceil(fish.length/2);
+  fish.forEach((f,i)=>{f.fp=curve(i%2?-1:1,Math.min(1,Math.floor(i/2)/Math.max(1,half-1)))});
+  hero.fp=curve(1,.97);form={alpha,idle}}
+
+/* 1. ESCOLHIDO: 9 letras escondidas nos textos, na ordem da leitura */
+const WORD='ESCOLHIDO', tray=$('#tray'), got=new Array(WORD.length).fill(false);
+tray.innerHTML=WORD.split('').map(()=>'<span></span>').join('');
+const slots=[...tray.children];
+function openCard(big,txt){d.body.classList.add('eggmode');$('#eggDim').hidden=false;requestAnimationFrame(()=>$('#eggDim').classList.add('on'));
+  $('#eggBig').innerHTML=big;$('#eggTxt').textContent=txt;$('#eggCard').hidden=false;$('#eggClose').focus({preventScroll:true})}
+function closeCard(){$('#eggDim').classList.remove('on');$('#eggCard').hidden=true;form=null;
+  setTimeout(()=>{$('#eggDim').hidden=true;d.body.classList.remove('eggmode')},800)}
+$('#eggClose').addEventListener('click',closeCard);
+d.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#eggCard').hidden)closeCard()});
+function takeLetter(el){if(el.classList.contains('got'))return;const i=+el.dataset.i;el.classList.add('got');got[i]=true;
+  tray.hidden=false;slots[i].textContent=WORD[i];slots[i].classList.add('on');
+  const n=got.filter(Boolean).length;
+  if(n===1)say('Você achou uma letra escondida. Faltam 8. Continue lendo.');
+  if(n===WORD.length){setTimeout(()=>{tray.hidden=true;if(!RM)ichthys(1,false);
+    window.__secret('escolhido',true);openCard('Você também foi <em>escolhido.</em>','“Venham, sigam-me, e eu os farei pescadores de homens.” Mateus 4:19')},700)}}
+$$('.egg').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();takeLetter(el)});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();takeLetter(el)}})});
+
+/* 2. Os 153 peixes: tocar em cima de um peixe pesca ele */
+let caught=0;
+window.__fishCatch=(x,y)=>{if(RM||form)return false;
+  for(let i=fish.length-1;i>=0;i--){const f=fish[i];if(f.al<.15)continue;const L=f.L*gs,c=Math.cos(-f.a),s2=Math.sin(-f.a),dx=x-f.x,dy=y-f.y;
+    const lx=dx*c-dy*s2, ly=dx*s2+dy*c;
+    if(Math.abs(lx)<L*.5+10&&Math.abs(ly)<Math.max(20,L*.12)){
+      rings.push({x:f.x,y:f.y,t});f.x=-f.L;f.y=f.ly*H;f.al=0;caught++;
+      if(caught===1)say('Você pescou um peixe. Quantos consegue?');
+      else if(caught===12)say('12 peixes. Os doze.');
+      else if(caught===50)say('50 peixes. Você é persistente.');
+      else if(caught===100)say('100. Falta pouco para o número certo.');
+      else if(caught===153){window.__secret('153',true);openCard('153 <em>peixes.</em>','Foi esse o número da pesca milagrosa, quando a rede voltou cheia depois de uma noite inteira sem pescar nada. João 21:11')}
+      else if(caught%10===0)say(caught+' peixes.',1600);
+      return true}}
+  return false};
+
+/* 3. Quem fica parado 20 segundos vê o cardume desenhar o ichthys */
+let lastInput=performance.now();
+['pointermove','pointerdown','keydown','wheel','touchstart','scroll'].forEach(ev=>addEventListener(ev,()=>{lastInput=performance.now();if(form&&form.idle)form=null},{passive:true}));
+if(!RM)setInterval(()=>{if(!form&&$('#eggCard').hidden&&!d.hidden&&performance.now()-lastInput>20000){ichthys(.8,true);
+  window.__secret('ichthys',true);say('Você parou, e o cardume desenhou o ichthys: o peixe que os primeiros cristãos usavam como sinal.'+count(),6500)}},1000);
+
+/* 4. A volta: trocar de aba e voltar */
+const baseTitle=d.title; let hiddenAt=0;
+d.addEventListener('visibilitychange',()=>{if(d.hidden){hiddenAt=performance.now();d.title='Ei, volta aqui! 🐟'}
+  else{d.title=baseTitle;if(performance.now()-hiddenAt>1500){foods.push({x:W/2,y:H/2,t});
+    if(window.__secret('aba',true))setTimeout(()=>say('Que bom que você voltou. Os peixes vieram te receber.'+count()),700)}}});
+
+/* 5. Um bilhete para quem abre o console */
+try{console.log('%cOi, curioso. 🐟','font:600 16px Georgia,serif;color:#00BFB3');
+  console.log('Você abriu o código do site, e eu gosto de gente assim. Se quiser conversar sobre conteúdo, social, comunidade ou automação: eu@matheushoracio.com.br  (Matheus)')}catch(e){}
 
 /* ---------- Convite ---------- */
 const val=id=>$('#'+id).value.trim(), show=(id,ph)=>val(id)?esc(val(id)):'<i>['+ph+']</i>', g=(id,ph)=>val(id)||'['+ph+']';
