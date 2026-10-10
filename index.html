@@ -625,6 +625,8 @@ footer a:hover{color:var(--fg)}
 {% raw %}<script>
 (function(){
 const d=document, root=d.documentElement; root.classList.add('js');
+/* o site sempre abre no começo da história, a menos que o link aponte para um ponto (#convite) */
+if('scrollRestoration' in history&&!location.hash){history.scrollRestoration='manual';scrollTo(0,0)}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=(s,r=d)=>r.querySelector(s), $$=(s,r=d)=>[...r.querySelectorAll(s)];
 const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -653,11 +655,12 @@ const followers=bases.filter(f=>!f.team).sort(()=>Math.random()-.5);
 const hero={x:W*.7,y:H*.5,ly:.5,a:0,v:40,depth:.9,L:(small?90:128),ph:1,ring:0,rank:0,th:0,al:1,tint:0,gx:0,gy:0};
 
 /* quanto do cardume está verde em cada momento da história */
-const RATIO={hero:.15,fan1:0,fan2:0,portal:0,vortex:.22,hire:.22,reach:.22,alone:0,team:.5,talks:.6,gather:.72};
+/* equilíbrio: no máximo uns 65% de verde, mesmo no fim da história */
+const RATIO={hero:.15,fan1:0,fan2:0,portal:0,vortex:.25,hire:.25,reach:.25,alone:0,team:.42,talks:.48,gather:.5};
 const ORDER=Object.keys(RATIO);
 /* nas cenas de leitura o cardume fica discreto; nos momentos-chave (capa, redemoinho, convite) aparece forte */
 const READ={hero:.6,fan1:.4,fan2:.4,portal:.3,hire:.3,reach:.4,team:.28,talks:.26};
-let mode='hero', idx=0, prog=0, ratio=.15, t=0, heroWas=0, heroWon=0;
+let mode='hero', idx=0, prog=0, ratio=.15, t=0, heroWas=0, heroWon=0, tealShare=0;
 const foods=[], rings=[], giants=[], oc=d.createElement('canvas').getContext('2d');
 let clicks=[], lastClick=-9, giant=null, giantDone=false, gs=1, form=null;
 /* os "poucos pães e peixes": 2 peixinhos verdes aparecem ao lado do peixe dele e, no portal, viram cardume */
@@ -687,7 +690,10 @@ const spd=f=>(18+f.depth*54)*(small?.8:1);
 function swim(f,mult,dt,left){const pull=clamp((f.ly*H-f.y)/H*2.4,-.45,.45), w=.1*Math.sin(t*.5+f.ph);
   steer(f,left?Math.PI-pull+w:pull+w,spd(f)*mult,1.3,dt);
   const m=f.L;
-  if(left){if(f.x<-m){f.x=W+m;f.y=f.ly*H}else if(f.x>W+m*3)f.x=-m}
+  /* um verde que sai pela esquerda fora de vista: se o cardume está verde demais, quem entra no lugar é um peixe cinza novo, pela esquerda.
+     ninguém muda de cor na frente da pessoa; é outro peixe chegando */
+  if(left){if(f.x<-m){if(f!==hero&&f.won&&tealShare>Math.min(.6,ratio+.1)){f.won=0;f.tint=0;f.rank=rnd(Math.min(.95,ratio+.05),1);f.x=-m;f.a=0;f.y=f.ly*H}
+      else{f.x=W+m;f.y=f.ly*H}}else if(f.x>W+m*3)f.x=-m}
   else{if(f.x>W+m){f.x=-m;f.y=f.ly*H}else if(f.x<-m*3)f.x=W+m}}
 function orbit(f,c,r,dt,turn,sy=1){f.th+=(f.depth*40+44)/r*dt;seek(f,c.x+r*Math.cos(f.th+.3),c.y+r*sy*Math.sin(f.th+.3),150,turn,dt)}
 
@@ -701,8 +707,9 @@ function gpos(f,gox,wave){return giant.vert?[giant.cx+f.gy+wave,giant.cy-f.gx-go
 function update(dt){
   const c=center(), R=small?110:150, live=performance.now()-ptr.at<2500;
   const vMin=Math.min(W,H)*(small?.36:.3), vMax=Math.hypot(W,H)*.62;
-  const tr=RATIO[mode]+(mode==='reach'?.18*prog:0); ratio+=(tr-ratio)*Math.min(1,dt*1.2);
-  const k=Math.floor(4+prog*40);
+  const tr=RATIO[mode]+(mode==='reach'?.15*prog:0); ratio+=(tr-ratio)*Math.min(1,dt*1.2);
+  {let v=0,g=0;for(const f of fish)if(f.al>.1){v++;if(f.tint>.5)g++}tealShare=v?g/v:0}
+  const k=Math.floor(4+prog*(small?10:16));
   const fd=foods.length&&t-foods[foods.length-1].t<2.6?foods[foods.length-1]:null, reach=Math.max(W,H)*.6;
   let gAge=0,gox=0;
   if(giant){gAge=t-giant.t0;gox=gAge>3.2?(gAge-3.2)*(giant.vert?H:W)*.3:0;if(gAge>6.6){giant=null;enter('gather')}}
