@@ -168,9 +168,10 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .arw:disabled{opacity:.3;cursor:default}
 .strip{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent);mask-image:linear-gradient(90deg,#000 0,#000 80%,transparent)}
 .strip.end{-webkit-mask-image:none;mask-image:none}
-.egg{position:relative;color:var(--teal-ink);text-shadow:0 0 12px rgba(0,191,179,.75);cursor:pointer;border-radius:2px}
+.egg{position:relative;color:var(--teal-ink);font-variation-settings:'wght' 820;text-shadow:0 0 6px rgba(0,191,179,1),0 0 16px rgba(0,191,179,.8);cursor:pointer;border-radius:2px;animation:eggpulse 2.4s ease-in-out infinite}
+@keyframes eggpulse{50%{color:#C8FFF9;text-shadow:0 0 10px rgba(0,191,179,1),0 0 26px rgba(0,191,179,.95)}}
 .egg::after{content:'';position:absolute;inset:-14px -12px}
-.egg.got{color:inherit;text-shadow:inherit;cursor:default}
+.egg.got{color:inherit;text-shadow:inherit;font-variation-settings:inherit;cursor:default;animation:none}
 .egg:focus-visible{outline:2px solid var(--teal-ink);outline-offset:2px}
 .tray{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));translate:-50% 0;z-index:12;display:flex;gap:6px;padding:8px 10px;border-radius:99px;background:rgba(3,3,4,.92);border:1px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .tray span{width:24px;height:32px;display:grid;place-items:center;border-bottom:2px solid var(--line);font-family:var(--serif);font-size:19px;font-weight:600;color:var(--teal-ink);text-transform:uppercase}
