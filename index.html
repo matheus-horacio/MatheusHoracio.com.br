@@ -198,11 +198,14 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 @keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.25)}100%{transform:none;opacity:1}}
 .eggs{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:12;min-height:44px;padding:0 16px;border-radius:99px;background:rgba(3,3,4,.92);border:1px solid var(--teal);color:var(--fg);font-size:13.5px;font-variation-settings:'wght' 560}
 .eggs b{color:var(--teal-ink);font-weight:inherit;font-variation-settings:'wght' 760}
-.eggs-pan{position:fixed;left:14px;bottom:calc(68px + env(safe-area-inset-bottom,0px));z-index:12;width:min(320px,calc(100vw - 28px));padding:16px 18px;border-radius:6px;background:rgba(10,10,12,.97);border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.6);display:grid;gap:10px}
+.eggs-pan{position:fixed;left:14px;bottom:calc(68px + env(safe-area-inset-bottom,0px));z-index:12;width:min(320px,calc(100vw - 28px));padding:16px 18px;border-radius:6px;background:rgba(10,10,12,.97);border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.6);display:grid;gap:8px;max-height:calc(100svh - 300px);overflow-y:auto;overscroll-behavior:contain}
 .eggs-pan p{margin:0;font-size:14px;line-height:1.45;color:var(--ink);display:flex;gap:10px}
 .eggs-pan p b{font-weight:inherit;color:var(--fg);font-variation-settings:'wght' 640}
 .eggs-pan p::before{content:'·';color:var(--mute);width:14px;flex:none;text-align:center}
 .eggs-pan p.ok::before{content:'✓';color:var(--teal-ink)}
+.eggs-tip{color:var(--teal-ink)}
+.eggs-pan .more{display:inline;margin-left:6px;padding:4px 0;background:none;border:0;color:var(--teal-ink);font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.eggs-pan .hot{display:block;margin-top:2px;color:var(--fg);font-style:italic}
 /* no celular, quando a bandeja de letras aparece, o contador sobe para não ficar em cima dela */
 @media (max-width:700px){
   body.tray-on .eggs{bottom:calc(70px + env(safe-area-inset-bottom,0px))}
@@ -349,7 +352,7 @@ footer a:hover{color:var(--fg)}
 </div>
 <canvas id="sea" aria-hidden="true"></canvas>
 <div class="tray" id="tray" hidden aria-label="Palavra escondida"></div>
-<button class="eggs" id="eggs" type="button" hidden aria-expanded="false" aria-controls="eggsPan">🐟 <b id="eggsN">0</b> de 5 segredos</button>
+<button class="eggs" id="eggs" type="button" hidden aria-expanded="false" aria-controls="eggsPan">🐟 <b id="eggsN">0</b> de 5 segredos<span class="eggs-tip"> · dicas</span></button>
 <div class="eggs-pan" id="eggsPan" hidden></div>
 <div class="egg-toast" id="eggToast" role="status" aria-live="polite"></div>
 <div class="egg-dim" id="eggDim" hidden></div>
@@ -905,17 +908,21 @@ lb.addEventListener('touchend',e=>{if(sx===null||grp.length<2)return;const dx=e.
 
 /* ================= EASTER EGGS ================= */
 const SECRETS=[
-  {k:'escolhido',name:'A palavra escondida',hint:'Algumas letras não são o que parecem.'},
-  {k:'153',name:'Os 153 peixes',hint:'Pescadores pescam.'},
-  {k:'ichthys',name:'O cardume parado',hint:'Às vezes, é só parar.'},
-  {k:'gigantes',name:'Os peixes gigantes',hint:'Quanto mais você alimenta…'},
-  {k:'aba',name:'A volta',hint:'Saia e volte.'}];
+  {k:'escolhido',name:'A palavra escondida',hint:'Algumas letras não são o que parecem.',hot:'Algumas letras brilham mais que as outras.'},
+  {k:'153',name:'Os 153 peixes',hint:'Pescadores pescam.',hot:'Na pesca milagrosa foram 153. Quantos você pega?'},
+  {k:'ichthys',name:'O cardume parado',hint:'Às vezes, é só parar.',hot:'O cardume tem algo a mostrar para quem espera.'},
+  {k:'gigantes',name:'Os peixes gigantes',hint:'Quanto mais você alimenta…',hot:'Quanto mais rápido você alimenta, maior o que vem.'},
+  {k:'aba',name:'A volta',hint:'Saia e volte.',hot:'O site sente sua falta quando você vai embora.'}];
 let found=[]; try{found=JSON.parse(localStorage.getItem('mh-eggs')||'[]')}catch(e){}
 const eggsBtn=$('#eggs'), eggsPan=$('#eggsPan'), eggsN=$('#eggsN'), toastEl=$('#eggToast');
 let toastT=0;
 function say(msg,ms=4200){toastEl.textContent=msg;toastEl.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove('on'),ms)}
 function paintEggs(){eggsN.textContent=found.length;eggsBtn.hidden=!found.length;
-  eggsPan.innerHTML=SECRETS.map(x=>found.includes(x.k)?'<p class="ok"><b>'+x.name+'</b></p>':'<p>'+x.hint+'</p>').join('')}
+  eggsPan.innerHTML=SECRETS.map(x=>found.includes(x.k)?'<p class="ok"><b>'+x.name+'</b></p>':
+    '<p><span>'+x.hint+(hot.has(x.k)?'<span class="hot">'+x.hot+'</span>':'<button type="button" class="more" data-k="'+x.k+'">Mais uma dica</button>')+'</span></p>').join('')}
+/* "Mais uma dica": uma segunda pista, mais quente, sem entregar o segredo */
+const hot=new Set();
+eggsPan.addEventListener('click',e=>{const b=e.target.closest('.more');if(!b)return;hot.add(b.dataset.k);paintEggs()});
 /* quiet: quem já mostra a própria mensagem só atualiza o contador; o aviso de 5 de 5 vem depois */
 window.__secret=(k,quiet)=>{if(found.includes(k))return false;found.push(k);try{localStorage.setItem('mh-eggs',JSON.stringify(found))}catch(e){}
   paintEggs();const all=found.length===SECRETS.length;
