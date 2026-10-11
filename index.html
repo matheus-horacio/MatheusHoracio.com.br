@@ -147,6 +147,25 @@ body::after{content:'';position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .nums.sm{gap:18px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
 .nums.sm b{font-size:clamp(2rem,4.4vw,3.4rem);color:var(--teal)}
 .nums.sm span{font-size:13.5px}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
+.shots figure{margin:0}
+.shots img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:2px;background:#111}
+.shots figcaption{margin-top:8px;font-size:13px;line-height:1.45;color:var(--mute);text-shadow:0 0 10px rgba(3,3,4,.95)}
+/* fotos ampliáveis: clique abre em tela cheia */
+.zoomable{cursor:zoom-in}
+.zoomable:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.lb{position:fixed;inset:0;z-index:40;display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;align-items:center;gap:14px;padding:calc(64px + env(safe-area-inset-top,0px)) 16px calc(22px + env(safe-area-inset-bottom,0px));background:rgba(3,3,4,.985);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.lb.on{opacity:1;visibility:visible}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:2px;touch-action:pan-y}
+.lb p{margin:0;max-width:60ch;text-align:center;font-size:14px;line-height:1.5;color:var(--ink)}
+.lb p small{display:block;margin-top:4px;color:var(--mute);font-size:12.5px;letter-spacing:.06em}
+.lb button{position:absolute;width:48px;height:48px;border-radius:99px;border:1px solid var(--line);background:rgba(3,3,4,.8);color:var(--fg);font-size:20px;line-height:1;display:grid;place-items:center;cursor:pointer}
+.lb button:hover{border-color:var(--teal)}
+.lb .x{top:calc(12px + env(safe-area-inset-top,0px));right:12px}
+.lb .pv{left:12px;top:50%;translate:0 -50%}.lb .nx{right:12px;top:50%;translate:0 -50%}
+.lb button[hidden]{display:none}
+@media (min-width:701px){.lb{padding-inline:76px}}
+@media (max-width:700px){.lb .pv,.lb .nx{top:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));translate:none}.lb{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 .stack .step{margin-top:14px}
 .stat{display:flex;gap:18px;align-items:center;border-top:1px solid var(--line);padding-top:20px;margin-top:6px}
 .stat b{font-family:var(--serif);font-weight:500;font-size:clamp(2.6rem,5vw,3.8rem);line-height:.9;color:var(--teal);white-space:nowrap;text-shadow:0 0 14px rgba(3,3,4,.95)}
@@ -321,6 +340,13 @@ footer a:hover{color:var(--fg)}
   Se quiser conversar sobre conteúdo, social, comunidade ou automação: eu@matheushoracio.com.br
   Matheus
 -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+  <img id="lbImg" alt="">
+  <p id="lbCap"></p>
+  <button type="button" class="x" id="lbX" aria-label="Fechar foto">✕</button>
+  <button type="button" class="pv" id="lbPv" aria-label="Foto anterior">←</button>
+  <button type="button" class="nx" id="lbNx" aria-label="Próxima foto">→</button>
+</div>
 <canvas id="sea" aria-hidden="true"></canvas>
 <div class="tray" id="tray" hidden aria-label="Palavra escondida"></div>
 <button class="eggs" id="eggs" type="button" hidden aria-expanded="false" aria-controls="eggsPan">🐟 <b id="eggsN">0</b> de 5 segredos</button>
@@ -446,6 +472,10 @@ footer a:hover{color:var(--fg)}
         <div><b>6 mil</b><span>vídeos publicados no TikTok</span></div>
         <div><b>R$ 0</b><span>em mídia paga</span></div>
       </div>
+      <div class="shots">
+        <figure><img src="/assets/img/filtro-selfie-com-jesus-em-uso.webp" width="1080" height="1080" alt="Selfie feita com o filtro Selfie com Jesus, que coloca o Jesus da série The Chosen ao lado da pessoa" loading="lazy"><figcaption>O filtro em uso</figcaption></figure>
+        <figure><img src="/assets/img/filtro-selfie-com-jesus-numeros.webp" width="1080" height="1080" alt="Painel do Instagram com 11 milhões de aberturas do filtro e página do efeito Selfie com Jesus no TikTok com 6572 publicações" loading="lazy"><figcaption>Os números no Instagram e no TikTok</figcaption></figure>
+      </div>
     </div></div>
     <div class="beat" style="padding-top:0"><div class="blk stack rv">
       <p class="body">Essa experiência me ensinou algo que levo comigo até <span class="egg" data-i="5" role="button" tabindex="0" aria-label="Letra escondida">h</span>oje:</p>
@@ -515,7 +545,7 @@ footer a:hover{color:var(--fg)}
       <div class="says">
         <blockquote class="rv wide"><p>“Matheus é um profissional extremamente criativo, dedicado e com uma visão muito à frente. Ele está sempre buscando novas ideias, acompanhando tendências e explorando novas possibilidades, especialmente nas áreas de inovação e inteligência artificial. […] É um líder que realmente se preocupa com as pessoas e procura apoiar cada membro da equipe da melhor maneira possível.”</p><cite><b>Rebecca Campos</b> · Ex-Content Creator e Community Manager no The Chosen Brasil</cite></blockquote>
         <blockquote class="rv"><p>“Uma das mentes mais criativas e estratégicas que já conheci, mas, principalmente, com clareza sobre como transformar isso em resultado.”</p><cite><b>David Cavalcante</b> · Operations Lead no The Chosen Brasil</cite></blockquote>
-        <blockquote class="rv"><p>“Sua capacidade de estruturar processos claros, definir fluxos e organizar prioridades cria um ambiente mais eficiente, produtivo e sustentável.”</p><cite><b>Barbara Cordeli</b> · Audiovisual Productions no The Chosen Brasil</cite></blockquote>
+        <blockquote class="rv"><p>“Sua capacidade de estruturar processos claros, definir fluxos e organizar prioridades cria um ambiente mais eficiente, produtivo e sustentável.”</p><cite><b>Barbara Cordeli</b> · ex Audiovisual Productions no The Chosen Brasil</cite></blockquote>
         <blockquote class="rv"><p>“Não guarda conhecimento para si. Orienta, capacita e incentiva as pessoas ao seu redor a pensarem de forma autônoma.”</p><cite><b>Fabricia Erler</b> · Ex-Content Creator e Community Manager no The Chosen Brasil</cite></blockquote>
         <blockquote class="rv"><p>“Uma habilidade rara de ver caminhos onde ainda não existe nada, e de transformar ideias em algo real, executável e estratégico.”</p><cite><b>Rafaela Caro</b> · Communication Coordinator no The Chosen Brasil</cite></blockquote>
       </div>
@@ -823,7 +853,7 @@ if(RM){
 
 /* Toque na água: alimenta o cardume. Clicar sem parar faz nascer peixes cada vez maiores. */
 const hint=$('#hint'); let fed=0;
-d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter,.strip,summary,details,.egg,.tray,.eggs,.eggs-pan,.egg-card'))return;
+d.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,textarea,label,form,.letter,.strip,.zoomable,.lb,summary,details,.egg,.tray,.eggs,.eggs-pan,.egg-card'))return;
   if(window.__fishCatch&&window.__fishCatch(e.clientX,e.clientY))return;
   foods.push({x:e.clientX,y:e.clientY,t});if(foods.length>4)foods.shift();
   clicks=clicks.filter(c=>t-c<2.5);clicks.push(t);lastClick=t;
@@ -850,6 +880,28 @@ strip.addEventListener('scroll',arrows,{passive:true});arrows();
 if(!RM){const pio=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;pio.disconnect();
   setTimeout(()=>{if(strip.scrollLeft>4)return;strip.scrollBy({left:110,behavior:'smooth'});setTimeout(()=>strip.scrollBy({left:-110,behavior:'smooth'}),750)},500)},{threshold:.6});pio.observe(strip)}
 
+
+/* Fotos: clicar abre a foto grande. Fotos do mesmo grupo (bastidores, filtro) passam com setas ou deslizando. */
+{const lb=$('#lb'), li=$('#lbImg'), lc=$('#lbCap'), lx=$('#lbX'), lp=$('#lbPv'), ln=$('#lbNx');
+let grp=[], gi=0, back=null, sx=null;
+const imgs=$$('.photo img,.strip img,.shots img');
+function capOf(im){const f=im.closest('figure'), fc=f&&f.querySelector('figcaption'), nx=f&&f.nextElementSibling;
+  return fc?fc.textContent:(nx&&nx.classList.contains('cap')?nx.textContent:im.alt)}
+function show(){const im=grp[gi];li.src=im.currentSrc||im.src;li.alt=im.alt;
+  lc.innerHTML='';lc.append(capOf(im));if(grp.length>1){const s=d.createElement('small');s.textContent=(gi+1)+' de '+grp.length;lc.append(s)}
+  lp.hidden=ln.hidden=grp.length<2}
+function open(im){const box=im.closest('.strip,.shots');grp=box?[...box.querySelectorAll('img')]:[im];gi=grp.indexOf(im);
+  back=d.activeElement;show();lb.hidden=false;root.style.overflow='hidden';requestAnimationFrame(()=>lb.classList.add('on'));lx.focus({preventScroll:true})}
+function close(){lb.classList.remove('on');root.style.overflow='';setTimeout(()=>{if(!lb.classList.contains('on'))lb.hidden=true},300);back&&back.focus&&back.focus({preventScroll:true})}
+function step(n){gi=(gi+n+grp.length)%grp.length;show()}
+imgs.forEach(im=>{im.classList.add('zoomable');im.tabIndex=0;im.setAttribute('role','button');im.setAttribute('aria-label','Ampliar foto: '+im.alt);
+  im.addEventListener('click',()=>open(im));im.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(im)}})});
+lx.addEventListener('click',close);lp.addEventListener('click',()=>step(-1));ln.addEventListener('click',()=>step(1));
+lb.addEventListener('click',e=>{if(e.target===lb)close()});
+d.addEventListener('keydown',e=>{if(lb.hidden)return;if(e.key==='Escape')close();else if(e.key==='ArrowLeft'&&grp.length>1)step(-1);else if(e.key==='ArrowRight'&&grp.length>1)step(1);
+  else if(e.key==='Tab'){const f=[lx,lp,ln].filter(b=>!b.hidden);const i=f.indexOf(d.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus()}});
+lb.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+lb.addEventListener('touchend',e=>{if(sx===null||grp.length<2)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>50)step(dx<0?1:-1)},{passive:true})}
 
 /* ================= EASTER EGGS ================= */
 const SECRETS=[
